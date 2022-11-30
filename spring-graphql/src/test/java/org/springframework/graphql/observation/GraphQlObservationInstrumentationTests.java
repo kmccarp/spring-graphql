@@ -183,7 +183,7 @@ class GraphQlObservationInstrumentationTests {
 		TestObservationRegistryAssert.assertThat(this.observationRegistry)
 				.hasObservationWithNameEqualTo("graphql.datafetcher")
 				.that()
-				.hasParentObservationContextMatching(context -> context instanceof ExecutionRequestObservationContext);
+				.hasParentObservationContextMatching(ExecutionRequestObservationContext.class::isInstance);
 	}
 
 

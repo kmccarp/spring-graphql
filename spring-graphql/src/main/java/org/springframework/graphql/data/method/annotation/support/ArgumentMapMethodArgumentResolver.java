@@ -43,19 +43,19 @@ public class ArgumentMapMethodArgumentResolver implements HandlerMethodArgumentR
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
-		return (checkArgumentMap(parameter) || checkArgumentsMap(parameter));
+		return checkArgumentMap(parameter) || checkArgumentsMap(parameter);
 	}
 
 	private static boolean checkArgumentMap(MethodParameter parameter) {
 		Argument argument = parameter.getParameterAnnotation(Argument.class);
-		return (argument != null &&
+		return argument != null &&
 				Map.class.isAssignableFrom(parameter.getParameterType()) &&
-				!StringUtils.hasText(argument.name()));
+				!StringUtils.hasText(argument.name());
 	}
 
 	private static boolean checkArgumentsMap(MethodParameter parameter) {
 		Arguments argument = parameter.getParameterAnnotation(Arguments.class);
-		return (argument != null && Map.class.isAssignableFrom(parameter.getParameterType()));
+		return argument != null && Map.class.isAssignableFrom(parameter.getParameterType());
 	}
 
 	@Override

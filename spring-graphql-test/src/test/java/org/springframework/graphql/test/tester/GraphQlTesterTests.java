@@ -131,7 +131,7 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 				.isEqualTo(luke)
 				.isNotEqualTo(han)
 				.satisfies(personRef::set)
-				.matches((movieCharacter) -> personRef.get().equals(movieCharacter))
+				.matches(movieCharacter -> personRef.get().equals(movieCharacter))
 				.isSameAs(personRef.get())
 				.isNotSameAs(luke)
 				.get();
@@ -286,7 +286,7 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 				graphQlTester().document(document)
 						.execute()
 						.errors()
-						.filter((error) -> error.getMessage().equals("some error"))
+						.filter(error -> "some error".equals(error.getMessage()))
 						.verify())
 				.hasMessageContaining("Response has 1 unexpected error(s) of 2 total.");
 
@@ -305,7 +305,7 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 		graphQlTester().document(document)
 				.execute()
 				.errors()
-				.filter((error) -> error.getMessage().startsWith("some "))
+				.filter(error -> error.getMessage().startsWith("some "))
 				.verify()
 				.path("me")
 				.pathDoesNotExist();
@@ -325,7 +325,7 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 		graphQlTester().document(document)
 				.execute()
 				.errors()
-				.expect((error) -> error.getMessage().startsWith("some "))
+				.expect(error -> error.getMessage().startsWith("some "))
 				.verify()
 				.path("me").pathDoesNotExist();
 
@@ -344,7 +344,7 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 		assertThatThrownBy(() ->
 				graphQlTester().document(document)
 						.execute()
-						.errors().expect((error) -> error.getMessage().startsWith("another ")))
+						.errors().expect(error -> error.getMessage().startsWith("another ")))
 				.hasMessageStartingWith("No matching errors.");
 	}
 
@@ -358,7 +358,7 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 		graphQlTester().document(document)
 				.execute()
 				.errors()
-				.satisfy((errors) -> {
+				.satisfy(errors -> {
 					assertThat(errors).hasSize(1);
 					assertThat(errors.get(0).getMessage()).isEqualTo("Invalid query");
 					assertThat(errors.get(0).getLocations()).hasSize(1);

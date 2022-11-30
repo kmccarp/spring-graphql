@@ -111,7 +111,7 @@ final class ContextDataFetcherDecorator implements DataFetcher<Object> {
 				DataFetcher<?> dataFetcher = codeRegistry.getDataFetcher(parent, fieldDefinition);
 
 				if (applyDecorator(dataFetcher)) {
-					boolean handlesSubscription = parent.getName().equals("Subscription");
+					boolean handlesSubscription = "Subscription".equals(parent.getName());
 					dataFetcher = new ContextDataFetcherDecorator(dataFetcher, handlesSubscription, compositeResolver);
 					codeRegistry.dataFetcher(parent, fieldDefinition, dataFetcher);
 				}
@@ -123,8 +123,8 @@ final class ContextDataFetcherDecorator implements DataFetcher<Object> {
 				Class<?> type = dataFetcher.getClass();
 				String packageName = type.getPackage().getName();
 				if (packageName.startsWith("graphql.")) {
-					return (type.getSimpleName().startsWith("DataFetcherFactories") ||
-							packageName.startsWith("graphql.validation"));
+					return type.getSimpleName().startsWith("DataFetcherFactories") ||
+							packageName.startsWith("graphql.validation");
 				}
 				return true;
 			}

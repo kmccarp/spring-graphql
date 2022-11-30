@@ -42,7 +42,7 @@ import org.springframework.data.util.TypeInformation;
  * @author Mark Paluch
  * @since 1.0.0
  */
-class PropertySelection {
+final class PropertySelection {
 
 	private final List<PropertyPath> propertyPaths;
 
@@ -188,8 +188,8 @@ class PropertySelection {
 				}
 			}
 
-			return (selectedFields.isEmpty() ? EmptyFieldSelection.INSTANCE
-					: new DataFetchingFieldSelection(selectedFields, allFields));
+			return selectedFields.isEmpty() ? EmptyFieldSelection.INSTANCE
+					: new DataFetchingFieldSelection(selectedFields, allFields);
 		}
 
 		@Override

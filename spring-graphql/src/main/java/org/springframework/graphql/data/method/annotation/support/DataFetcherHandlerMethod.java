@@ -71,7 +71,7 @@ public class DataFetcherHandlerMethod extends InvocableHandlerMethodSupport {
 		super(handlerMethod, executor);
 		Assert.isTrue(!resolvers.getResolvers().isEmpty(), "No argument resolvers");
 		this.resolvers = resolvers;
-		this.validator = (validator != null && validator.requiresValidation(handlerMethod) ? validator : null);
+		this.validator = validator != null && validator.requiresValidation(handlerMethod) ? validator : null;
 		this.subscription = subscription;
 	}
 
@@ -121,7 +121,7 @@ public class DataFetcherHandlerMethod extends InvocableHandlerMethodSupport {
 			return Mono.error(ex);
 		}
 
-		if (Arrays.stream(args).noneMatch(arg -> arg instanceof Mono)) {
+		if (Arrays.stream(args).noneMatch(Mono.class::isInstance)) {
 			return validateAndInvoke(args, environment);
 		}
 

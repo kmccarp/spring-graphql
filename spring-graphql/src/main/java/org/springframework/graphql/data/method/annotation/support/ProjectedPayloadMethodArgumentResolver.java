@@ -80,15 +80,15 @@ public class ProjectedPayloadMethodArgumentResolver implements HandlerMethodArgu
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		Class<?> type = parameter.nestedIfOptional().getNestedParameterType();
-		return (type.isInterface() &&
-				AnnotatedElementUtils.findMergedAnnotation(type, ProjectedPayload.class) != null);
+		return type.isInterface() &&
+				AnnotatedElementUtils.findMergedAnnotation(type, ProjectedPayload.class) != null;
 	}
 
 	@Override
 	public Object resolveArgument(MethodParameter parameter, DataFetchingEnvironment environment) throws Exception {
 
-		String name = (parameter.hasParameterAnnotation(Argument.class) ?
-				ArgumentMethodArgumentResolver.getArgumentName(parameter) : null);
+		String name = parameter.hasParameterAnnotation(Argument.class) ?
+				ArgumentMethodArgumentResolver.getArgumentName(parameter) : null;
 
 		Class<?> projectionType = parameter.getParameterType();
 
@@ -97,15 +97,15 @@ public class ProjectedPayloadMethodArgumentResolver implements HandlerMethodArgu
 			projectionType = parameter.nestedIfOptional().getNestedParameterType();
 		}
 
-		Object projectionSource = (name != null ?
-				environment.getArgument(name) : environment.getArguments());
+		Object projectionSource = name != null ?
+				environment.getArgument(name) : environment.getArguments();
 
 		Object value = null;
 		if (!isOptional || projectionSource != null) {
 			value = project(projectionType, projectionSource);
 		}
 
-		return (isOptional ? Optional.ofNullable(value) : value);
+		return isOptional ? Optional.ofNullable(value) : value;
 	}
 
 	protected Object project(Class<?> projectionType, Object projectionSource){

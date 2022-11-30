@@ -90,7 +90,7 @@ final class HandlerMethodValidationHelper {
 	 */
 	private Class<?>[] determineValidationGroups(HandlerMethod method) {
 		Validated annotation = findAnnotation(method, Validated.class);
-		return (annotation != null ? annotation.value() : new Class<?>[0]);
+		return annotation != null ? annotation.value() : new Class<?>[0];
 	}
 
 	@Nullable
@@ -140,7 +140,7 @@ final class HandlerMethodValidationHelper {
 	@Nullable
 	public static HandlerMethodValidationHelper createIfValidatorAvailable(ApplicationContext context) {
 		Validator validator = context.getBeanProvider(Validator.class).getIfAvailable();
-		return (validator != null ? new HandlerMethodValidationHelper(validator) : null);
+		return validator != null ? new HandlerMethodValidationHelper(validator) : null;
 	}
 
 }

@@ -90,7 +90,7 @@ final class DefaultExecutionGraphQlServiceTesterBuilder
 	/**
 	 * Default {@link ExecutionGraphQlServiceTester} implementation.
 	 */
-	private static class DefaultExecutionGraphQlServiceTester
+	private static final class DefaultExecutionGraphQlServiceTester
 			extends AbstractDelegatingGraphQlTester implements ExecutionGraphQlServiceTester {
 
 		private final GraphQlServiceGraphQlTransport transport;

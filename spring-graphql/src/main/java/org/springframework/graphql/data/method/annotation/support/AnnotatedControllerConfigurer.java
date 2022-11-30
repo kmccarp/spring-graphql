@@ -86,7 +86,7 @@ import org.springframework.validation.DataBinder;
 public class AnnotatedControllerConfigurer
 		implements ApplicationContextAware, InitializingBean, RuntimeWiringConfigurer {
 
-	private final static Log logger = LogFactory.getLog(AnnotatedControllerConfigurer.class);
+	private static final Log logger = LogFactory.getLog(AnnotatedControllerConfigurer.class);
 
 	/**
 	 * Bean name prefix for target beans behind scoped proxies. Used to exclude those
@@ -100,15 +100,15 @@ public class AnnotatedControllerConfigurer
 	 */
 	private static final String SCOPED_TARGET_NAME_PREFIX = "scopedTarget.";
 
-	private final static boolean springDataPresent = ClassUtils.isPresent(
+	private static final boolean springDataPresent = ClassUtils.isPresent(
 			"org.springframework.data.projection.SpelAwareProxyProjectionFactory",
 			AnnotatedControllerConfigurer.class.getClassLoader());
 
-	private final static boolean springSecurityPresent = ClassUtils.isPresent(
+	private static final boolean springSecurityPresent = ClassUtils.isPresent(
 			"org.springframework.security.core.context.SecurityContext",
 			AnnotatedControllerConfigurer.class.getClassLoader());
 
-	private final static boolean beanValidationPresent = ClassUtils.isPresent(
+	private static final boolean beanValidationPresent = ClassUtils.isPresent(
 			"jakarta.validation.executable.ExecutableValidator",
 			AnnotatedControllerConfigurer.class.getClassLoader());
 
@@ -225,7 +225,7 @@ public class AnnotatedControllerConfigurer
 	public void configure(RuntimeWiring.Builder runtimeWiringBuilder) {
 		Assert.state(this.argumentResolvers != null, "`argumentResolvers` is not initialized");
 
-		findHandlerMethods().forEach((info) -> {
+		findHandlerMethods().forEach(info -> {
 			DataFetcher<?> dataFetcher;
 			if (!info.isBatchMapping()) {
 				dataFetcher = new SchemaMappingDataFetcher(info, this.argumentResolvers, this.validationHelper, this.executor);
@@ -263,7 +263,7 @@ public class AnnotatedControllerConfigurer
 				continue;
 			}
 			Class<?> beanClass = context.getType(beanName);
-			findHandlerMethods(beanName, beanClass).forEach((info) -> {
+			findHandlerMethods(beanName, beanClass).forEach(info -> {
 				HandlerMethod handlerMethod = info.getHandlerMethod();
 				MappingInfo existing = result.put(info.getCoordinates(), info);
 				if (existing != null && !existing.getHandlerMethod().equals(handlerMethod)) {
@@ -319,12 +319,12 @@ public class AnnotatedControllerConfigurer
 		Annotation annotation = annotations.iterator().next();
 		if (annotation instanceof SchemaMapping mapping) {
 			typeName = mapping.typeName();
-			field = (StringUtils.hasText(mapping.field()) ? mapping.field() : method.getName());
+			field = StringUtils.hasText(mapping.field()) ? mapping.field() : method.getName();
 		}
 		else {
 			BatchMapping mapping = (BatchMapping) annotation;
 			typeName = mapping.typeName();
-			field = (StringUtils.hasText(mapping.field()) ? mapping.field() : method.getName());
+			field = StringUtils.hasText(mapping.field()) ? mapping.field() : method.getName();
 			batchMapping = true;
 			batchSize = mapping.maxBatchSize();
 		}
@@ -364,9 +364,9 @@ public class AnnotatedControllerConfigurer
 
 	private HandlerMethod createHandlerMethod(Method method, Object handler, Class<?> handlerType) {
 		Method theMethod = AopUtils.selectInvocableMethod(method, handlerType);
-		return (handler instanceof String ?
+		return handler instanceof String ?
 				new HandlerMethod((String) handler, obtainApplicationContext().getAutowireCapableBeanFactory(), theMethod) :
-				new HandlerMethod(handler, theMethod));
+				new HandlerMethod(handler, theMethod);
 	}
 
 	private String formatMappings(Class<?> handlerType, Collection<MappingInfo> infos) {
@@ -397,7 +397,7 @@ public class AnnotatedControllerConfigurer
 
 		MethodParameter returnType = handlerMethod.getReturnType();
 		Class<?> clazz = returnType.getParameterType();
-		Class<?> nestedClass = (clazz.equals(Callable.class) ? returnType.nested().getNestedParameterType() : clazz);
+		Class<?> nestedClass = clazz.equals(Callable.class) ? returnType.nested().getNestedParameterType() : clazz;
 
 		BatchLoaderRegistry.RegistrationSpec<Object, Object> registration = registry.forName(dataLoaderKey);
 		if (info.getMaxBatchSize() > 0) {
@@ -508,7 +508,7 @@ public class AnnotatedControllerConfigurer
 			this.argumentResolvers = resolvers;
 			this.validatorHelper = validatorHelper;
 			this.executor = executor;
-			this.subscription = this.info.getCoordinates().getTypeName().equalsIgnoreCase("Subscription");
+			this.subscription = "Subscription".equalsIgnoreCase(this.info.getCoordinates().getTypeName());
 		}
 
 		/**

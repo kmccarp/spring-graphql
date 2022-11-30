@@ -152,7 +152,7 @@ public class TestWebSocketSession implements WebSocketSession {
 
 	@Nullable
 	public CloseStatus getCloseStatus() {
-		return (this.closed ? this.statusSink.asMono().block() : null);
+		return this.closed ? this.statusSink.asMono().block() : null;
 	}
 
 	public Mono<CloseStatus> closeStatus() {

@@ -100,7 +100,7 @@ public final class TestWebSocketConnection {
 	 * Return {@code true} if both client and server sessions are open.
 	 */
 	public boolean isOpen() {
-		return (this.clientSession.isOpen() && this.serverSession.isOpen());
+		return this.clientSession.isOpen() && this.serverSession.isOpen();
 	}
 
 	/**
@@ -267,7 +267,7 @@ public final class TestWebSocketConnection {
 			}
 			else {
 				this.closeStatusSink.tryEmitEmpty();
-			};
+			}
 		}
 
 		@Override

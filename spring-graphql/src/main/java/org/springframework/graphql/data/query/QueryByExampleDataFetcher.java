@@ -91,7 +91,7 @@ import org.springframework.validation.BindException;
  */
 public abstract class QueryByExampleDataFetcher<T> {
 
-	private final static Log logger = LogFactory.getLog(QueryByExampleDataFetcher.class);
+	private static final Log logger = LogFactory.getLog(QueryByExampleDataFetcher.class);
 
 
 	private final TypeInformation<T> domainType;

@@ -67,20 +67,20 @@ class HandlerMethodValidationHelperTests {
 	void shouldRaiseValidationErrorForAnnotatedParams() {
 		HandlerMethod method = findHandlerMethod(MyBean.class, "myValidMethod");
 		assertViolations(() -> validator.validate(method, new Object[] {null, 2}))
-				.anyMatch(violation -> violation.getPropertyPath().toString().equals("myValidMethod.arg0"));
+				.anyMatch(violation -> "myValidMethod.arg0".equals(violation.getPropertyPath().toString()));
 		assertViolations(() -> validator.validate(method, new Object[] {"test", 12}))
-				.anyMatch(violation -> violation.getPropertyPath().toString().equals("myValidMethod.arg1"));
+				.anyMatch(violation -> "myValidMethod.arg1".equals(violation.getPropertyPath().toString()));
 	}
 
 	@Test
 	void shouldRaiseValidationErrorForAnnotatedParamsWithGroups() {
 		HandlerMethod myValidMethodWithGroup = findHandlerMethod(MyValidationGroupsBean.class, "myValidMethodWithGroup");
 		assertViolations(() -> validator.validate(myValidMethodWithGroup, new Object[] {null}))
-				.anyMatch(violation -> violation.getPropertyPath().toString().equals("myValidMethodWithGroup.arg0"));
+				.anyMatch(violation -> "myValidMethodWithGroup.arg0".equals(violation.getPropertyPath().toString()));
 
 		HandlerMethod myValidMethodWithGroupOnType = findHandlerMethod(MyValidationGroupsBean.class, "myValidMethodWithGroupOnType");
 		assertViolations(() -> validator.validate(myValidMethodWithGroupOnType, new Object[] {null}))
-				.anyMatch(violation -> violation.getPropertyPath().toString().equals("myValidMethodWithGroupOnType.arg0"));
+				.anyMatch(violation -> "myValidMethodWithGroupOnType.arg0".equals(violation.getPropertyPath().toString()));
 	}
 
 	@Test

@@ -70,7 +70,7 @@ public class WebGraphQlRequest extends DefaultExecutionGraphQlRequest implements
 
 	@SuppressWarnings("unchecked")
 	private static <T> T getKey(String key, Map<String, Object> body) {
-		if (key.equals("query") && !StringUtils.hasText((String) body.get(key))) {
+		if ("query".equals(key) && !StringUtils.hasText((String) body.get(key))) {
 			throw new ServerWebInputException("No \"query\" in the request document");
 		}
 		return (T) body.get(key);
