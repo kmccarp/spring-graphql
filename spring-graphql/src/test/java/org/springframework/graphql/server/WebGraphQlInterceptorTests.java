@@ -77,7 +77,7 @@ public class WebGraphQlInterceptorTests {
 		AtomicReference<String> actualName = new AtomicReference<>();
 
 		WebGraphQlHandler handler = WebGraphQlHandler
-				.builder((request) -> {
+				.builder(request -> {
 					actualName.set(request.toExecutionInput().getOperationName());
 					return emptyExecutionResult(request);
 				})
@@ -113,7 +113,7 @@ public class WebGraphQlInterceptorTests {
 		public Mono<WebGraphQlResponse> intercept(WebGraphQlRequest request, Chain chain) {
 			this.sb.append(":pre").append(this.order);
 			return chain.next(request)
-					.map((response) -> {
+					.map(response -> {
 						this.sb.append(":post").append(this.order);
 						return response;
 					})

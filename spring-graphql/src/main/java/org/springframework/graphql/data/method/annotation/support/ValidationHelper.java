@@ -44,7 +44,7 @@ import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
  * @author Rossen Stoyanchev
  * @since 1.2
  */
-class ValidationHelper {
+final class ValidationHelper {
 
 	private final Validator validator;
 
@@ -87,18 +87,18 @@ class ValidationHelper {
 				}
 				else if (annot.annotationType().equals(Validated.class)) {
 					Class<?>[] groups = ((Validated) annot).value();
-					parameterValidator = (parameterValidator != null ?
+					parameterValidator = parameterValidator != null ?
 							parameterValidator.andThen(new MethodParameterValidator(i, groups)) :
-							new MethodParameterValidator(i, groups));
+							new MethodParameterValidator(i, groups);
 				}
 			}
 		}
 
-		Consumer<Object[]> result = (requiresMethodValidation ?
-				new HandlerMethodValidator(handlerMethod, methodValidationGroups) : null);
+		Consumer<Object[]> result = requiresMethodValidation ?
+				new HandlerMethodValidator(handlerMethod, methodValidationGroups) : null;
 
 		if (parameterValidator != null) {
-			return (result != null ? result.andThen(parameterValidator) : parameterValidator);
+			return result != null ? result.andThen(parameterValidator) : parameterValidator;
 		}
 
 		return result;
@@ -127,7 +127,7 @@ class ValidationHelper {
 		else if (validator instanceof SpringValidatorAdapter) {
 			validator = validator.unwrap(Validator.class);
 		}
-		return (validator != null ? create(validator) : null);
+		return validator != null ? create(validator) : null;
 	}
 
 	/**
@@ -150,7 +150,7 @@ class ValidationHelper {
 		HandlerMethodValidator(HandlerMethod handlerMethod, @Nullable Class<?>[] validationGroups) {
 			Assert.notNull(handlerMethod, "HandlerMethod is required");
 			this.handlerMethod = handlerMethod;
-			this.validationGroups = (validationGroups != null ? validationGroups : new Class<?>[] {});
+			this.validationGroups = validationGroups != null ? validationGroups : new Class<?>[] {};
 		}
 
 		@Override
@@ -180,7 +180,7 @@ class ValidationHelper {
 
 		MethodParameterValidator(int index, @Nullable Class<?>[] validationGroups) {
 			this.index = index;
-			this.validationGroups = (validationGroups != null ? validationGroups : new Class<?>[] {});
+			this.validationGroups = validationGroups != null ? validationGroups : new Class<?>[] {};
 		}
 
 		@Override

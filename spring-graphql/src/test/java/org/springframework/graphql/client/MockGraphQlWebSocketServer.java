@@ -46,7 +46,7 @@ import org.springframework.web.reactive.socket.WebSocketSession;
  */
 public final class MockGraphQlWebSocketServer implements WebSocketHandler {
 
-	private final static Log logger = LogFactory.getLog(MockGraphQlWebSocketServer.class);
+	private static final Log logger = LogFactory.getLog(MockGraphQlWebSocketServer.class);
 
 
 	@Nullable
@@ -146,7 +146,7 @@ public final class MockGraphQlWebSocketServer implements WebSocketHandler {
 	}
 
 
-	private static class Exchange implements ResponseSpec {
+	private static final class Exchange implements ResponseSpec {
 
 		private final GraphQlRequest request;
 

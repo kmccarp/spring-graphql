@@ -89,7 +89,7 @@ public abstract class InvocableHandlerMethodSupport extends HandlerMethod {
 		}
 		catch (IllegalArgumentException ex) {
 			assertTargetBean(method, getBean(), argValues);
-			String text = (ex.getMessage() != null ? ex.getMessage() : "Illegal argument");
+			String text = ex.getMessage() != null ? ex.getMessage() : "Illegal argument";
 			return Mono.error(new IllegalStateException(formatInvokeError(text, argValues), ex));
 		}
 		catch (InvocationTargetException ex) {
@@ -135,7 +135,7 @@ public abstract class InvocableHandlerMethodSupport extends HandlerMethod {
 
 		List<Mono<Object>> monoList = Arrays.stream(args)
 				.map(arg -> {
-					Mono<Object> argMono = (arg instanceof Mono ? (Mono<Object>) arg : Mono.justOrEmpty(arg));
+					Mono<Object> argMono = arg instanceof Mono ? (Mono<Object>) arg : Mono.justOrEmpty(arg);
 					return argMono.defaultIfEmpty(NO_VALUE);
 				})
 				.collect(Collectors.toList());
