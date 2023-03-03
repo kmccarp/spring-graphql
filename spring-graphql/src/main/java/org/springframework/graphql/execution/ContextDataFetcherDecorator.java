@@ -103,7 +103,7 @@ final class ContextDataFetcherDecorator implements DataFetcher<Object> {
 			GraphQLSchema schema, List<SubscriptionExceptionResolver> resolvers) {
 
 		GraphQLObjectType subscriptionType = schema.getSubscriptionType();
-		String subscriptionTypeName = (subscriptionType != null ? subscriptionType.getName() : null);
+		String subscriptionTypeName = subscriptionType != null ? subscriptionType.getName() : null;
 
 		SubscriptionExceptionResolver exceptionResolver = new CompositeSubscriptionExceptionResolver(resolvers);
 
@@ -129,8 +129,8 @@ final class ContextDataFetcherDecorator implements DataFetcher<Object> {
 				Class<?> type = dataFetcher.getClass();
 				String packageName = type.getPackage().getName();
 				if (packageName.startsWith("graphql.")) {
-					return (type.getSimpleName().startsWith("DataFetcherFactories") ||
-							packageName.startsWith("graphql.validation"));
+					return type.getSimpleName().startsWith("DataFetcherFactories") ||
+							packageName.startsWith("graphql.validation");
 				}
 				return true;
 			}

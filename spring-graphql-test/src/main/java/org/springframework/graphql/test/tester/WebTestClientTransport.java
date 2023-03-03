@@ -65,7 +65,7 @@ final class WebTestClientTransport implements GraphQlTransport {
 				.returnResult()
 				.getResponseBody();
 
-		responseMap = (responseMap != null ? responseMap : Collections.emptyMap());
+		responseMap = responseMap != null ? responseMap : Collections.emptyMap();
 		GraphQlResponse response = GraphQlTransport.createResponse(responseMap);
 		return Mono.just(response);
 	}
