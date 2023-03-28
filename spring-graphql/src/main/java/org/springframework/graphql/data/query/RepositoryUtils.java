@@ -69,8 +69,8 @@ class RepositoryUtils {
 			return null;
 		}
 
-		return (StringUtils.hasText(annotation.typeName()) ?
-				annotation.typeName() : RepositoryUtils.getDomainType(repository).getSimpleName());
+		return StringUtils.hasText(annotation.typeName()) ?
+				annotation.typeName() : RepositoryUtils.getDomainType(repository).getSimpleName();
 	}
 
 }
