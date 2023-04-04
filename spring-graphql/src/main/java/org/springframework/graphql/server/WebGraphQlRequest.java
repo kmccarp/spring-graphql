@@ -92,13 +92,13 @@ public class WebGraphQlRequest extends DefaultExecutionGraphQlRequest implements
 
 		this.uri = UriComponentsBuilder.fromUri(uri).build(true);
 		this.headers = headers;
-		this.cookies = (cookies != null ? CollectionUtils.unmodifiableMultiValueMap(cookies) : EMPTY_COOKIES);
+		this.cookies = cookies != null ? CollectionUtils.unmodifiableMultiValueMap(cookies) : EMPTY_COOKIES;
 		this.attributes = Collections.unmodifiableMap(attributes);
 	}
 
 	@SuppressWarnings("unchecked")
 	private static <T> T getKey(String key, Map<String, Object> body) {
-		if (key.equals("query") && !StringUtils.hasText((String) body.get(key))) {
+		if ("query".equals(key) && !StringUtils.hasText((String) body.get(key))) {
 			throw new ServerWebInputException("No \"query\" in the request document");
 		}
 		return (T) body.get(key);

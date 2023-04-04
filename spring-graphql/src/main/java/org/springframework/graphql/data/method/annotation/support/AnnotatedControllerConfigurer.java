@@ -112,17 +112,17 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 
 	private static final ClassLoader classLoader = AnnotatedControllerConfigurer.class.getClassLoader();
 
-	private final static boolean springDataPresent = ClassUtils.isPresent(
+	private static final boolean springDataPresent = ClassUtils.isPresent(
 			"org.springframework.data.projection.SpelAwareProxyProjectionFactory", classLoader);
 
-	private final static boolean springSecurityPresent = ClassUtils.isPresent(
+	private static final boolean springSecurityPresent = ClassUtils.isPresent(
 			"org.springframework.security.core.context.SecurityContext", classLoader);
 
-	private final static boolean beanValidationPresent = ClassUtils.isPresent(
+	private static final boolean beanValidationPresent = ClassUtils.isPresent(
 			"jakarta.validation.executable.ExecutableValidator", classLoader);
 
 
-	private final static Log logger = LogFactory.getLog(AnnotatedControllerConfigurer.class);
+	private static final Log logger = LogFactory.getLog(AnnotatedControllerConfigurer.class);
 
 	/**
 	 * Bean name prefix for target beans behind scoped proxies. Used to exclude those
@@ -326,7 +326,7 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 		Assert.state(this.argumentResolvers != null, "`argumentResolvers` is not initialized");
 		Assert.state(this.exceptionResolver != null, "`exceptionResolver` is not initialized");
 
-		findHandlerMethods().forEach((info) -> {
+		findHandlerMethods().forEach(info -> {
 			DataFetcher<?> dataFetcher;
 			if (!info.isBatchMapping()) {
 				dataFetcher = new SchemaMappingDataFetcher(
@@ -365,7 +365,7 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 				continue;
 			}
 			Class<?> beanClass = context.getType(beanName);
-			findHandlerMethods(beanName, beanClass).forEach((info) -> {
+			findHandlerMethods(beanName, beanClass).forEach(info -> {
 				HandlerMethod handlerMethod = info.getHandlerMethod();
 				MappingInfo existing = result.put(info.getCoordinates(), info);
 				if (existing != null && !existing.getHandlerMethod().equals(handlerMethod)) {
@@ -421,12 +421,12 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 		Annotation annotation = annotations.iterator().next();
 		if (annotation instanceof SchemaMapping mapping) {
 			typeName = mapping.typeName();
-			field = (StringUtils.hasText(mapping.field()) ? mapping.field() : method.getName());
+			field = StringUtils.hasText(mapping.field()) ? mapping.field() : method.getName();
 		}
 		else {
 			BatchMapping mapping = (BatchMapping) annotation;
 			typeName = mapping.typeName();
-			field = (StringUtils.hasText(mapping.field()) ? mapping.field() : method.getName());
+			field = StringUtils.hasText(mapping.field()) ? mapping.field() : method.getName();
 			batchMapping = true;
 			batchSize = mapping.maxBatchSize();
 		}
@@ -466,9 +466,9 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 
 	private HandlerMethod createHandlerMethod(Method method, Object handler, Class<?> handlerType) {
 		Method theMethod = AopUtils.selectInvocableMethod(method, handlerType);
-		return (handler instanceof String ?
+		return handler instanceof String ?
 				new HandlerMethod((String) handler, obtainApplicationContext().getAutowireCapableBeanFactory(), theMethod) :
-				new HandlerMethod(handler, theMethod));
+				new HandlerMethod(handler, theMethod);
 	}
 
 	private String formatMappings(Class<?> handlerType, Collection<MappingInfo> infos) {
@@ -499,7 +499,7 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 
 		MethodParameter returnType = handlerMethod.getReturnType();
 		Class<?> clazz = returnType.getParameterType();
-		Class<?> nestedClass = (clazz.equals(Callable.class) ? returnType.nested().getNestedParameterType() : clazz);
+		Class<?> nestedClass = clazz.equals(Callable.class) ? returnType.nested().getNestedParameterType() : clazz;
 
 		BatchLoaderRegistry.RegistrationSpec<Object, Object> registration = registry.forName(dataLoaderKey);
 		if (info.getMaxBatchSize() > 0) {
@@ -612,7 +612,7 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 			this.argumentResolvers = argumentResolvers;
 
 			this.methodValidationHelper =
-					(helper != null ? helper.getValidationHelperFor(info.getHandlerMethod()) : null);
+					helper != null ? helper.getValidationHelperFor(info.getHandlerMethod()) : null;
 
 			// Register controllers early to validate exception handler return types
 			Class<?> controllerType = info.getHandlerMethod().getBeanType();
@@ -621,7 +621,7 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 			this.exceptionResolver = exceptionResolver;
 
 			this.executor = executor;
-			this.subscription = this.info.getCoordinates().getTypeName().equalsIgnoreCase("Subscription");
+			this.subscription = "Subscription".equalsIgnoreCase(this.info.getCoordinates().getTypeName());
 		}
 
 		/**

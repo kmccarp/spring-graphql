@@ -46,7 +46,7 @@ import org.springframework.util.Assert;
  */
 class AutoRegistrationRuntimeWiringConfigurer implements RuntimeWiringConfigurer {
 
-	private final static Log logger = LogFactory.getLog(AutoRegistrationRuntimeWiringConfigurer.class);
+	private static final Log logger = LogFactory.getLog(AutoRegistrationRuntimeWiringConfigurer.class);
 
 
 	private final Map<String, Function<Boolean, DataFetcher<?>>> dataFetcherFactories;
@@ -92,15 +92,15 @@ class AutoRegistrationRuntimeWiringConfigurer implements RuntimeWiringConfigurer
 				return false;
 			}
 
-			if (!environment.getParentType().getName().equals("Query")) {
+			if (!"Query".equals(environment.getParentType().getName())) {
 				return false;
 			}
 
 			String outputTypeName = getOutputTypeName(environment);
 
-			boolean result = (outputTypeName != null &&
+			boolean result = outputTypeName != null &&
 					dataFetcherFactories.containsKey(outputTypeName) &&
-					!hasDataFetcherFor(environment.getFieldDefinition()));
+					!hasDataFetcherFor(environment.getFieldDefinition());
 
 			if (!result) {
 				// This may be called multiples times on success, so log only rejections from here
@@ -112,16 +112,16 @@ class AutoRegistrationRuntimeWiringConfigurer implements RuntimeWiringConfigurer
 
 		@Nullable
 		private String getOutputTypeName(FieldWiringEnvironment environment) {
-			GraphQLType outputType = (environment.getFieldType() instanceof GraphQLList ?
+			GraphQLType outputType = environment.getFieldType() instanceof GraphQLList ?
 					((GraphQLList) environment.getFieldType()).getWrappedType() :
-					environment.getFieldType());
+					environment.getFieldType();
 
 			if (outputType instanceof GraphQLNonNull) {
 				outputType = ((GraphQLNonNull) outputType).getWrappedType();
 			}
 
-			return (outputType instanceof GraphQLNamedOutputType ?
-					((GraphQLNamedOutputType) outputType).getName() : null);
+			return outputType instanceof GraphQLNamedOutputType ?
+					((GraphQLNamedOutputType) outputType).getName() : null;
 		}
 
 		private boolean hasDataFetcherFor(FieldDefinition fieldDefinition) {

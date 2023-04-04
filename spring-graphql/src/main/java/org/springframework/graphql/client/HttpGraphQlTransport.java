@@ -64,7 +64,7 @@ final class HttpGraphQlTransport implements GraphQlTransport {
 		HttpHeaders headers = new HttpHeaders();
 		webClient.mutate().defaultHeaders(headers::putAll);
 		MediaType contentType = headers.getContentType();
-		return (contentType != null ? contentType : MediaType.APPLICATION_JSON);
+		return contentType != null ? contentType : MediaType.APPLICATION_JSON;
 	}
 
 
