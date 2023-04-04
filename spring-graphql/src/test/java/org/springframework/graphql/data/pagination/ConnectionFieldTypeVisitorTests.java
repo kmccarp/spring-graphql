@@ -104,9 +104,9 @@ public class ConnectionFieldTypeVisitorTests {
 
 	private static class TestConnectionAdapter implements ConnectionAdapter {
 
-		private int initialOffset = 0;
+		private int initialOffset;
 
-		private boolean hasNext = false;
+		private boolean hasNext;
 
 		public void setInitialOffset(int initialOffset) {
 			this.initialOffset = initialOffset;
@@ -128,7 +128,7 @@ public class ConnectionFieldTypeVisitorTests {
 
 		@Override
 		public boolean hasPrevious(Object container) {
-			return (this.initialOffset != 0);
+			return this.initialOffset != 0;
 		}
 
 		@Override

@@ -74,7 +74,7 @@ public final class ConnectionFieldTypeVisitor extends GraphQLTypeVisitorStub {
 		GraphQLFieldsContainer parent = (GraphQLFieldsContainer) context.getParentNode();
 		DataFetcher<?> dataFetcher = codeRegistry.getDataFetcher(parent, fieldDefinition);
 
-		if (parent.getName().equalsIgnoreCase("mutation") || parent.getName().equalsIgnoreCase("subscription")) {
+		if ("mutation".equalsIgnoreCase(parent.getName()) || "subscription".equalsIgnoreCase(parent.getName())) {
 			return TraversalControl.ABORT;
 		}
 
@@ -90,9 +90,9 @@ public final class ConnectionFieldTypeVisitor extends GraphQLTypeVisitorStub {
 		if (returnType instanceof GraphQLNonNull nonNullType) {
 			returnType = nonNullType.getWrappedType();
 		}
-		return (returnType instanceof GraphQLObjectType objectType &&
+		return returnType instanceof GraphQLObjectType objectType &&
 				objectType.getName().endsWith("Connection") &&
-				objectType.getField("pageInfo") != null);
+				objectType.getField("pageInfo") != null;
 	}
 
 
@@ -113,7 +113,7 @@ public final class ConnectionFieldTypeVisitor extends GraphQLTypeVisitorStub {
 	 */
 	private record ConnectionDataFetcher(DataFetcher<?> delegate, ConnectionAdapter adapter) implements DataFetcher<Object> {
 
-		private final static Connection<?> EMPTY_CONNECTION =
+		private static final Connection<?> EMPTY_CONNECTION =
 				new DefaultConnection<>(Collections.emptyList(), new DefaultPageInfo(null, null, false, false));
 
 

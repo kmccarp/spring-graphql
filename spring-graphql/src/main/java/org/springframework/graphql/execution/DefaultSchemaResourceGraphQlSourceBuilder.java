@@ -60,7 +60,7 @@ final class DefaultSchemaResourceGraphQlSourceBuilder
 
 	private final Set<Resource> schemaResources = new LinkedHashSet<>();
 
-	private List<TypeDefinitionConfigurer> typeDefinitionConfigurers = new ArrayList<>();
+	private final List<TypeDefinitionConfigurer> typeDefinitionConfigurers = new ArrayList<>();
 
 	private final List<RuntimeWiringConfigurer> runtimeWiringConfigurers = new ArrayList<>();
 
@@ -141,9 +141,9 @@ final class DefaultSchemaResourceGraphQlSourceBuilder
 			}
 		});
 
-		return (this.schemaFactory != null ?
+		return this.schemaFactory != null ?
 				this.schemaFactory.apply(registry, runtimeWiring) :
-				new SchemaGenerator().makeExecutableSchema(registry, runtimeWiring));
+				new SchemaGenerator().makeExecutableSchema(registry, runtimeWiring);
 	}
 
 	private TypeDefinitionRegistry parse(Resource schemaResource) {
@@ -180,7 +180,7 @@ final class DefaultSchemaResourceGraphQlSourceBuilder
 	}
 
 	private TypeResolver initTypeResolver() {
-		return (this.typeResolver != null ? this.typeResolver : new ClassNameTypeResolver());
+		return this.typeResolver != null ? this.typeResolver : new ClassNameTypeResolver();
 	}
 
 }

@@ -188,7 +188,7 @@ class SchemaMappingInspector {
 
 	}
 
-	private static class ReportBuilder {
+	private static final class ReportBuilder {
 
 		private final MultiValueMap<String, String> missingOperations = new LinkedMultiValueMap<>();
 
