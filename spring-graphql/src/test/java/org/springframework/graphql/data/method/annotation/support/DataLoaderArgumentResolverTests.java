@@ -42,7 +42,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 public class DataLoaderArgumentResolverTests {
 
 	private static final Method method = ClassUtils.getMethod(
-			DataLoaderArgumentResolverTests.class, "handle", (Class<?>[]) null);
+DataLoaderArgumentResolverTests.class, "handle", (Class<?>[]) null);
 
 	private final DataLoaderMethodArgumentResolver resolver = new DataLoaderMethodArgumentResolver();
 
@@ -79,7 +79,7 @@ public class DataLoaderArgumentResolverTests {
 		this.registry.forTypePair(Long.class, Author.class).registerBatchLoader((ids, env) -> Flux.empty());
 
 		assertThatThrownBy(() -> this.resolver.resolveArgument(initParameter(2), environment()))
-				.hasMessageContaining("declaring the DataLoader argument with generic types should help");
+	.hasMessageContaining("declaring the DataLoader argument with generic types should help");
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class DataLoaderArgumentResolverTests {
 		// Skip ParameterNameDiscovery
 
 		assertThatThrownBy(() -> this.resolver.resolveArgument(parameter, environment()))
-				.hasMessageContaining("compiling with \"-parameters\" should help");
+	.hasMessageContaining("compiling with \"-parameters\" should help");
 	}
 
 	@Test
@@ -101,10 +101,8 @@ public class DataLoaderArgumentResolverTests {
 		parameter.initParameterNameDiscovery(new DefaultParameterNameDiscoverer());
 
 		assertThatThrownBy(() -> this.resolver.resolveArgument(parameter, environment()))
-				.hasMessageContaining(
-						"Neither the name of the declared value type 'class org.springframework.graphql.Author' " +
-								"nor the method parameter name 'authorDataLoader' match to any DataLoader. " +
-								"The DataLoaderRegistry contains: [bookDataLoader]");
+	.hasMessageContaining(
+"Neither the name of the declared value type 'class org.springframework.graphql.Author' " +"nor the method parameter name 'authorDataLoader' match to any DataLoader. " +"The DataLoaderRegistry contains: [bookDataLoader]");
 	}
 
 	private DataFetchingEnvironment environment() {
@@ -120,10 +118,10 @@ public class DataLoaderArgumentResolverTests {
 
 	@SuppressWarnings({"unused", "rawtypes"})
 	public void handle(
-			DataLoader<Long, Author> authorDataLoader,
-			DataLoader<Long, Author> namedDataLoader,
-			DataLoader rawDataLoader,
-			DataFetchingEnvironment environment) {
+DataLoader<Long, Author> authorDataLoader,
+DataLoader<Long, Author> namedDataLoader,
+DataLoader rawDataLoader,
+DataFetchingEnvironment environment) {
 	}
 
 }

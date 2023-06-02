@@ -68,7 +68,7 @@ public class JsonKeysetCursorStrategyTests {
 	void toAndFromCursorWithZonedDateTime() {
 
 		ZonedDateTime dateTime = ZonedDateTime.of(
-				LocalDateTime.of(2023, Month.MAY, 5, 0, 0, 0, 0), ZoneId.of("Z"));
+	LocalDateTime.of(2023, Month.MAY, 5, 0, 0, 0, 0), ZoneId.of("Z"));
 
 		Map<String, Object> keys = new LinkedHashMap<>();
 		keys.put("date", dateTime);

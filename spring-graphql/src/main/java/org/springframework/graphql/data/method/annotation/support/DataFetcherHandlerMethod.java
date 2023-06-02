@@ -52,7 +52,7 @@ public class DataFetcherHandlerMethod extends InvocableHandlerMethodSupport {
 	private final HandlerMethodArgumentResolverComposite resolvers;
 
 	private final BiConsumer<Object, Object[]> validationHelper;
-	
+
 	private final ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 
 	private final boolean subscription;
@@ -66,14 +66,15 @@ public class DataFetcherHandlerMethod extends InvocableHandlerMethodSupport {
 	 * @param subscription whether the field being fetched is of subscription type
 	 */
 	public DataFetcherHandlerMethod(
-			HandlerMethod handlerMethod, HandlerMethodArgumentResolverComposite resolvers,
-			@Nullable BiConsumer<Object, Object[]> validationHelper, @Nullable Executor executor,
-			boolean subscription) {
+HandlerMethod handlerMethod, HandlerMethodArgumentResolverComposite resolvers,
+@Nullable BiConsumer<Object, Object[]> validationHelper, @Nullable Executor executor,
+boolean subscription) {
 
 		super(handlerMethod, executor);
 		Assert.isTrue(!resolvers.getResolvers().isEmpty(), "No argument resolvers");
 		this.resolvers = resolvers;
-		this.validationHelper = (validationHelper != null ? validationHelper : (controller, args) -> {});
+		this.validationHelper = (validationHelper != null ? validationHelper : (controller, args) -> {
+		});
 		this.subscription = subscription;
 	}
 
@@ -127,26 +128,26 @@ public class DataFetcherHandlerMethod extends InvocableHandlerMethodSupport {
 		}
 
 		return this.subscription ?
-				toArgsMono(args).flatMapMany(argValues -> {
-					Object result = validateAndInvoke(argValues, environment);
-					Assert.state(result instanceof Publisher, "Expected a Publisher from a Subscription response");
-					return Flux.from((Publisher<?>) result);
-				}) :
-				toArgsMono(args).flatMap(argValues -> {
-					Object result = validateAndInvoke(argValues, environment);
-					if (result instanceof Mono<?> mono) {
-						return mono;
-					}
-					else if (result instanceof Flux<?> flux) {
-						return Flux.from(flux).collectList();
-					}
-					else if (result instanceof CompletableFuture<?> future) {
-						return Mono.fromFuture(future);
-					}
-					else {
-						return Mono.justOrEmpty(result);
-					}
-				});
+	toArgsMono(args).flatMapMany(argValues -> {
+		Object result = validateAndInvoke(argValues, environment);
+		Assert.state(result instanceof Publisher, "Expected a Publisher from a Subscription response");
+		return Flux.from((Publisher<?>) result);
+	}) :
+	toArgsMono(args).flatMap(argValues -> {
+		Object result = validateAndInvoke(argValues, environment);
+		if (result instanceof Mono<?> mono) {
+			return mono;
+		}
+		else if (result instanceof Flux<?> flux) {
+			return Flux.from(flux).collectList();
+		}
+		else if (result instanceof CompletableFuture<?> future) {
+			return Mono.fromFuture(future);
+		}
+		else {
+			return Mono.justOrEmpty(result);
+		}
+	});
 	}
 
 	/**
@@ -155,7 +156,7 @@ public class DataFetcherHandlerMethod extends InvocableHandlerMethodSupport {
 	 * <p>The resulting array will be passed into {@link #doInvoke}.
 	 */
 	private Object[] getMethodArgumentValues(
-			DataFetchingEnvironment environment, Object... providedArgs) throws Exception {
+DataFetchingEnvironment environment, Object... providedArgs) throws Exception {
 
 		MethodParameter[] parameters = getMethodParameters();
 		if (ObjectUtils.isEmpty(parameters)) {

@@ -65,7 +65,7 @@ abstract class AbstractDirectGraphQlTransport implements GraphQlTransport {
 				AssertionErrors.assertTrue("Subscription errors: " + errors, CollectionUtils.isEmpty(errors));
 
 				return Flux.from((Publisher<ExecutionResult>) data).map(executionResult ->
-						new DefaultExecutionGraphQlResponse(response.getExecutionInput(), executionResult));
+			new DefaultExecutionGraphQlResponse(response.getExecutionInput(), executionResult));
 			}
 			catch (AssertionError ex) {
 				throw new AssertionError(ex.getMessage() + "\nRequest: " + request, ex);
@@ -75,8 +75,8 @@ abstract class AbstractDirectGraphQlTransport implements GraphQlTransport {
 
 	private ExecutionGraphQlRequest toExecutionRequest(GraphQlRequest request) {
 		return new DefaultExecutionGraphQlRequest(
-				request.getDocument(), request.getOperationName(), request.getVariables(), request.getExtensions(),
-				idGenerator.generateId().toString(), null);
+	request.getDocument(), request.getOperationName(), request.getVariables(), request.getExtensions(),
+	idGenerator.generateId().toString(), null);
 	}
 
 	/**

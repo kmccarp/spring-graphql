@@ -81,7 +81,7 @@ public class GraphQlSetup implements GraphQlServiceSetup {
 
 	public GraphQlSetup dataFetcher(String type, String field, DataFetcher<?> dataFetcher) {
 		return runtimeWiring(wiringBuilder ->
-				wiringBuilder.type(type, typeBuilder -> typeBuilder.dataFetcher(field, dataFetcher)));
+	wiringBuilder.type(type, typeBuilder -> typeBuilder.dataFetcher(field, dataFetcher)));
 	}
 
 	public GraphQlSetup typeDefinitionConfigurer(TypeDefinitionConfigurer configurer) {
@@ -172,8 +172,8 @@ public class GraphQlSetup implements GraphQlServiceSetup {
 	public WebGraphQlHandler toWebGraphQlHandler() {
 		ExecutionGraphQlService service = toGraphQlService();
 		return WebGraphQlHandler.builder(service)
-				.interceptors(this.interceptors)
-				.build();
+	.interceptors(this.interceptors)
+	.build();
 	}
 
 	@Override

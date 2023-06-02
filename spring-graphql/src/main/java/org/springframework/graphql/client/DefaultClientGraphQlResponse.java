@@ -38,7 +38,7 @@ final class DefaultClientGraphQlResponse extends ResponseMapGraphQlResponse impl
 
 
 	DefaultClientGraphQlResponse(
-			ClientGraphQlRequest request, GraphQlResponse response, Encoder<?> encoder, Decoder<?> decoder) {
+ClientGraphQlRequest request, GraphQlResponse response, Encoder<?> encoder, Decoder<?> decoder) {
 
 		super(response);
 

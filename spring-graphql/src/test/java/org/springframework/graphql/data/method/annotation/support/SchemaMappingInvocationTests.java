@@ -70,15 +70,15 @@ public class SchemaMappingInvocationTests {
 	@Test
 	void queryWithScalarArgument() {
 		String document = "{ " +
-				"  bookById(id:\"1\") { " +
-				"    id" +
-				"    name" +
-				"    author {" +
-				"      firstName" +
-				"      lastName" +
-				"    }" +
-				"  }" +
-				"}";
+	"  bookById(id:\"1\") { " +
+	"    id" +
+	"    name" +
+	"    author {" +
+	"      firstName" +
+	"      lastName" +
+	"    }" +
+	"  }" +
+	"}";
 
 		Mono<ExecutionGraphQlResponse> responseMono = graphQlService().execute(document);
 
@@ -94,11 +94,11 @@ public class SchemaMappingInvocationTests {
 	@Test
 	void queryWithObjectArgument() {
 		String document = "{ " +
-				"  booksByCriteria(criteria: {author:\"Orwell\"}) { " +
-				"    id" +
-				"    name" +
-				"  }" +
-				"}";
+	"  booksByCriteria(criteria: {author:\"Orwell\"}) { " +
+	"    id" +
+	"    name" +
+	"  }" +
+	"}";
 
 		Mono<ExecutionGraphQlResponse> responseMono = graphQlService().execute(document);
 
@@ -111,11 +111,11 @@ public class SchemaMappingInvocationTests {
 	@Test
 	void queryWithProjectionOnArgumentsMap() {
 		String document = "{ " +
-				"  booksByProjectedArguments(author:\"Orwell\") { " +
-				"    id" +
-				"    name" +
-				"  }" +
-				"}";
+	"  booksByProjectedArguments(author:\"Orwell\") { " +
+	"    id" +
+	"    name" +
+	"  }" +
+	"}";
 
 		Mono<ExecutionGraphQlResponse> responseMono = graphQlService().execute(document);
 
@@ -128,11 +128,11 @@ public class SchemaMappingInvocationTests {
 	@Test
 	void queryWithProjectionOnNamedArgument() {
 		String document = "{ " +
-				"  booksByProjectedCriteria(criteria: {author:\"Orwell\"}) { " +
-				"    id" +
-				"    name" +
-				"  }" +
-				"}";
+	"  booksByProjectedCriteria(criteria: {author:\"Orwell\"}) { " +
+	"    id" +
+	"    name" +
+	"  }" +
+	"}";
 
 		Mono<ExecutionGraphQlResponse> responseMono = graphQlService().execute(document);
 
@@ -145,12 +145,12 @@ public class SchemaMappingInvocationTests {
 	@Test
 	void queryWithArgumentViaDataFetchingEnvironment() {
 		String document = "{ " +
-				"  authorById(id:\"101\") { " +
-				"    id" +
-				"    firstName" +
-				"    lastName" +
-				"  }" +
-				"}";
+	"  authorById(id:\"101\") { " +
+	"    id" +
+	"    firstName" +
+	"    lastName" +
+	"  }" +
+	"}";
 
 		AtomicReference<GraphQLContext> contextRef = new AtomicReference<>();
 		ExecutionGraphQlRequest request = TestExecutionRequest.forDocument(document);
@@ -172,12 +172,12 @@ public class SchemaMappingInvocationTests {
 	@Test
 	void mutation() {
 		String document = "mutation { " +
-				"  addAuthor(firstName:\"James\", lastName:\"Joyce\") { " +
-				"    id" +
-				"    firstName" +
-				"    lastName" +
-				"  }" +
-				"}";
+	"  addAuthor(firstName:\"James\", lastName:\"Joyce\") { " +
+	"    id" +
+	"    firstName" +
+	"    lastName" +
+	"  }" +
+	"}";
 
 		Mono<ExecutionGraphQlResponse> responseMono = graphQlService().execute(document);
 
@@ -190,37 +190,37 @@ public class SchemaMappingInvocationTests {
 	@Test
 	void subscription() {
 		String document = "subscription { " +
-				"  bookSearch(author:\"Orwell\") { " +
-				"    id" +
-				"    name" +
-				"  }" +
-				"}";
+	"  bookSearch(author:\"Orwell\") { " +
+	"    id" +
+	"    name" +
+	"  }" +
+	"}";
 
 		Mono<ExecutionGraphQlResponse> responseMono = graphQlService().execute(document);
 
 		Flux<Book> bookFlux = ResponseHelper.forSubscription(responseMono)
-				.map(response -> response.toEntity("bookSearch", Book.class));
+	.map(response -> response.toEntity("bookSearch", Book.class));
 
 		StepVerifier.create(bookFlux)
-				.consumeNextWith(book -> {
-					assertThat(book.getId()).isEqualTo(1);
-					assertThat(book.getName()).isEqualTo("Nineteen Eighty-Four");
-				})
-				.consumeNextWith(book -> {
-					assertThat(book.getId()).isEqualTo(5);
-					assertThat(book.getName()).isEqualTo("Animal Farm");
-				})
-				.verifyComplete();
+	.consumeNextWith(book -> {
+		assertThat(book.getId()).isEqualTo(1);
+		assertThat(book.getName()).isEqualTo("Nineteen Eighty-Four");
+	})
+	.consumeNextWith(book -> {
+		assertThat(book.getId()).isEqualTo(5);
+		assertThat(book.getName()).isEqualTo("Animal Farm");
+	})
+	.verifyComplete();
 	}
 
 	@Test
 	void handleExceptionFromQuery() {
 		String document = "{ " +
-				"  booksByCriteria(criteria: {author:\"Fitzgerald\"}) { " +
-				"    id" +
-				"    name" +
-				"  }" +
-				"}";
+	"  booksByCriteria(criteria: {author:\"Fitzgerald\"}) { " +
+	"    id" +
+	"    name" +
+	"  }" +
+	"}";
 
 		Mono<ExecutionGraphQlResponse> responseMono = graphQlService().execute(document);
 
@@ -233,17 +233,15 @@ public class SchemaMappingInvocationTests {
 	@Test
 	void handleExceptionWithResolverWhenNoAnnotatedExceptionHandlerMatches() {
 		String document = "{ " +
-				"  booksByCriteria(criteria: {author:\"Heller\"}) { " +
-				"    id" +
-				"    name" +
-				"  }" +
-				"}";
+	"  booksByCriteria(criteria: {author:\"Heller\"}) { " +
+	"    id" +
+	"    name" +
+	"  }" +
+	"}";
 
 		DataFetcherExceptionResolver resolver = (ex, env) ->
-				Mono.just(Collections.singletonList(
-						GraphQLError.newError().errorType(ErrorType.INTERNAL_ERROR)
-								.message("Rejected: " + ex.getMessage())
-								.build()));
+	Mono.just(Collections.singletonList(
+GraphQLError.newError().errorType(ErrorType.INTERNAL_ERROR).message("Rejected: " + ex.getMessage()).build()));
 
 		TestExecutionGraphQlService service = graphQlService((configurer, setup) -> {
 			setup.exceptionResolver(configurer.getExceptionResolver()); // First @ControllerAdvice (no match)
@@ -261,31 +259,32 @@ public class SchemaMappingInvocationTests {
 	@Test
 	void handleExceptionFromSubscription() {
 		String document = "subscription { " +
-				"  bookSearch(author:\"Fitzgerald\") { " +
-				"    id" +
-				"    name" +
-				"  }" +
-				"}";
+	"  bookSearch(author:\"Fitzgerald\") { " +
+	"    id" +
+	"    name" +
+	"  }" +
+	"}";
 
 		Mono<ExecutionGraphQlResponse> responseMono = graphQlService().execute(document);
 
 		Flux<Book> bookFlux = ResponseHelper.forSubscription(responseMono)
-				.map(response -> response.toEntity("bookSearch", Book.class));
+	.map(response -> response.toEntity("bookSearch", Book.class));
 
 		StepVerifier.create(bookFlux)
-				.expectErrorSatisfies(ex -> {
-					SubscriptionPublisherException theEx = (SubscriptionPublisherException) ex;
-					List<GraphQLError> errors = theEx.getErrors();
-					assertThat(errors).hasSize(1);
-					assertThat(errors.get(0).getErrorType().toString()).isEqualTo("BAD_REQUEST");
-					assertThat(errors.get(0).getMessage()).isEqualTo("Rejected: Bad input");
-				})
-				.verify();
+	.expectErrorSatisfies(ex -> {
+		SubscriptionPublisherException theEx = (SubscriptionPublisherException) ex;
+		List<GraphQLError> errors = theEx.getErrors();
+		assertThat(errors).hasSize(1);
+		assertThat(errors.get(0).getErrorType().toString()).isEqualTo("BAD_REQUEST");
+		assertThat(errors.get(0).getMessage()).isEqualTo("Rejected: Bad input");
+	})
+	.verify();
 	}
 
 
 	private TestExecutionGraphQlService graphQlService() {
-		return graphQlService((configurer, setup) -> {});
+		return graphQlService((configurer, setup) -> {
+		});
 	}
 
 	private TestExecutionGraphQlService graphQlService(BiConsumer<AnnotatedControllerConfigurer, GraphQlSetup> consumer) {
@@ -314,7 +313,7 @@ public class SchemaMappingInvocationTests {
 
 		public BookController(BatchLoaderRegistry batchLoaderRegistry) {
 			batchLoaderRegistry.forTypePair(Long.class, Author.class)
-					.registerBatchLoader((ids, env) -> Flux.fromIterable(ids).map(BookSource::getAuthor));
+		.registerBatchLoader((ids, env) -> Flux.fromIterable(ids).map(BookSource::getAuthor));
 		}
 
 		@QueryMapping
@@ -363,15 +362,15 @@ public class SchemaMappingInvocationTests {
 		@SubscriptionMapping
 		public Flux<Book> bookSearch(@Argument String author) {
 			return (author.equalsIgnoreCase("Fitzgerald") ?
-					Flux.error(new IllegalArgumentException("Bad input")) :
-					Flux.fromIterable(BookSource.findBooksByAuthor(author)));
+		Flux.error(new IllegalArgumentException("Bad input")) :
+		Flux.fromIterable(BookSource.findBooksByAuthor(author)));
 		}
 
 		@GraphQlExceptionHandler
 		public GraphQLError handleInputError(IllegalArgumentException ex) {
 			return GraphQLError.newError().errorType(ErrorType.BAD_REQUEST)
-					.message("Rejected: " + ex.getMessage())
-					.build();
+		.message("Rejected: " + ex.getMessage())
+		.build();
 		}
 	}
 

@@ -42,8 +42,8 @@ public class SchemaHandler {
 
 	public ServerResponse handleRequest(ServerRequest request) {
 		return ServerResponse.ok()
-				.contentType(MediaType.TEXT_PLAIN)
-				.body(this.printer.print(graphQlSource.schema()));
+	.contentType(MediaType.TEXT_PLAIN)
+	.body(this.printer.print(graphQlSource.schema()));
 	}
 
 }

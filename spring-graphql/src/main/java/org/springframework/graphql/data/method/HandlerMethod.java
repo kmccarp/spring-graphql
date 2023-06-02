@@ -104,7 +104,7 @@ public class HandlerMethod {
 		Class<?> beanType = beanFactory.getType(beanName);
 		if (beanType == null) {
 			throw new IllegalStateException(
-					"Cannot resolve bean type for bean with name '" + beanName + "'");
+		"Cannot resolve bean type for bean with name '" + beanName + "'");
 		}
 		this.beanType = ClassUtils.getUserClass(beanType);
 		this.method = method;
@@ -266,7 +266,7 @@ public class HandlerMethod {
 
 	private boolean isOverrideFor(Method candidate) {
 		if (!candidate.getName().equals(this.method.getName()) ||
-				candidate.getParameterCount() != this.method.getParameterCount()) {
+	candidate.getParameterCount() != this.method.getParameterCount()) {
 			return false;
 		}
 		Class<?>[] paramTypes = this.method.getParameterTypes();
@@ -275,7 +275,7 @@ public class HandlerMethod {
 		}
 		for (int i = 0; i < paramTypes.length; i++) {
 			if (paramTypes[i] !=
-					ResolvableType.forMethodParameter(candidate, i, this.method.getDeclaringClass()).resolve()) {
+		ResolvableType.forMethodParameter(candidate, i, this.method.getDeclaringClass()).resolve()) {
 				return false;
 			}
 		}
@@ -322,7 +322,7 @@ public class HandlerMethod {
 
 	protected static String formatArgumentError(MethodParameter param, String message) {
 		return "Could not resolve parameter [" + param.getParameterIndex() + "] in " +
-				param.getExecutable().toGenericString() + (StringUtils.hasText(message) ? ": " + message : "");
+	param.getExecutable().toGenericString() + (StringUtils.hasText(message) ? ": " + message : "");
 	}
 
 	/**
@@ -337,9 +337,9 @@ public class HandlerMethod {
 		Class<?> targetBeanClass = targetBean.getClass();
 		if (!methodDeclaringClass.isAssignableFrom(targetBeanClass)) {
 			String text = "The mapped handler method class '" + methodDeclaringClass.getName() +
-					"' is not an instance of the actual endpoint bean class '" +
-					targetBeanClass.getName() + "'. If the class requires proxying " +
-					"(e.g. due to @Transactional), please use class-based proxying.";
+		"' is not an instance of the actual endpoint bean class '" +
+		targetBeanClass.getName() + "'. If the class requires proxying " +
+		"(e.g. due to @Transactional), please use class-based proxying.";
 			throw new IllegalStateException(formatInvokeError(text, args));
 		}
 	}
@@ -347,15 +347,15 @@ public class HandlerMethod {
 	protected String formatInvokeError(String text, Object[] args) {
 
 		String formattedArgs = IntStream.range(0, args.length)
-				.mapToObj(i -> (args[i] != null ?
-						"[" + i + "] [type=" + args[i].getClass().getName() + "] [value=" + args[i] + "]" :
-						"[" + i + "] [null]"))
-				.collect(Collectors.joining(",\n", " ", " "));
+	.mapToObj(i -> (args[i] != null ?
+"[" + i + "] [type=" + args[i].getClass().getName() + "] [value=" + args[i] + "]" :
+"[" + i + "] [null]"))
+	.collect(Collectors.joining(",\n", " ", " "));
 
 		return text + "\n" +
-				"Class [" + getBeanType().getName() + "]\n" +
-				"Method [" + getBridgedMethod().toGenericString() + "] " +
-				"with argument values:\n" + formattedArgs;
+	"Class [" + getBeanType().getName() + "]\n" +
+	"Method [" + getBridgedMethod().toGenericString() + "] " +
+	"with argument values:\n" + formattedArgs;
 	}
 
 

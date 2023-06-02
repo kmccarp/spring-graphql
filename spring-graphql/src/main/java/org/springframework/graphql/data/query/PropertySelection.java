@@ -59,19 +59,19 @@ class PropertySelection {
 	 * @return a property selection holding all selectable property paths.
 	 */
 	public static PropertySelection create(TypeInformation<?> typeInformation,
-			DataFetchingFieldSelectionSet selectionSet) {
+DataFetchingFieldSelectionSet selectionSet) {
 		return create(typeInformation, new DataFetchingFieldSelection(selectionSet));
 	}
 
 	private static PropertySelection create(TypeInformation<?> typeInformation, FieldSelection selection) {
 		List<PropertyPath> propertyPaths = collectPropertyPaths(typeInformation,
-				selection,
-				path -> PropertyPath.from(path, typeInformation));
+	selection,
+	path -> PropertyPath.from(path, typeInformation));
 		return new PropertySelection(propertyPaths);
 	}
 
 	private static List<PropertyPath> collectPropertyPaths(TypeInformation<?> typeInformation,
-			FieldSelection selection, Function<String, PropertyPath> propertyPathFactory) {
+FieldSelection selection, Function<String, PropertyPath> propertyPathFactory) {
 		List<PropertyPath> propertyPaths = new ArrayList<>();
 
 		for (SelectedField selectedField : selection) {
@@ -90,7 +90,7 @@ class PropertySelection {
 
 			if (!nestedSelection.isEmpty() && property.getActualType() != null) {
 				List<PropertyPath> nestedPaths = collectPropertyPaths(property.getRequiredActualType(),
-						nestedSelection, propertyPath::nested);
+			nestedSelection, propertyPath::nested);
 
 				if (!nestedPaths.isEmpty()) {
 					pathsToAdd = nestedPaths;
@@ -167,7 +167,7 @@ class PropertySelection {
 		}
 
 		private DataFetchingFieldSelection(List<SelectedField> selectedFields,
-				List<SelectedField> allFields) {
+	List<SelectedField> allFields) {
 			this.selectedFields = selectedFields;
 			this.allFields = allFields;
 		}
@@ -188,7 +188,7 @@ class PropertySelection {
 			}
 
 			return (selectedFields.isEmpty() ? EmptyFieldSelection.INSTANCE
-					: new DataFetchingFieldSelection(selectedFields, allFields));
+		: new DataFetchingFieldSelection(selectedFields, allFields));
 		}
 
 		@Override

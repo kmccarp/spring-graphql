@@ -26,7 +26,7 @@ import org.springframework.graphql.data.query.jpa.QueryByExampleDataFetcherJpaTe
 public interface ProjectingBookJpaRepository extends JpaRepository<Book, Long>, QueryByExampleBuilderCustomizer<Book> {
 
 	@Override
-	default Builder<Book, ?> customize(Builder<Book, ?> builder){
+	default Builder<Book, ?> customize(Builder<Book, ?> builder) {
 		return builder.projectAs(BookProjection.class);
 	}
 }

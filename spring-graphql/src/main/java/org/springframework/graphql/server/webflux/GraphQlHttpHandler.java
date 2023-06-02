@@ -45,14 +45,15 @@ public class GraphQlHttpHandler {
 
 	// To be removed in favor of Framework's MediaType.APPLICATION_GRAPHQL_RESPONSE
 	private static final MediaType APPLICATION_GRAPHQL_RESPONSE =
-			new MediaType("application", "graphql-response+json");
+new MediaType("application", "graphql-response+json");
 
 	private static final ParameterizedTypeReference<Map<String, Object>> MAP_PARAMETERIZED_TYPE_REF =
-			new ParameterizedTypeReference<Map<String, Object>>() {};
+new ParameterizedTypeReference<Map<String, Object>>() {
+};
 
 	@SuppressWarnings("removal")
 	private static final List<MediaType> SUPPORTED_MEDIA_TYPES =
-			Arrays.asList(APPLICATION_GRAPHQL_RESPONSE, MediaType.APPLICATION_JSON, MediaType.APPLICATION_GRAPHQL);
+Arrays.asList(APPLICATION_GRAPHQL_RESPONSE, MediaType.APPLICATION_JSON, MediaType.APPLICATION_GRAPHQL);
 
 	private final WebGraphQlHandler graphQlHandler;
 
@@ -72,26 +73,26 @@ public class GraphQlHttpHandler {
 	 */
 	public Mono<ServerResponse> handleRequest(ServerRequest serverRequest) {
 		return serverRequest.bodyToMono(MAP_PARAMETERIZED_TYPE_REF)
-				.flatMap(body -> {
-					WebGraphQlRequest graphQlRequest = new WebGraphQlRequest(
-							serverRequest.uri(), serverRequest.headers().asHttpHeaders(),
-							serverRequest.cookies(), serverRequest.attributes(), body,
-							serverRequest.exchange().getRequest().getId(),
-							serverRequest.exchange().getLocaleContext().getLocale());
-					if (logger.isDebugEnabled()) {
-						logger.debug("Executing: " + graphQlRequest);
-					}
-					return this.graphQlHandler.handleRequest(graphQlRequest);
-				})
-				.flatMap(response -> {
-					if (logger.isDebugEnabled()) {
-						logger.debug("Execution complete");
-					}
-					ServerResponse.BodyBuilder builder = ServerResponse.ok();
-					builder.headers(headers -> headers.putAll(response.getResponseHeaders()));
-					builder.contentType(selectResponseMediaType(serverRequest));
-					return builder.bodyValue(response.toMap());
-				});
+	.flatMap(body -> {
+		WebGraphQlRequest graphQlRequest = new WebGraphQlRequest(
+	serverRequest.uri(), serverRequest.headers().asHttpHeaders(),
+	serverRequest.cookies(), serverRequest.attributes(), body,
+	serverRequest.exchange().getRequest().getId(),
+	serverRequest.exchange().getLocaleContext().getLocale());
+		if (logger.isDebugEnabled()) {
+			logger.debug("Executing: " + graphQlRequest);
+		}
+		return this.graphQlHandler.handleRequest(graphQlRequest);
+	})
+	.flatMap(response -> {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Execution complete");
+		}
+		ServerResponse.BodyBuilder builder = ServerResponse.ok();
+		builder.headers(headers -> headers.putAll(response.getResponseHeaders()));
+		builder.contentType(selectResponseMediaType(serverRequest));
+		return builder.bodyValue(response.toMap());
+	});
 	}
 
 	private static MediaType selectResponseMediaType(ServerRequest serverRequest) {

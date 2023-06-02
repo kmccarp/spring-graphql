@@ -96,7 +96,7 @@ final class AnnotatedControllerExceptionResolver {
 	 */
 	public void registerController(Class<?> controllerType) {
 		this.controllerCache.computeIfAbsent(
-				controllerType, type -> new MethodResolver(findExceptionHandlers(controllerType)));
+	controllerType, type -> new MethodResolver(findExceptionHandlers(controllerType)));
 	}
 
 	/**
@@ -118,7 +118,7 @@ final class AnnotatedControllerExceptionResolver {
 		}
 		if (logger.isDebugEnabled()) {
 			logger.debug("@GraphQlException methods in ControllerAdvice beans: " +
-					(this.controllerAdviceCache.size() == 0 ? "none" : this.controllerAdviceCache.size()));
+		(this.controllerAdviceCache.size() == 0 ? "none" : this.controllerAdviceCache.size()));
 		}
 	}
 
@@ -126,8 +126,8 @@ final class AnnotatedControllerExceptionResolver {
 	private static Map<Class<? extends Throwable>, Method> findExceptionHandlers(Class<?> handlerType) {
 
 		Map<Method, GraphQlExceptionHandler> handlerMap = MethodIntrospector.selectMethods(
-				handlerType, (MethodIntrospector.MetadataLookup<GraphQlExceptionHandler>) method ->
-						AnnotatedElementUtils.findMergedAnnotation(method, GraphQlExceptionHandler.class));
+	handlerType, (MethodIntrospector.MetadataLookup<GraphQlExceptionHandler>) method ->
+AnnotatedElementUtils.findMergedAnnotation(method, GraphQlExceptionHandler.class));
 
 		Map<Class<? extends Throwable>, Method> mappings = new HashMap<>(handlerMap.size());
 		handlerMap.forEach((method, annotation) -> {
@@ -146,7 +146,7 @@ final class AnnotatedControllerExceptionResolver {
 			for (Class<? extends Throwable> type : exceptionTypes) {
 				Method oldMethod = mappings.put(type, method);
 				Assert.state(oldMethod == null || oldMethod.equals(method), () ->
-						"Ambiguous @GraphQlExceptionHandler for [" + type + "]: {" + oldMethod + ", " + method + "}");
+			"Ambiguous @GraphQlExceptionHandler for [" + type + "]: {" + oldMethod + ", " + method + "}");
 			}
 		});
 		return mappings;
@@ -165,7 +165,7 @@ final class AnnotatedControllerExceptionResolver {
 	 * {@link DataFetcherExceptionResolver#resolveException(Throwable, DataFetchingEnvironment)}
 	 */
 	public Mono<List<GraphQLError>> resolveException(
-			Throwable ex, DataFetchingEnvironment environment, @Nullable Object controller) {
+Throwable ex, DataFetchingEnvironment environment, @Nullable Object controller) {
 
 		Object controllerOrAdvice = null;
 		MethodHolder methodHolder = null;
@@ -204,11 +204,11 @@ final class AnnotatedControllerExceptionResolver {
 	}
 
 	private Mono<List<GraphQLError>> invokeExceptionHandler(
-			Throwable exception, DataFetchingEnvironment env, Object controllerOrAdvice, MethodHolder methodHolder) {
+Throwable exception, DataFetchingEnvironment env, Object controllerOrAdvice, MethodHolder methodHolder) {
 
 		DataFetcherHandlerMethod exceptionHandler = new DataFetcherHandlerMethod(
-				new HandlerMethod(controllerOrAdvice, methodHolder.getMethod()), this.argumentResolvers,
-				null, null, false);
+	new HandlerMethod(controllerOrAdvice, methodHolder.getMethod()), this.argumentResolvers,
+	null, null, false);
 
 		List<Throwable> exceptions = new ArrayList<>();
 		try {
@@ -250,7 +250,7 @@ final class AnnotatedControllerExceptionResolver {
 
 		@SuppressWarnings("DataFlowIssue")
 		private static final MethodHolder NO_MATCH =
-				new MethodHolder(ReflectionUtils.findMethod(MethodResolver.class, "noMatch"));
+	new MethodHolder(ReflectionUtils.findMethod(MethodResolver.class, "noMatch"));
 
 
 		private final Map<Class<? extends Throwable>, MethodHolder> exceptionMappings = new HashMap<>(16);
@@ -259,7 +259,7 @@ final class AnnotatedControllerExceptionResolver {
 
 		MethodResolver(Map<Class<? extends Throwable>, Method> methodMap) {
 			methodMap.forEach((exceptionType, method) ->
-					this.exceptionMappings.put(exceptionType, new MethodHolder(method)));
+		this.exceptionMappings.put(exceptionType, new MethodHolder(method)));
 		}
 
 		/**
@@ -399,7 +399,7 @@ final class AnnotatedControllerExceptionResolver {
 				return forObject;
 			}
 			throw new IllegalStateException(
-					"Invalid return type for @GraphQlExceptionHandler method: " + returnType);
+		"Invalid return type for @GraphQlExceptionHandler method: " + returnType);
 		}
 
 		/** Adapter for void */
@@ -407,17 +407,15 @@ final class AnnotatedControllerExceptionResolver {
 
 		/** Adapter for a single GraphQLError */
 		ReturnValueAdapter forSingleError = (result, returnType, ex) ->
-				(result == null ?
-						Mono.empty() :
-						Mono.just(Collections.singletonList((GraphQLError) result)));
+	(result == null ?
+Mono.empty() :
+Mono.just(Collections.singletonList((GraphQLError) result)));
 
 		/** Adapter for a collection of GraphQLError's */
 		ReturnValueAdapter forCollection = (result, returnType, ex) ->
-				(result == null ?
-						Mono.empty() :
-						Mono.just((result instanceof List ?
-								(List<GraphQLError>) result :
-								new ArrayList<>((Collection<GraphQLError>) result))));
+	(result == null ?
+Mono.empty() :
+Mono.just((result instanceof List ?(List<GraphQLError>) result :new ArrayList<>((Collection<GraphQLError>) result))));
 
 		/** Adapter for Object */
 		ReturnValueAdapter forObject = (result, returnType, ex) -> {
@@ -433,7 +431,7 @@ final class AnnotatedControllerExceptionResolver {
 			else {
 				if (logger.isWarnEnabled()) {
 					logger.warn("Unexpected return value of type " +
-							result.getClass().getName() + " from method " + returnType);
+				result.getClass().getName() + " from method " + returnType);
 				}
 				return Mono.error(ex);
 			}
@@ -441,13 +439,13 @@ final class AnnotatedControllerExceptionResolver {
 
 		/** Adapter for {@code Mono<Void>} */
 		ReturnValueAdapter forMonoVoid = (result, returnType, ex) ->
-				(result == null ? Mono.empty() : Mono.just(Collections.emptyList()));
+	(result == null ? Mono.empty() : Mono.just(Collections.emptyList()));
 
 		/** Adapter for a {@code Mono} wrapping any of the other synchronous return value types */
 		ReturnValueAdapter forMono = (result, returnType, ex) ->
-				(result == null ?
-						Mono.empty() :
-						((Mono<?>) result).flatMap(o -> forObject.adapt(o, returnType, ex)).switchIfEmpty(Mono.error(ex)));
+	(result == null ?
+Mono.empty() :
+((Mono<?>) result).flatMap(o -> forObject.adapt(o, returnType, ex)).switchIfEmpty(Mono.error(ex)));
 	}
 
 }

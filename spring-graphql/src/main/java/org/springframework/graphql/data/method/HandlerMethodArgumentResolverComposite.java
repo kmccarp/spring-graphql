@@ -38,7 +38,7 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
 	private final List<HandlerMethodArgumentResolver> argumentResolvers = new ArrayList<>();
 
 	private final Map<MethodParameter, HandlerMethodArgumentResolver> argumentResolverCache =
-			new ConcurrentHashMap<>(256);
+new ConcurrentHashMap<>(256);
 
 
 	/**

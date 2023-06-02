@@ -142,11 +142,11 @@ public abstract class AbstractGraphQlResponse implements GraphQlResponse {
 				return Collections.emptyList();
 			}
 			return response.getErrors().stream()
-					.filter(error -> {
-						String errorPath = error.getPath();
-						return (!errorPath.isEmpty() && (errorPath.startsWith(path) || path.startsWith(errorPath)));
-					})
-					.collect(Collectors.toList());
+		.filter(error -> {
+			String errorPath = error.getPath();
+			return (!errorPath.isEmpty() && (errorPath.startsWith(path) || path.startsWith(errorPath)));
+		})
+		.collect(Collectors.toList());
 		}
 
 

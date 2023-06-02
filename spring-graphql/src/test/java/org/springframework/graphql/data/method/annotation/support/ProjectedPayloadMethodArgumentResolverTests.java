@@ -65,8 +65,8 @@ public class ProjectedPayloadMethodArgumentResolverTests extends ArgumentResolve
 	void optionalPresent() throws Exception {
 
 		Object result = this.resolver.resolveArgument(
-				methodParam(BookController.class, "optionalProjection", Optional.class),
-				environment("{ \"where\" : { \"author\" : \"Orwell\" }}"));
+	methodParam(BookController.class, "optionalProjection", Optional.class),
+	environment("{ \"where\" : { \"author\" : \"Orwell\" }}"));
 
 		assertThat(result).isNotNull().isInstanceOf(Optional.class);
 		BookProjection book = ((Optional<BookProjection>) result).get();
@@ -77,8 +77,8 @@ public class ProjectedPayloadMethodArgumentResolverTests extends ArgumentResolve
 	void optionalNotPresent() throws Exception {
 
 		Object result = this.resolver.resolveArgument(
-				methodParam(BookController.class, "optionalProjection", Optional.class),
-				environment("{}"));
+	methodParam(BookController.class, "optionalProjection", Optional.class),
+	environment("{}"));
 
 		assertThat(result).isNotNull().isInstanceOf(Optional.class);
 		assertThat((Optional<?>) result).isNotPresent();
@@ -88,8 +88,8 @@ public class ProjectedPayloadMethodArgumentResolverTests extends ArgumentResolve
 	void argumentValuePresent() throws Exception {
 
 		Object result = this.resolver.resolveArgument(
-				methodParam(BookController.class, "argumentValueProjection", ArgumentValue.class),
-				environment("{ \"where\" : { \"author\" : \"Orwell\" }}"));
+	methodParam(BookController.class, "argumentValueProjection", ArgumentValue.class),
+	environment("{ \"where\" : { \"author\" : \"Orwell\" }}"));
 
 		assertThat(result).isNotNull().isInstanceOf(ArgumentValue.class);
 		BookProjection book = ((ArgumentValue<BookProjection>) result).value();
@@ -100,8 +100,8 @@ public class ProjectedPayloadMethodArgumentResolverTests extends ArgumentResolve
 	void argumentValueSetToNull() throws Exception {
 
 		Object result = this.resolver.resolveArgument(
-				methodParam(BookController.class, "argumentValueProjection", ArgumentValue.class),
-				environment("{ \"where\" : null}"));
+	methodParam(BookController.class, "argumentValueProjection", ArgumentValue.class),
+	environment("{ \"where\" : null}"));
 
 		assertThat(result).isNotNull().isInstanceOf(ArgumentValue.class);
 		ArgumentValue<BookProjection> value = ((ArgumentValue<BookProjection>) result);
@@ -113,8 +113,8 @@ public class ProjectedPayloadMethodArgumentResolverTests extends ArgumentResolve
 	void argumentValueIsOmitted() throws Exception {
 
 		Object result = this.resolver.resolveArgument(
-				methodParam(BookController.class, "argumentValueProjection", ArgumentValue.class),
-				environment("{}"));
+	methodParam(BookController.class, "argumentValueProjection", ArgumentValue.class),
+	environment("{}"));
 
 		assertThat(result).isNotNull().isInstanceOf(ArgumentValue.class);
 		ArgumentValue<BookProjection> value = ((ArgumentValue<BookProjection>) result);
@@ -126,8 +126,8 @@ public class ProjectedPayloadMethodArgumentResolverTests extends ArgumentResolve
 	void nullValue() throws Exception {
 
 		Object result = this.resolver.resolveArgument(
-				methodParam(BookController.class, "projection", BookProjection.class),
-				environment("{}"));
+	methodParam(BookController.class, "projection", BookProjection.class),
+	environment("{}"));
 
 		assertThat(result).isNull();
 	}

@@ -39,8 +39,8 @@ public class ResourceDocumentSourceTests {
 	@BeforeEach
 	void setUp() {
 		this.source = new ResourceDocumentSource(
-				Collections.singletonList(new ClassPathResource("books/")),
-				ResourceDocumentSource.FILE_EXTENSIONS);
+	Collections.singletonList(new ClassPathResource("books/")),
+	ResourceDocumentSource.FILE_EXTENSIONS);
 	}
 
 
@@ -53,10 +53,9 @@ public class ResourceDocumentSourceTests {
 	@Test
 	void getDocumentNotFound() {
 		StepVerifier.create(this.source.getDocument("invalid"))
-				.expectErrorMessage(
-						"Failed to find document, name='invalid', " +
-								"under location(s)=[class path resource [books/]]")
-				.verify(Duration.ofSeconds(5));
+	.expectErrorMessage(
+"Failed to find document, name='invalid', " +"under location(s)=[class path resource [books/]]")
+	.verify(Duration.ofSeconds(5));
 	}
 
 }

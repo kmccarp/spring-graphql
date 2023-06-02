@@ -75,14 +75,14 @@ final class EncoderDecoderMappingProvider implements MappingProvider {
 
 	private static Encoder<?> findJsonEncoder(CodecConfigurer configurer) {
 		return findJsonEncoder(configurer.getWriters().stream()
-				.filter(writer -> writer instanceof EncoderHttpMessageWriter)
-				.map(writer -> ((EncoderHttpMessageWriter<?>) writer).getEncoder()));
+	.filter(writer -> writer instanceof EncoderHttpMessageWriter)
+	.map(writer -> ((EncoderHttpMessageWriter<?>) writer).getEncoder()));
 	}
 
 	private static Decoder<?> findJsonDecoder(CodecConfigurer configurer) {
 		return findJsonDecoder(configurer.getReaders().stream()
-				.filter(reader -> reader instanceof DecoderHttpMessageReader)
-				.map(reader -> ((DecoderHttpMessageReader<?>) reader).getDecoder()));
+	.filter(reader -> reader instanceof DecoderHttpMessageReader)
+	.map(reader -> ((DecoderHttpMessageReader<?>) reader).getDecoder()));
 	}
 
 	private static Encoder<?> findJsonEncoder(List<Encoder<?>> encoders) {
@@ -95,16 +95,16 @@ final class EncoderDecoderMappingProvider implements MappingProvider {
 
 	private static Encoder<?> findJsonEncoder(Stream<Encoder<?>> stream) {
 		return stream
-				.filter(encoder -> encoder.canEncode(MAP_TYPE, MediaType.APPLICATION_JSON))
-				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException("No JSON Encoder"));
+	.filter(encoder -> encoder.canEncode(MAP_TYPE, MediaType.APPLICATION_JSON))
+	.findFirst()
+	.orElseThrow(() -> new IllegalArgumentException("No JSON Encoder"));
 	}
 
 	private static Decoder<?> findJsonDecoder(Stream<Decoder<?>> decoderStream) {
 		return decoderStream
-				.filter(decoder -> decoder.canDecode(MAP_TYPE, MediaType.APPLICATION_JSON))
-				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException("No JSON Decoder"));
+	.filter(decoder -> decoder.canDecode(MAP_TYPE, MediaType.APPLICATION_JSON))
+	.findFirst()
+	.orElseThrow(() -> new IllegalArgumentException("No JSON Decoder"));
 	}
 
 
@@ -129,7 +129,7 @@ final class EncoderDecoderMappingProvider implements MappingProvider {
 		Map<String, Object> hints = Collections.emptyMap();
 
 		DataBuffer buffer = ((Encoder<T>) this.encoder).encodeValue(
-				(T) source, bufferFactory, ResolvableType.forInstance(source), mimeType, hints);
+	(T) source, bufferFactory, ResolvableType.forInstance(source), mimeType, hints);
 
 		return ((Decoder<T>) this.decoder).decode(buffer, targetType, mimeType, hints);
 	}

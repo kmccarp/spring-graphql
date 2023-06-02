@@ -64,20 +64,20 @@ public class BatchMappingTestSupport {
 	}
 
 	static final String schema = "" +
-			"type Query {" +
-			"    courses: [Course]" +
-			"}" +
-			"type Course {" +
-			"    id: ID" +
-			"    name: String" +
-			"    instructor: Person" +
-			"    students: [Person]" +
-			"}" +
-			"type Person {" +
-			"    id: ID" +
-			"    firstName: String" +
-			"    lastName: String" +
-			"}";
+"type Query {" +
+"    courses: [Course]" +
+"}" +
+"type Course {" +
+"    id: ID" +
+"    name: String" +
+"    instructor: Person" +
+"    students: [Person]" +
+"}" +
+"type Person {" +
+"    id: ID" +
+"    firstName: String" +
+"    lastName: String" +
+"}";
 
 
 	protected TestExecutionGraphQlService createGraphQlService(CourseController controller) {
@@ -94,9 +94,9 @@ public class BatchMappingTestSupport {
 		configurer.afterPropertiesSet();
 
 		return GraphQlSetup.schemaContent(schema)
-				.runtimeWiring(configurer)
-				.dataLoaders(registry)
-				.toGraphQlService();
+	.runtimeWiring(configurer)
+	.dataLoaders(registry)
+	.toGraphQlService();
 	}
 
 
@@ -112,16 +112,16 @@ public class BatchMappingTestSupport {
 
 		@JsonCreator
 		public Course(
-				@JsonProperty("id") Long id, @JsonProperty("name") String name,
-				@JsonProperty("instructor") @Nullable Person instructor,
-				@JsonProperty("students") @Nullable List<Person> students) {
+	@JsonProperty("id") Long id, @JsonProperty("name") String name,
+	@JsonProperty("instructor") @Nullable Person instructor,
+	@JsonProperty("students") @Nullable List<Person> students) {
 
 			this.id = id;
 			this.name = name;
 			this.instructorId = (instructor != null ? instructor.id() : -1);
 			this.studentIds = (students != null ?
-					students.stream().map(Person::id).collect(Collectors.toList()) :
-					Collections.emptyList());
+		students.stream().map(Person::id).collect(Collectors.toList()) :
+		Collections.emptyList());
 		}
 
 		public Course(Long id, String name, Long instructorId, List<Long> studentIds) {
@@ -190,9 +190,9 @@ public class BatchMappingTestSupport {
 
 		@JsonCreator
 		public Person(
-				@JsonProperty("id") Long id,
-				@JsonProperty("firstName") String firstName,
-				@JsonProperty("lastName") String lastName) {
+	@JsonProperty("id") Long id,
+	@JsonProperty("firstName") String firstName,
+	@JsonProperty("lastName") String lastName) {
 
 			this.id = id;
 			this.firstName = firstName;

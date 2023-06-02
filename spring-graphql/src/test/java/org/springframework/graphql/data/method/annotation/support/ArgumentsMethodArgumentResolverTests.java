@@ -42,7 +42,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ArgumentsMethodArgumentResolverTests extends ArgumentResolverTestSupport {
 
 	private final HandlerMethodArgumentResolver resolver = new ArgumentsMethodArgumentResolver(
-			new GraphQlArgumentBinder(new DefaultFormattingConversionService()));
+new GraphQlArgumentBinder(new DefaultFormattingConversionService()));
 
 
 	@Test
@@ -63,26 +63,26 @@ class ArgumentsMethodArgumentResolverTests extends ArgumentResolverTestSupport {
 	@Test
 	void shouldResolveJavaBeanArgument() throws Exception {
 		Object result = resolver.resolveArgument(
-				methodParam(BookController.class, "addBook", BookInput.class),
-				environment("{\"name\":\"test name\", \"authorId\":42}"));
+	methodParam(BookController.class, "addBook", BookInput.class),
+	environment("{\"name\":\"test name\", \"authorId\":42}"));
 
 		assertThat(result)
-				.isNotNull()
-				.isInstanceOf(BookInput.class)
-				.satisfies(value -> {
-					BookInput input = (BookInput) value;
-					assertThat(input.getName().isPresent()).isTrue();
-					assertThat(input.getName().isOmitted()).isFalse();
-					assertThat(input.getName().value()).isEqualTo("test name");
-					assertThat(input.getAuthorId()).isEqualTo(42L);
-				});
+	.isNotNull()
+	.isInstanceOf(BookInput.class)
+	.satisfies(value -> {
+		BookInput input = (BookInput) value;
+		assertThat(input.getName().isPresent()).isTrue();
+		assertThat(input.getName().isOmitted()).isFalse();
+		assertThat(input.getName().value()).isEqualTo("test name");
+		assertThat(input.getAuthorId()).isEqualTo(42L);
+	});
 	}
 
 	@Test
 	void shouldResolveRawArgumentsMap() throws Exception {
 		Object result = this.resolver.resolveArgument(
-				methodParam(BookController.class, "argumentsMap", Map.class),
-				environment("{\"id\": 42 }"));
+	methodParam(BookController.class, "argumentsMap", Map.class),
+	environment("{\"id\": 42 }"));
 
 		assertThat(result).isNotNull().isEqualTo(Collections.singletonMap("id", 42));
 	}

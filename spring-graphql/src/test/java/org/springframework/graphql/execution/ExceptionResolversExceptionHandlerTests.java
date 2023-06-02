@@ -41,10 +41,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ExceptionResolversExceptionHandlerTests {
 
 	private final GraphQlSetup graphQlSetup =
-			GraphQlSetup.schemaContent("type Query { greeting: String }")
-					.queryFetcher("greeting", (env) -> {
-						throw new IllegalArgumentException("Invalid greeting");
-					});
+GraphQlSetup.schemaContent("type Query { greeting: String }").queryFetcher("greeting", (env) -> {
+throw new IllegalArgumentException("Invalid greeting");});
 
 	private final ExecutionInput input = ExecutionInput.newExecutionInput().query("{ greeting }").build();
 
@@ -52,13 +50,11 @@ public class ExceptionResolversExceptionHandlerTests {
 	@Test
 	void resolveException() throws Exception {
 		DataFetcherExceptionResolver resolver =
-				DataFetcherExceptionResolver.forSingleError((ex, env) ->
-						GraphqlErrorBuilder.newError(env)
-								.message("Resolved error: " + ex.getMessage())
-								.errorType(ErrorType.BAD_REQUEST).build());
+	DataFetcherExceptionResolver.forSingleError((ex, env) ->
+GraphqlErrorBuilder.newError(env).message("Resolved error: " + ex.getMessage()).errorType(ErrorType.BAD_REQUEST).build());
 
 		ExecutionResult result = this.graphQlSetup.exceptionResolver(resolver).toGraphQl()
-				.executeAsync(this.input).get();
+	.executeAsync(this.input).get();
 
 		ResponseHelper response = ResponseHelper.forResult(result);
 		assertThat(response.errorCount()).isEqualTo(1);
@@ -72,15 +68,13 @@ public class ExceptionResolversExceptionHandlerTests {
 	@Test
 	void resolveExceptionWithReactorContext() throws Exception {
 		DataFetcherExceptionResolver resolver =
-				(ex, env) -> Mono.deferContextual((view) -> Mono.just(Collections.singletonList(
-						GraphqlErrorBuilder.newError(env)
-								.message("Resolved error: " + ex.getMessage() + ", name=" + view.get("name"))
-								.errorType(ErrorType.BAD_REQUEST).build())));
+	(ex, env) -> Mono.deferContextual((view) -> Mono.just(Collections.singletonList(
+GraphqlErrorBuilder.newError(env).message("Resolved error: " + ex.getMessage() + ", name=" + view.get("name")).errorType(ErrorType.BAD_REQUEST).build())));
 
 		this.input.getGraphQLContext().put("name", "007");
 
 		ExecutionResult result = this.graphQlSetup.exceptionResolver(resolver).toGraphQl()
-				.executeAsync(this.input).get();
+	.executeAsync(this.input).get();
 
 		ResponseHelper response = ResponseHelper.forResult(result);
 		assertThat(response.errorCount()).isEqualTo(1);
@@ -94,17 +88,17 @@ public class ExceptionResolversExceptionHandlerTests {
 		ContextRegistry.getInstance().registerThreadLocalAccessor(new TestThreadLocalAccessor<>(threadLocal));
 		try {
 			DataFetcherExceptionResolverAdapter resolver =
-					DataFetcherExceptionResolver.forSingleError((ex, env) ->
-							GraphqlErrorBuilder.newError(env)
-									.message("Resolved error: " + ex.getMessage() + ", name=" + threadLocal.get())
-									.errorType(ErrorType.BAD_REQUEST)
-									.build());
+		DataFetcherExceptionResolver.forSingleError((ex, env) ->
+	GraphqlErrorBuilder.newError(env)
+.message("Resolved error: " + ex.getMessage() + ", name=" + threadLocal.get())
+.errorType(ErrorType.BAD_REQUEST)
+.build());
 
 			resolver.setThreadLocalContextAware(true);
 			ContextSnapshot.captureAll().updateContext(this.input.getGraphQLContext());
 
 			Mono<ExecutionResult> result = Mono.delay(Duration.ofMillis(10)).flatMap((aLong) ->
-					Mono.fromFuture(this.graphQlSetup.exceptionResolver(resolver).toGraphQl().executeAsync(this.input)));
+		Mono.fromFuture(this.graphQlSetup.exceptionResolver(resolver).toGraphQl().executeAsync(this.input)));
 
 			ResponseHelper response = ResponseHelper.forResult(result);
 			assertThat(response.errorCount()).isEqualTo(1);
@@ -118,10 +112,10 @@ public class ExceptionResolversExceptionHandlerTests {
 	@Test
 	void unresolvedException() throws Exception {
 		DataFetcherExceptionResolverAdapter resolver =
-				DataFetcherExceptionResolver.forSingleError((ex, env) -> null);
+	DataFetcherExceptionResolver.forSingleError((ex, env) -> null);
 
 		ExecutionResult result = this.graphQlSetup.exceptionResolver(resolver).toGraphQl()
-				.executeAsync(this.input).get();
+	.executeAsync(this.input).get();
 
 		ResponseHelper response = ResponseHelper.forResult(result);
 		assertThat(response.errorCount()).isEqualTo(1);
@@ -136,8 +130,8 @@ public class ExceptionResolversExceptionHandlerTests {
 	void suppressedException() throws Exception {
 
 		ExecutionResult result = this.graphQlSetup
-				.exceptionResolver((ex, env) -> Mono.just(Collections.emptyList())).toGraphQl()
-				.executeAsync(input).get();
+	.exceptionResolver((ex, env) -> Mono.just(Collections.emptyList())).toGraphQl()
+	.executeAsync(input).get();
 
 		String greeting = ResponseHelper.forResult(result).rawValue("greeting");
 		assertThat(greeting).isNull();

@@ -65,9 +65,9 @@ public class DefaultExecutionGraphQlRequest extends DefaultGraphQlRequest implem
 	 * @param locale the locale associated with the request
 	 */
 	public DefaultExecutionGraphQlRequest(
-			String document, @Nullable String operationName,
-			@Nullable Map<String, Object> variables, @Nullable Map<String, Object> extensions,
-			String id, @Nullable Locale locale) {
+String document, @Nullable String operationName,
+@Nullable Map<String, Object> variables, @Nullable Map<String, Object> extensions,
+String id, @Nullable Locale locale) {
 
 		super(document, operationName, variables, extensions);
 		Assert.notNull(id, "'id' is required");
@@ -106,12 +106,12 @@ public class DefaultExecutionGraphQlRequest extends DefaultGraphQlRequest implem
 	@Override
 	public ExecutionInput toExecutionInput() {
 		ExecutionInput.Builder inputBuilder = ExecutionInput.newExecutionInput()
-				.query(getDocument())
-				.operationName(getOperationName())
-				.variables(getVariables())
-				.extensions(getExtensions())
-				.locale(this.locale)
-				.executionId(this.executionId != null ? this.executionId : ExecutionId.from(this.id));
+	.query(getDocument())
+	.operationName(getOperationName())
+	.variables(getVariables())
+	.extensions(getExtensions())
+	.locale(this.locale)
+	.executionId(this.executionId != null ? this.executionId : ExecutionId.from(this.id));
 
 		ExecutionInput executionInput = inputBuilder.build();
 

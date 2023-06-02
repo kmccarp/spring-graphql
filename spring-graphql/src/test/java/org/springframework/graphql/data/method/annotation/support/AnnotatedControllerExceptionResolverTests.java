@@ -50,7 +50,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 public class AnnotatedControllerExceptionResolverTests {
 
 	private final DataFetchingEnvironment environment =
-			DataFetchingEnvironmentImpl.newDataFetchingEnvironment().build();
+DataFetchingEnvironmentImpl.newDataFetchingEnvironment().build();
 
 
 	@Test
@@ -63,7 +63,7 @@ public class AnnotatedControllerExceptionResolverTests {
 	void resolveToList() {
 		Exception ex = new IllegalAccessException("No access");
 		testResolve(ex, new TestController(), Arrays.asList(
-				"handleToList[1]: " + ex.getMessage(), "handleToList[2]: " + ex.getMessage()));
+	"handleToList[1]: " + ex.getMessage(), "handleToList[2]: " + ex.getMessage()));
 	}
 
 	@Test
@@ -124,7 +124,7 @@ public class AnnotatedControllerExceptionResolverTests {
 	@Test
 	void invalidReturnType() {
 		assertThatIllegalStateException().isThrownBy(() ->
-				exceptionResolver().registerController(InvalidReturnTypeController.class));
+	exceptionResolver().registerController(InvalidReturnTypeController.class));
 	}
 
 	@Test // gh-710
@@ -216,8 +216,8 @@ public class AnnotatedControllerExceptionResolverTests {
 
 		private static GraphQLError createError(String methodName, @Nullable Throwable ex) {
 			return GraphQLError.newError()
-					.message(methodName + (ex != null && StringUtils.hasText(ex.getMessage()) ? ": " + ex.getMessage() : ""))
-					.build();
+		.message(methodName + (ex != null && StringUtils.hasText(ex.getMessage()) ? ": " + ex.getMessage() : ""))
+		.build();
 		}
 
 	}

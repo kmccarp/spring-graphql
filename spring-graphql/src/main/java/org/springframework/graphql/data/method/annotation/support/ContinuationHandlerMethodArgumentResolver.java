@@ -27,14 +27,14 @@ import org.springframework.graphql.data.method.HandlerMethodArgumentResolver;
  */
 public class ContinuationHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
-    @Override
-    public boolean supportsParameter(MethodParameter parameter) {
-        return "kotlin.coroutines.Continuation".equals(parameter.getParameterType().getName());
-    }
+	@Override
+	public boolean supportsParameter(MethodParameter parameter) {
+		return "kotlin.coroutines.Continuation".equals(parameter.getParameterType().getName());
+	}
 
-    @Override
-    public Object resolveArgument(MethodParameter parameter, DataFetchingEnvironment environment) {
-        return null;
-    }
+	@Override
+	public Object resolveArgument(MethodParameter parameter, DataFetchingEnvironment environment) {
+		return null;
+	}
 
 }

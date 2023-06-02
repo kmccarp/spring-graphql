@@ -59,28 +59,28 @@ public class ConnectionFieldTypeVisitorTests {
 		adapter.setHasNext(true);
 
 		Mono<ExecutionGraphQlResponse> response = GraphQlSetup.schemaResource(BookSource.paginationSchema)
-				.dataFetcher("Query", "books", env -> BookSource.books())
-				.connectionSupport(adapter)
-				.toGraphQlService()
-				.execute(BookSource.booksConnectionQuery(null));
+	.dataFetcher("Query", "books", env -> BookSource.books())
+	.connectionSupport(adapter)
+	.toGraphQlService()
+	.execute(BookSource.booksConnectionQuery(null));
 
 		ResponseHelper.forResponse(response).assertData(
-				"{\"books\":{" +
-						"\"edges\":[" +
-						"{\"cursor\":\"O_30\",\"node\":{\"id\":\"1\",\"name\":\"Nineteen Eighty-Four\"}}," +
-						"{\"cursor\":\"O_31\",\"node\":{\"id\":\"2\",\"name\":\"The Great Gatsby\"}}," +
-						"{\"cursor\":\"O_32\",\"node\":{\"id\":\"3\",\"name\":\"Catch-22\"}}," +
-						"{\"cursor\":\"O_33\",\"node\":{\"id\":\"4\",\"name\":\"To The Lighthouse\"}}," +
-						"{\"cursor\":\"O_34\",\"node\":{\"id\":\"5\",\"name\":\"Animal Farm\"}}," +
-						"{\"cursor\":\"O_35\",\"node\":{\"id\":\"53\",\"name\":\"Breaking Bad\"}}," +
-						"{\"cursor\":\"O_36\",\"node\":{\"id\":\"42\",\"name\":\"Hitchhiker's Guide to the Galaxy\"}}" +
-						"]," +
-						"\"pageInfo\":{" +
-						"\"startCursor\":\"O_30\"," +
-						"\"endCursor\":\"O_36\"," +
-						"\"hasPreviousPage\":true," +
-						"\"hasNextPage\":true}" +
-						"}}"
+	"{\"books\":{" +
+"\"edges\":[" +
+"{\"cursor\":\"O_30\",\"node\":{\"id\":\"1\",\"name\":\"Nineteen Eighty-Four\"}}," +
+"{\"cursor\":\"O_31\",\"node\":{\"id\":\"2\",\"name\":\"The Great Gatsby\"}}," +
+"{\"cursor\":\"O_32\",\"node\":{\"id\":\"3\",\"name\":\"Catch-22\"}}," +
+"{\"cursor\":\"O_33\",\"node\":{\"id\":\"4\",\"name\":\"To The Lighthouse\"}}," +
+"{\"cursor\":\"O_34\",\"node\":{\"id\":\"5\",\"name\":\"Animal Farm\"}}," +
+"{\"cursor\":\"O_35\",\"node\":{\"id\":\"53\",\"name\":\"Breaking Bad\"}}," +
+"{\"cursor\":\"O_36\",\"node\":{\"id\":\"42\",\"name\":\"Hitchhiker's Guide to the Galaxy\"}}" +
+"]," +
+"\"pageInfo\":{" +
+"\"startCursor\":\"O_30\"," +
+"\"endCursor\":\"O_36\"," +
+"\"hasPreviousPage\":true," +
+"\"hasNextPage\":true}" +
+"}}"
 		);
 	}
 
@@ -92,28 +92,28 @@ public class ConnectionFieldTypeVisitorTests {
 		MyConnection<Book> connection = new MyConnection<>(edges, pageInfo);
 
 		Mono<ExecutionGraphQlResponse> response = GraphQlSetup.schemaResource(BookSource.paginationSchema)
-				.dataFetcher("Query", "books", env -> connection)
-				.connectionSupport(new ListConnectionAdapter())
-				.toGraphQlService()
-				.execute(BookSource.booksConnectionQuery(null));
+	.dataFetcher("Query", "books", env -> connection)
+	.connectionSupport(new ListConnectionAdapter())
+	.toGraphQlService()
+	.execute(BookSource.booksConnectionQuery(null));
 
 		ResponseHelper.forResponse(response).assertData(
-				"{\"books\":{" +
-						"\"edges\":[" +
-						"{\"cursor\":\"0_1\",\"node\":{\"id\":\"1\",\"name\":\"Nineteen Eighty-Four\"}}," +
-						"{\"cursor\":\"0_2\",\"node\":{\"id\":\"2\",\"name\":\"The Great Gatsby\"}}," +
-						"{\"cursor\":\"0_3\",\"node\":{\"id\":\"3\",\"name\":\"Catch-22\"}}," +
-						"{\"cursor\":\"0_4\",\"node\":{\"id\":\"4\",\"name\":\"To The Lighthouse\"}}," +
-						"{\"cursor\":\"0_5\",\"node\":{\"id\":\"5\",\"name\":\"Animal Farm\"}}," +
-						"{\"cursor\":\"0_53\",\"node\":{\"id\":\"53\",\"name\":\"Breaking Bad\"}}," +
-						"{\"cursor\":\"0_42\",\"node\":{\"id\":\"42\",\"name\":\"Hitchhiker's Guide to the Galaxy\"}}" +
-						"]," +
-						"\"pageInfo\":{" +
-						"\"startCursor\":\"0_1\"," +
-						"\"endCursor\":\"0_42\"," +
-						"\"hasPreviousPage\":true," +
-						"\"hasNextPage\":true}" +
-						"}}"
+	"{\"books\":{" +
+"\"edges\":[" +
+"{\"cursor\":\"0_1\",\"node\":{\"id\":\"1\",\"name\":\"Nineteen Eighty-Four\"}}," +
+"{\"cursor\":\"0_2\",\"node\":{\"id\":\"2\",\"name\":\"The Great Gatsby\"}}," +
+"{\"cursor\":\"0_3\",\"node\":{\"id\":\"3\",\"name\":\"Catch-22\"}}," +
+"{\"cursor\":\"0_4\",\"node\":{\"id\":\"4\",\"name\":\"To The Lighthouse\"}}," +
+"{\"cursor\":\"0_5\",\"node\":{\"id\":\"5\",\"name\":\"Animal Farm\"}}," +
+"{\"cursor\":\"0_53\",\"node\":{\"id\":\"53\",\"name\":\"Breaking Bad\"}}," +
+"{\"cursor\":\"0_42\",\"node\":{\"id\":\"42\",\"name\":\"Hitchhiker's Guide to the Galaxy\"}}" +
+"]," +
+"\"pageInfo\":{" +
+"\"startCursor\":\"0_1\"," +
+"\"endCursor\":\"0_42\"," +
+"\"hasPreviousPage\":true," +
+"\"hasNextPage\":true}" +
+"}}"
 		);
 	}
 
@@ -121,20 +121,20 @@ public class ConnectionFieldTypeVisitorTests {
 	void nullValueTreatedAsEmptyConnection() {
 
 		Mono<ExecutionGraphQlResponse> response = GraphQlSetup.schemaResource(BookSource.paginationSchema)
-				.dataFetcher("Query", "books", environment -> null)
-				.connectionSupport(new ListConnectionAdapter())
-				.toGraphQlService()
-				.execute(BookSource.booksConnectionQuery(null));
+	.dataFetcher("Query", "books", environment -> null)
+	.connectionSupport(new ListConnectionAdapter())
+	.toGraphQlService()
+	.execute(BookSource.booksConnectionQuery(null));
 
 		ResponseHelper.forResponse(response).assertData(
-				"{\"books\":{" +
-						"\"edges\":[]," +
-						"\"pageInfo\":{" +
-						"\"startCursor\":null," +
-						"\"endCursor\":null," +
-						"\"hasPreviousPage\":false," +
-						"\"hasNextPage\":false}" +
-						"}}"
+	"{\"books\":{" +
+"\"edges\":[]," +
+"\"pageInfo\":{" +
+"\"startCursor\":null," +
+"\"endCursor\":null," +
+"\"hasPreviousPage\":false," +
+"\"hasNextPage\":false}" +
+"}}"
 		);
 	}
 
@@ -149,7 +149,7 @@ public class ConnectionFieldTypeVisitorTests {
 			DataFetcher<?> dataFetcher = new PropertyDataFetcher<>("books");
 
 			DataFetcher<?> actual =
-					applyConnectionFieldTypeVisitor(BookSource.paginationSchema, coordinates, dataFetcher);
+		applyConnectionFieldTypeVisitor(BookSource.paginationSchema, coordinates, dataFetcher);
 
 			assertThat(actual).isSameAs(dataFetcher);
 		}
@@ -186,7 +186,7 @@ public class ConnectionFieldTypeVisitorTests {
 		}
 
 		private static DataFetcher<?> applyConnectionFieldTypeVisitor(
-				Object schemaSource, FieldCoordinates coordinates, DataFetcher<?> fetcher) throws Exception {
+	Object schemaSource, FieldCoordinates coordinates, DataFetcher<?> fetcher) throws Exception {
 
 			TypeDefinitionRegistry registry;
 			if (schemaSource instanceof Resource resource) {
@@ -202,12 +202,12 @@ public class ConnectionFieldTypeVisitorTests {
 			new ConnectionTypeDefinitionConfigurer().configure(registry);
 
 			GraphQLSchema schema = new SchemaGenerator().makeExecutableSchema(
-					registry, RuntimeWiring.newRuntimeWiring()
-							.type(coordinates.getTypeName(), b -> b.dataFetcher(coordinates.getFieldName(), fetcher))
-							.build());
+		registry, RuntimeWiring.newRuntimeWiring()
+	.type(coordinates.getTypeName(), b -> b.dataFetcher(coordinates.getFieldName(), fetcher))
+	.build());
 
 			ConnectionFieldTypeVisitor visitor =
-					ConnectionFieldTypeVisitor.create(List.of(new ListConnectionAdapter()));
+		ConnectionFieldTypeVisitor.create(List.of(new ListConnectionAdapter()));
 
 			schema = new SchemaTransformer().transform(schema, visitor);
 			GraphQLFieldDefinition field = schema.getFieldDefinition(coordinates);
@@ -215,7 +215,6 @@ public class ConnectionFieldTypeVisitorTests {
 		}
 
 	}
-
 
 
 	private static class ListConnectionAdapter implements ConnectionAdapter {

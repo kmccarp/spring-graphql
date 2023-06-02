@@ -62,7 +62,7 @@ public interface WebGraphQlInterceptor {
 		return (request, chain) -> intercept(request, nextRequest -> {
 			if (request instanceof WebSocketGraphQlRequest) {
 				Assert.isTrue(nextRequest instanceof WebSocketGraphQlRequest,
-						"Expected WebSocketGraphQlRequest but was: " + nextRequest.getClass().getName());
+			"Expected WebSocketGraphQlRequest but was: " + nextRequest.getClass().getName());
 			}
 			return nextInterceptor.intercept(nextRequest, chain);
 		});

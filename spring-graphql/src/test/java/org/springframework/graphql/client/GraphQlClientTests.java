@@ -51,8 +51,8 @@ public class GraphQlClientTests extends GraphQlClientTestSupport {
 		getGraphQlService().setDataAsJson(document, "{\"me\": {\"name\":\"Luke Skywalker\"}}");
 
 		MovieCharacter movieCharacter = graphQlClient().document(document)
-				.retrieve("me").toEntity(MovieCharacter.class)
-				.block(TIMEOUT);
+	.retrieve("me").toEntity(MovieCharacter.class)
+	.block(TIMEOUT);
 
 		assertThat(movieCharacter).isEqualTo(MovieCharacter.create("Luke Skywalker"));
 	}
@@ -62,19 +62,19 @@ public class GraphQlClientTests extends GraphQlClientTestSupport {
 
 		String document = "mockRequest1";
 		getGraphQlService().setDataAsJson(document, "{" +
-				"  \"me\":{" +
-				"      \"name\":\"Luke Skywalker\","
-				+ "    \"friends\":[{\"name\":\"Han Solo\"}, {\"name\":\"Leia Organa\"}]" +
-				"  }" +
-				"}");
+	"  \"me\":{" +
+	"      \"name\":\"Luke Skywalker\","
+	+ "    \"friends\":[{\"name\":\"Han Solo\"}, {\"name\":\"Leia Organa\"}]" +
+	"  }" +
+	"}");
 
 		List<MovieCharacter> movieCharacters = graphQlClient().document(document)
-				.retrieve("me.friends")
-				.toEntityList(MovieCharacter.class)
-				.block(TIMEOUT);
+	.retrieve("me.friends")
+	.toEntityList(MovieCharacter.class)
+	.block(TIMEOUT);
 
 		assertThat(movieCharacters).containsExactly(
-				MovieCharacter.create("Han Solo"), MovieCharacter.create("Leia Organa"));
+	MovieCharacter.create("Han Solo"), MovieCharacter.create("Leia Organa"));
 	}
 
 	@Test
@@ -84,8 +84,9 @@ public class GraphQlClientTests extends GraphQlClientTestSupport {
 		getGraphQlService().setDataAsJson(document, "{\"me\": {\"name\":\"Luke Skywalker\"}}");
 
 		Map<String, MovieCharacter> map = graphQlClient().document(document)
-				.retrieve("").toEntity(new ParameterizedTypeReference<Map<String, MovieCharacter>>() {})
-				.block(TIMEOUT);
+	.retrieve("").toEntity(new ParameterizedTypeReference<Map<String, MovieCharacter>>() {
+		})
+	.block(TIMEOUT);
 
 		assertThat(map).containsEntry("me", MovieCharacter.create("Luke Skywalker"));
 	}
@@ -105,12 +106,12 @@ public class GraphQlClientTests extends GraphQlClientTestSupport {
 		getGraphQlService().setDataAsJson(request.getDocument(), "{\"hero\": {\"name\":\"R2-D2\"}}");
 
 		MovieCharacter character = graphQlClient().document(document)
-				.operationName(operationName)
-				.variables(vars)
-				.variable("keyOnly", null)
-				.retrieve("hero")
-				.toEntity(MovieCharacter.class)
-				.block(TIMEOUT);
+	.operationName(operationName)
+	.variables(vars)
+	.variable("keyOnly", null)
+	.retrieve("hero")
+	.toEntity(MovieCharacter.class)
+	.block(TIMEOUT);
 
 		assertThat(character).isEqualTo(MovieCharacter.create("R2-D2"));
 	}
@@ -152,10 +153,10 @@ public class GraphQlClientTests extends GraphQlClientTestSupport {
 
 	private void testRetrieveFieldAccessException(String document, String path) {
 		assertThatThrownBy(() ->
-				graphQlClient().document(document)
-						.retrieve(path).toEntity(MovieCharacter.class)
-						.block(TIMEOUT))
-				.isInstanceOf(FieldAccessException.class);
+	graphQlClient().document(document)
+.retrieve(path).toEntity(MovieCharacter.class)
+.block(TIMEOUT))
+	.isInstanceOf(FieldAccessException.class);
 	}
 
 	@Test
@@ -175,14 +176,14 @@ public class GraphQlClientTests extends GraphQlClientTestSupport {
 	private void testExecuteFailedResponse(String document) {
 
 		ClientGraphQlResponse response =
-				graphQlClient().document(document).execute().block(TIMEOUT);
+	graphQlClient().document(document).execute().block(TIMEOUT);
 
 		assertThat(response).isNotNull();
 		assertThat(response.isValid()).isFalse();
 		assertThat(response.field("me")).isNotNull();
 
 		assertThatThrownBy(() -> response.field("me").toEntity(MovieCharacter.class))
-				.isInstanceOf(FieldAccessException.class);
+	.isInstanceOf(FieldAccessException.class);
 	}
 
 	@Test
@@ -193,20 +194,20 @@ public class GraphQlClientTests extends GraphQlClientTestSupport {
 		testRetrieveFieldAccessException(document, "me.name");
 
 		ClientGraphQlResponse response =
-				graphQlClient().document(document).execute().block(TIMEOUT);
+	graphQlClient().document(document).execute().block(TIMEOUT);
 
 		assertThat(response).isNotNull();
 		assertThat(response.isValid())
-				.as("Partial response with field errors should be considered valid")
-				.isTrue();
+	.as("Partial response with field errors should be considered valid")
+	.isTrue();
 
 		ClientResponseField field = response.field("me");
 		assertThat((Object) field.getValue()).isNotNull();
 		assertThat(field.getErrors()).hasSize(1);
 		assertThat(field.getErrors().get(0).getParsedPath()).containsExactly("me", "name");
 		assertThat(field.toEntity(MovieCharacter.class))
-				.as("Decoding with nested field error should not be precluded")
-				.isNotNull();
+	.as("Decoding with nested field error should not be precluded")
+	.isNotNull();
 
 		field = response.field("me.name");
 		assertThat((Object) field.getValue()).isNull();
@@ -214,9 +215,9 @@ public class GraphQlClientTests extends GraphQlClientTestSupport {
 		assertThat(field.getErrors().get(0).getParsedPath()).containsExactly("me", "name");
 		ClientResponseField theField = field;
 		assertThatThrownBy(() -> theField.toEntity(String.class))
-				.as("Decoding field null with direct field error should be rejected")
-				.isInstanceOf(FieldAccessException.class)
-				.hasMessageContaining("Test error");
+	.as("Decoding field null with direct field error should be rejected")
+	.isInstanceOf(FieldAccessException.class)
+	.hasMessageContaining("Test error");
 
 		field = response.field("me.name.other");
 		assertThat((Object) field.getValue()).isNull();
@@ -226,8 +227,8 @@ public class GraphQlClientTests extends GraphQlClientTestSupport {
 
 	private GraphQLError errorForPath(String errorPath) {
 		return GraphqlErrorBuilder.newError()
-				.message("Test error")
-				.path(ResultPath.parse(errorPath).toList()).build();
+	.message("Test error")
+	.path(ResultPath.parse(errorPath).toList()).build();
 	}
 
 }

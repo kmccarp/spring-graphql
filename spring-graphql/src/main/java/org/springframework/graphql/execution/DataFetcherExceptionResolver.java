@@ -73,7 +73,7 @@ public interface DataFetcherExceptionResolver {
 	 * @since 1.0.1
 	 */
 	static DataFetcherExceptionResolverAdapter forSingleError(
-			BiFunction<Throwable, DataFetchingEnvironment, GraphQLError> resolver) {
+BiFunction<Throwable, DataFetchingEnvironment, GraphQLError> resolver) {
 
 		return new DataFetcherExceptionResolverAdapter() {
 

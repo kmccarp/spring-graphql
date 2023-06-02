@@ -32,20 +32,20 @@ class SecurityExceptionResolverUtils {
 
 	static GraphQLError resolveUnauthorized(DataFetchingEnvironment environment) {
 		return GraphqlErrorBuilder.newError(environment)
-				.errorType(ErrorType.UNAUTHORIZED)
-				.message("Unauthorized")
-				.build();
+	.errorType(ErrorType.UNAUTHORIZED)
+	.message("Unauthorized")
+	.build();
 	}
 
 	static GraphQLError resolveAccessDenied(
-			DataFetchingEnvironment env, AuthenticationTrustResolver resolver, SecurityContext securityContext) {
+DataFetchingEnvironment env, AuthenticationTrustResolver resolver, SecurityContext securityContext) {
 
 		return resolver.isAnonymous(securityContext.getAuthentication()) ?
-				resolveUnauthorized(env) :
-				GraphqlErrorBuilder.newError(env)
-						.errorType(ErrorType.FORBIDDEN)
-						.message("Forbidden")
-						.build();
+	resolveUnauthorized(env) :
+	GraphqlErrorBuilder.newError(env)
+.errorType(ErrorType.FORBIDDEN)
+.message("Forbidden")
+.build();
 	}
 
 }

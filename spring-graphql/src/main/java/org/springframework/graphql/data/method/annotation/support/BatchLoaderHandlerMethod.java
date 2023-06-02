@@ -51,8 +51,8 @@ import org.springframework.util.ClassUtils;
 public class BatchLoaderHandlerMethod extends InvocableHandlerMethodSupport {
 
 	private final static boolean springSecurityPresent = ClassUtils.isPresent(
-			"org.springframework.security.core.context.SecurityContext",
-			AnnotatedControllerConfigurer.class.getClassLoader());
+"org.springframework.security.core.context.SecurityContext",
+AnnotatedControllerConfigurer.class.getClassLoader());
 
 
 	private final ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
@@ -117,7 +117,7 @@ public class BatchLoaderHandlerMethod extends InvocableHandlerMethodSupport {
 
 	@Nullable
 	private  <K> Object resolveArgument(
-			MethodParameter parameter, Collection<K> keys, BatchLoaderEnvironment environment) {
+MethodParameter parameter, Collection<K> keys, BatchLoaderEnvironment environment) {
 
 		parameter.initParameterNameDiscovery(this.parameterNameDiscoverer);
 
@@ -160,7 +160,7 @@ public class BatchLoaderHandlerMethod extends InvocableHandlerMethodSupport {
 		String name = ContextValueMethodArgumentResolver.getContextValueName(parameter, annotation.name(), annotation);
 
 		return ContextValueMethodArgumentResolver.resolveContextValue(
-				name, annotation.required(), parameter, environment.getContext());
+	name, annotation.required(), parameter, environment.getContext());
 	}
 
 	private boolean doesNotHaveAsyncArgs(Object[] args) {
@@ -176,7 +176,7 @@ public class BatchLoaderHandlerMethod extends InvocableHandlerMethodSupport {
 			return (Mono<Map<K, V>>) result;
 		}
 		else if (result instanceof CompletableFuture) {
-			return Mono.fromFuture((CompletableFuture<? extends Map<K,V>>) result);
+			return Mono.fromFuture((CompletableFuture<? extends Map<K, V>>) result);
 		}
 		return Mono.error(new IllegalStateException("Unexpected return value: " + result));
 	}
@@ -191,7 +191,7 @@ public class BatchLoaderHandlerMethod extends InvocableHandlerMethodSupport {
 		}
 		else if (result instanceof CompletableFuture) {
 			return Mono.fromFuture((CompletableFuture<? extends Collection<V>>) result)
-					.flatMapIterable(Function.identity());
+		.flatMapIterable(Function.identity());
 		}
 		return Flux.error(new IllegalStateException("Unexpected return value: " + result));
 	}

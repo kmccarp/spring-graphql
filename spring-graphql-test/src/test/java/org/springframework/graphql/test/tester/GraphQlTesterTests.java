@@ -51,7 +51,7 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 		response.path("me[?(@.name == 'Luke Skywalker')].name").hasValue(); // gh-377
 
 		assertThatThrownBy(() -> response.path("hero").hasValue())
-				.hasMessageContaining("No value at JSON path \"$.data.hero\"");
+	.hasMessageContaining("No value at JSON path \"$.data.hero\"");
 
 		assertThat(getActualRequestDocument()).contains(document);
 	}
@@ -68,7 +68,7 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 		response.path("me.friends").valueIsNull();
 
 		assertThatThrownBy(() -> response.path("me").valueIsNull())
-				.hasMessageContaining("Expected null value at JSON path");
+	.hasMessageContaining("Expected null value at JSON path");
 
 		assertThat(getActualRequestDocument()).contains(document);
 	}
@@ -93,7 +93,7 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 		response.path("hero").pathDoesNotExist();
 
 		assertThatThrownBy(() -> response.path("me.name").pathDoesNotExist())
-				.hasMessageContaining("Expected no value at JSON path");
+	.hasMessageContaining("Expected no value at JSON path");
 	}
 
 	@Test
@@ -109,8 +109,8 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 		response.path("me").matchesJson("{\"friends\":[]}"); // lenient match with subset of fields
 
 		assertThatThrownBy(() -> response.path("me").matchesJsonStrictly("{\"friends\":[]}"))
-				.as("Extended fields should fail in strict mode")
-				.hasMessageContaining("Unexpected: name");
+	.as("Extended fields should fail in strict mode")
+	.hasMessageContaining("Unexpected: name");
 
 		assertThat(getActualRequestDocument()).contains(document);
 	}
@@ -128,19 +128,20 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 		AtomicReference<MovieCharacter> personRef = new AtomicReference<>();
 
 		MovieCharacter actual = response.path("me").entity(MovieCharacter.class)
-				.isEqualTo(luke)
-				.isNotEqualTo(han)
-				.satisfies(personRef::set)
-				.matches((movieCharacter) -> personRef.get().equals(movieCharacter))
-				.isSameAs(personRef.get())
-				.isNotSameAs(luke)
-				.get();
+	.isEqualTo(luke)
+	.isNotEqualTo(han)
+	.satisfies(personRef::set)
+	.matches((movieCharacter) -> personRef.get().equals(movieCharacter))
+	.isSameAs(personRef.get())
+	.isNotSameAs(luke)
+	.get();
 
 		assertThat(actual.getName()).isEqualTo("Luke Skywalker");
 
 		response.path("")
-				.entity(new ParameterizedTypeReference<Map<String, MovieCharacter>>() {})
-				.isEqualTo(Collections.singletonMap("me", luke));
+	.entity(new ParameterizedTypeReference<Map<String, MovieCharacter>>() {
+	})
+	.isEqualTo(Collections.singletonMap("me", luke));
 
 		assertThat(getActualRequestDocument()).contains(document);
 	}
@@ -150,12 +151,12 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 
 		String document = "{me {name, friends}}";
 		getGraphQlService().setDataAsJson(document,
-				"{" +
-				"  \"me\":{" +
-				"      \"name\":\"Luke Skywalker\","
-				+ "    \"friends\":[{\"name\":\"Han Solo\"}, {\"name\":\"Leia Organa\"}]" +
-				"  }" +
-				"}");
+	"{" +
+"  \"me\":{" +
+"      \"name\":\"Luke Skywalker\","
++ "    \"friends\":[{\"name\":\"Han Solo\"}, {\"name\":\"Leia Organa\"}]" +
+"  }" +
+"}");
 
 		GraphQlTester.Response response = graphQlTester().document(document).execute();
 
@@ -164,30 +165,31 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 		MovieCharacter jabba = MovieCharacter.create("Jabba the Hutt");
 
 		GraphQlTester.EntityList<MovieCharacter> entityList =
-				response.path("me.friends").entityList(MovieCharacter.class);
+	response.path("me.friends").entityList(MovieCharacter.class);
 
 		List<MovieCharacter> actual = entityList
-				.contains(han)
-				.containsExactly(han, leia)
-				.doesNotContain(jabba)
-				.hasSize(2)
-				.hasSizeGreaterThan(1)
-				.hasSizeLessThan(3)
-				.get();
+	.contains(han)
+	.containsExactly(han, leia)
+	.doesNotContain(jabba)
+	.hasSize(2)
+	.hasSizeGreaterThan(1)
+	.hasSizeLessThan(3)
+	.get();
 
 		assertThat(actual).containsExactly(han, leia);
 
 		assertThatThrownBy(() -> entityList.containsExactly(leia, han))
-				.as("Should be exactly the same order")
-				.hasMessage("Expecting list " +
-						"[MovieCharacter[name='Han Solo'], MovieCharacter[name='Leia Organa']] " +
-						"at path 'me.friends' to contain exactly " +
-						"[MovieCharacter[name='Leia Organa'], MovieCharacter[name='Han Solo']]\n" +
-						"Request: document='{me {name, friends}}'");
+	.as("Should be exactly the same order")
+	.hasMessage("Expecting list " +
+"[MovieCharacter[name='Han Solo'], MovieCharacter[name='Leia Organa']] " +
+"at path 'me.friends' to contain exactly " +
+"[MovieCharacter[name='Leia Organa'], MovieCharacter[name='Han Solo']]\n" +
+"Request: document='{me {name, friends}}'");
 
 		response.path("me.friends")
-				.entityList(new ParameterizedTypeReference<MovieCharacter>() {})
-				.containsExactly(han, leia);
+	.entityList(new ParameterizedTypeReference<MovieCharacter>() {
+	})
+	.containsExactly(han, leia);
 
 		assertThat(getActualRequestDocument()).contains(document);
 	}
@@ -197,37 +199,37 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 
 		String document = "{me {name, friends}}";
 		getGraphQlService().setDataAsJson(document,
-				"{" +
-						"  \"me\":{" +
-						"      \"name\":\"Luke Skywalker\","
-						+ "    \"friends\":[{\"name\":\"Han Solo\"}, {\"name\":\"Leia Organa\"}]" +
-						"  }" +
-						"}");
+	"{" +
+"  \"me\":{" +
+"      \"name\":\"Luke Skywalker\","
++ "    \"friends\":[{\"name\":\"Han Solo\"}, {\"name\":\"Leia Organa\"}]" +
+"  }" +
+"}");
 
 		graphQlTester().document(document).execute()
-				.path("me", me -> me
-						.path("name").entity(String.class).isEqualTo("Luke Skywalker")
-						.path("friends[0]", f -> f.path("name").entity(String.class).isEqualTo("Han Solo"))
-						.path("friends[1]", f -> f.path("name").entity(String.class).isEqualTo("Leia Organa")));
+	.path("me", me -> me
+.path("name").entity(String.class).isEqualTo("Luke Skywalker")
+.path("friends[0]", f -> f.path("name").entity(String.class).isEqualTo("Han Solo"))
+.path("friends[1]", f -> f.path("name").entity(String.class).isEqualTo("Leia Organa")));
 	}
 
 	@Test
 	void operationNameAndVariables() {
 
 		String document = "query HeroNameAndFriends($episode: Episode) {" +
-				"  hero(episode: $episode) {" +
-				"    name"
-				+ "  }" +
-				"}";
+	"  hero(episode: $episode) {" +
+	"    name"
+	+ "  }" +
+	"}";
 
 		getGraphQlService().setDataAsJson(document, "{\"hero\": {\"name\":\"R2-D2\"}}");
 
 		GraphQlTester.Response response = graphQlTester().document(document)
-				.operationName("HeroNameAndFriends")
-				.variable("episode", "JEDI")
-				.variable("foo", "bar")
-				.variable("keyOnly", null)
-				.execute();
+	.operationName("HeroNameAndFriends")
+	.variable("episode", "JEDI")
+	.variable("foo", "bar")
+	.variable("keyOnly", null)
+	.execute();
 
 		response.path("hero").entity(MovieCharacter.class).isEqualTo(MovieCharacter.create("R2-D2"));
 
@@ -246,15 +248,15 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 		getGraphQlService().setDataAsJson(document, "{\"me\": {\"name\":\"Luke Skywalker\", \"friends\":[]}}");
 
 		graphQlTester().document(document)
-				.extension("firstExt", Collections.singletonMap("key", "value"))
-				.extension("secondExt", "value")
-				.execute();
+	.extension("firstExt", Collections.singletonMap("key", "value"))
+	.extension("secondExt", "value")
+	.execute();
 
 		ExecutionGraphQlRequest request = getGraphQlService().getGraphQlRequest();
 		assertThat(request.getDocument()).contains(document);
 		assertThat(request.getExtensions()).hasSize(2);
 		assertThat(request.getExtensions()).containsEntry("firstExt", Collections.singletonMap("key", "value"))
-				.containsEntry("secondExt", "value");
+	.containsEntry("secondExt", "value");
 	}
 
 	@Test
@@ -275,7 +277,7 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 		getGraphQlService().setError(document, builder -> builder.message("Invalid query"));
 
 		assertThatThrownBy(() -> graphQlTester().document(document).executeAndVerify())
-				.hasMessageContaining("Response has 1 unexpected error(s)");
+	.hasMessageContaining("Response has 1 unexpected error(s)");
 
 		assertThat(getActualRequestDocument()).contains(document);
 	}
@@ -287,7 +289,7 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 		getGraphQlService().setError(document, builder -> builder.message("Invalid query"));
 
 		assertThatThrownBy(() -> graphQlTester().document(document).execute().path("me"))
-				.hasMessageContaining("Response has 1 unexpected error(s)");
+	.hasMessageContaining("Response has 1 unexpected error(s)");
 
 		assertThat(getActualRequestDocument()).contains(document);
 	}
@@ -297,17 +299,17 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 
 		String document = "{me {name, friends}}";
 		getGraphQlService().setErrors(
-				document,
-				GraphqlErrorBuilder.newError().message("some error").build(),
-				GraphqlErrorBuilder.newError().message("some other error").build());
+	document,
+	GraphqlErrorBuilder.newError().message("some error").build(),
+	GraphqlErrorBuilder.newError().message("some other error").build());
 
 		assertThatThrownBy(() ->
-				graphQlTester().document(document)
-						.execute()
-						.errors()
-						.filter((error) -> error.getMessage().equals("some error"))
-						.verify())
-				.hasMessageContaining("Response has 1 unexpected error(s) of 2 total.");
+	graphQlTester().document(document)
+.execute()
+.errors()
+.filter((error) -> error.getMessage().equals("some error"))
+.verify())
+	.hasMessageContaining("Response has 1 unexpected error(s) of 2 total.");
 
 		assertThat(getActualRequestDocument()).contains(document);
 	}
@@ -317,17 +319,17 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 
 		String document = "{me {name, friends}}";
 		getGraphQlService().setErrors(
-				document,
-				GraphqlErrorBuilder.newError().message("some error").build(),
-				GraphqlErrorBuilder.newError().message("some other error").build());
+	document,
+	GraphqlErrorBuilder.newError().message("some error").build(),
+	GraphqlErrorBuilder.newError().message("some other error").build());
 
 		graphQlTester().document(document)
-				.execute()
-				.errors()
-				.filter((error) -> error.getMessage().startsWith("some "))
-				.verify()
-				.path("me")
-				.pathDoesNotExist();
+	.execute()
+	.errors()
+	.filter((error) -> error.getMessage().startsWith("some "))
+	.verify()
+	.path("me")
+	.pathDoesNotExist();
 
 		assertThat(getActualRequestDocument()).contains(document);
 	}
@@ -337,16 +339,16 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 
 		String document = "{me {name, friends}}";
 		getGraphQlService().setErrors(
-				document,
-				GraphqlErrorBuilder.newError().message("some error").build(),
-				GraphqlErrorBuilder.newError().message("some other error").build());
+	document,
+	GraphqlErrorBuilder.newError().message("some error").build(),
+	GraphqlErrorBuilder.newError().message("some other error").build());
 
 		graphQlTester().document(document)
-				.execute()
-				.errors()
-				.expect((error) -> error.getMessage().startsWith("some "))
-				.verify()
-				.path("me").pathDoesNotExist();
+	.execute()
+	.errors()
+	.expect((error) -> error.getMessage().startsWith("some "))
+	.verify()
+	.path("me").pathDoesNotExist();
 
 		assertThat(getActualRequestDocument()).contains(document);
 	}
@@ -356,15 +358,15 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 
 		String document = "{me {name, friends}}";
 		getGraphQlService().setErrors(
-				document,
-				GraphqlErrorBuilder.newError().message("some error").build(),
-				GraphqlErrorBuilder.newError().message("some other error").build());
+	document,
+	GraphqlErrorBuilder.newError().message("some error").build(),
+	GraphqlErrorBuilder.newError().message("some other error").build());
 
 		assertThatThrownBy(() ->
-				graphQlTester().document(document)
-						.execute()
-						.errors().expect((error) -> error.getMessage().startsWith("another ")))
-				.hasMessageStartingWith("No matching errors.");
+	graphQlTester().document(document)
+.execute()
+.errors().expect((error) -> error.getMessage().startsWith("another ")))
+	.hasMessageStartingWith("No matching errors.");
 	}
 
 	@Test
@@ -372,19 +374,19 @@ public class GraphQlTesterTests extends GraphQlTesterTestSupport {
 
 		String document = "{me {name, friends}}";
 		getGraphQlService().setError(document, builder ->
-				builder.message("Invalid query").location(new SourceLocation(1, 2)).build());
+	builder.message("Invalid query").location(new SourceLocation(1, 2)).build());
 
 		graphQlTester().document(document)
-				.execute()
-				.errors()
-				.satisfy((errors) -> {
-					assertThat(errors).hasSize(1);
-					assertThat(errors.get(0).getMessage()).isEqualTo("Invalid query");
-					assertThat(errors.get(0).getLocations()).hasSize(1);
-					assertThat(errors.get(0).getLocations().get(0).getLine()).isEqualTo(1);
-					assertThat(errors.get(0).getLocations().get(0).getColumn()).isEqualTo(2);
-				})
-				.path("me").pathDoesNotExist();
+	.execute()
+	.errors()
+	.satisfy((errors) -> {
+		assertThat(errors).hasSize(1);
+		assertThat(errors.get(0).getMessage()).isEqualTo("Invalid query");
+		assertThat(errors.get(0).getLocations()).hasSize(1);
+		assertThat(errors.get(0).getLocations().get(0).getLine()).isEqualTo(1);
+		assertThat(errors.get(0).getLocations().get(0).getColumn()).isEqualTo(2);
+	})
+	.path("me").pathDoesNotExist();
 
 		assertThat(getActualRequestDocument()).contains(document);
 	}

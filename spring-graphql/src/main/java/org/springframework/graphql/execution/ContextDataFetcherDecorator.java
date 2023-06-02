@@ -60,8 +60,8 @@ final class ContextDataFetcherDecorator implements DataFetcher<Object> {
 	private final SubscriptionExceptionResolver subscriptionExceptionResolver;
 
 	private ContextDataFetcherDecorator(
-			DataFetcher<?> delegate, boolean subscription,
-			SubscriptionExceptionResolver subscriptionExceptionResolver) {
+DataFetcher<?> delegate, boolean subscription,
+SubscriptionExceptionResolver subscriptionExceptionResolver) {
 
 		Assert.notNull(delegate, "'delegate' DataFetcher is required");
 		Assert.notNull(subscriptionExceptionResolver, "'subscriptionExceptionResolver' is required");
@@ -77,9 +77,9 @@ final class ContextDataFetcherDecorator implements DataFetcher<Object> {
 		// temporarily merge global and local graphql context until https://github.com/micrometer-metrics/context-propagation/pull/98
 		if (environment.getLocalContext() instanceof GraphQLContext localContext) {
 			context = GraphQLContext.newContext()
-					.of(environment.getGraphQlContext())
-					.of(localContext)
-					.build();
+		.of(environment.getGraphQlContext())
+		.of(localContext)
+		.build();
 		}
 		else {
 			context = environment.getGraphQlContext();
@@ -95,7 +95,7 @@ final class ContextDataFetcherDecorator implements DataFetcher<Object> {
 					return Mono.error(exception);
 				}
 				return this.subscriptionExceptionResolver.resolveException(exception)
-						.flatMap(errors -> Mono.error(new SubscriptionPublisherException(errors, exception)));
+			.flatMap(errors -> Mono.error(new SubscriptionPublisherException(errors, exception)));
 			});
 			return flux.contextWrite(snapshot::updateContext);
 		}
@@ -117,7 +117,7 @@ final class ContextDataFetcherDecorator implements DataFetcher<Object> {
 	 * data fetchers with the {@link ContextDataFetcherDecorator}.
 	 */
 	static GraphQLTypeVisitor createVisitor(
-			GraphQLSchema schema, List<SubscriptionExceptionResolver> resolvers) {
+GraphQLSchema schema, List<SubscriptionExceptionResolver> resolvers) {
 
 		GraphQLObjectType subscriptionType = schema.getSubscriptionType();
 		String subscriptionTypeName = (subscriptionType != null ? subscriptionType.getName() : null);
@@ -127,7 +127,7 @@ final class ContextDataFetcherDecorator implements DataFetcher<Object> {
 		return new GraphQLTypeVisitorStub() {
 			@Override
 			public TraversalControl visitGraphQLFieldDefinition(
-					GraphQLFieldDefinition fieldDefinition, TraverserContext<GraphQLSchemaElement> context) {
+		GraphQLFieldDefinition fieldDefinition, TraverserContext<GraphQLSchemaElement> context) {
 
 				GraphQLCodeRegistry.Builder codeRegistry = context.getVarFromParents(GraphQLCodeRegistry.Builder.class);
 				GraphQLFieldsContainer parent = (GraphQLFieldsContainer) context.getParentNode();
@@ -147,7 +147,7 @@ final class ContextDataFetcherDecorator implements DataFetcher<Object> {
 				String packageName = type.getPackage().getName();
 				if (packageName.startsWith("graphql.")) {
 					return (type.getSimpleName().startsWith("DataFetcherFactories") ||
-							packageName.startsWith("graphql.validation"));
+				packageName.startsWith("graphql.validation"));
 				}
 				return true;
 			}

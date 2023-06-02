@@ -37,26 +37,26 @@ import org.springframework.core.NestedRuntimeException;
 @SuppressWarnings("serial")
 public final class SubscriptionPublisherException extends NestedRuntimeException {
 
-    private final List<GraphQLError> errors;
+	private final List<GraphQLError> errors;
 
 
-    /**
-     * Constructor with the resolved GraphQL errors and the original exception
-     * from the GraphQL subscription {@link org.reactivestreams.Publisher}.
-     */
-    public SubscriptionPublisherException(List<GraphQLError> errors, Throwable cause) {
-        super("GraphQL subscription ended with error(s): " + errors, cause);
-        this.errors = errors;
-    }
+	/**
+	* Constructor with the resolved GraphQL errors and the original exception
+	* from the GraphQL subscription {@link org.reactivestreams.Publisher}.
+	*/
+	public SubscriptionPublisherException(List<GraphQLError> errors, Throwable cause) {
+		super("GraphQL subscription ended with error(s): " + errors, cause);
+		this.errors = errors;
+	}
 
 
-    /**
-     * Return the GraphQL errors the exception was resolved to by the configured
-     * {@link SubscriptionExceptionResolver}'s. These errors can be included in
-     * an error message to be sent to the client by the underlying transport.
-     */
-    public List<GraphQLError> getErrors() {
-        return this.errors;
-    }
+	/**
+	* Return the GraphQL errors the exception was resolved to by the configured
+	* {@link SubscriptionExceptionResolver}'s. These errors can be included in
+	* an error message to be sent to the client by the underlying transport.
+	*/
+	public List<GraphQLError> getErrors() {
+		return this.errors;
+	}
 
 }

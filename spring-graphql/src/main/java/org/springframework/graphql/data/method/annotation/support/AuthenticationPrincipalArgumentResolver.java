@@ -97,8 +97,8 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
 	@Override
 	public Object resolveArgument(MethodParameter parameter, DataFetchingEnvironment environment) throws Exception {
 		return getCurrentAuthentication()
-				.flatMap(auth -> Mono.justOrEmpty(resolvePrincipal(parameter, auth.getPrincipal())))
-				.transform((argument) -> isParameterMonoAssignable(parameter) ? Mono.just(argument) : argument);
+	.flatMap(auth -> Mono.justOrEmpty(resolvePrincipal(parameter, auth.getPrincipal())))
+	.transform((argument) -> isParameterMonoAssignable(parameter) ? Mono.just(argument) : argument);
 	}
 
 	private static boolean isParameterMonoAssignable(MethodParameter parameter) {
@@ -108,7 +108,7 @@ public class AuthenticationPrincipalArgumentResolver implements HandlerMethodArg
 
 	private Mono<Authentication> getCurrentAuthentication() {
 		return Mono.justOrEmpty(SecurityContextHolder.getContext().getAuthentication())
-				.switchIfEmpty(ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication));
+	.switchIfEmpty(ReactiveSecurityContextHolder.getContext().map(SecurityContext::getAuthentication));
 	}
 
 	@Nullable

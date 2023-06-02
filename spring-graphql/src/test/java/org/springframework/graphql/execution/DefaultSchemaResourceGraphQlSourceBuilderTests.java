@@ -62,7 +62,7 @@ public class DefaultSchemaResourceGraphQlSourceBuilderTests {
 
 			@Override
 			public TraversalControl visitGraphQLObjectType(
-					GraphQLObjectType node, TraverserContext<GraphQLSchemaElement> context) {
+		GraphQLObjectType node, TraverserContext<GraphQLSchemaElement> context) {
 
 				counter.incrementAndGet();
 				return TraversalControl.CONTINUE;
@@ -78,25 +78,25 @@ public class DefaultSchemaResourceGraphQlSourceBuilderTests {
 	void typeVisitorToTransformSchema() {
 
 		String schemaContent = "" +
-				"type Query {" +
-				"  person: Person" +
-				"} " +
-				"type Person {" +
-				"  firstName: String" +
-				"}";
+	"type Query {" +
+	"  person: Person" +
+	"} " +
+	"type Person {" +
+	"  firstName: String" +
+	"}";
 
 		GraphQLTypeVisitor visitor = new GraphQLTypeVisitorStub() {
 
 			@Override
 			public TraversalControl visitGraphQLObjectType(
-					GraphQLObjectType node, TraverserContext<GraphQLSchemaElement> context) {
+		GraphQLObjectType node, TraverserContext<GraphQLSchemaElement> context) {
 
 				if (node.getName().equals("Person")) {
 					node = node.transform(builder -> builder.field(
-							GraphQLFieldDefinition.newFieldDefinition()
-									.name("lastName")
-									.type(Scalars.GraphQLString)
-									.build()));
+				GraphQLFieldDefinition.newFieldDefinition()
+			.name("lastName")
+			.type(Scalars.GraphQLString)
+			.build()));
 					changeNode(context, node);
 				}
 
@@ -105,9 +105,9 @@ public class DefaultSchemaResourceGraphQlSourceBuilderTests {
 		};
 
 		GraphQLSchema schema = GraphQlSetup.schemaContent(schemaContent)
-				.typeVisitorToTransformSchema(visitor)
-				.toGraphQlSource()
-				.schema();
+	.typeVisitorToTransformSchema(visitor)
+	.toGraphQlSource()
+	.schema();
 
 		assertThat(schema.getObjectType("Person").getFieldDefinition("lastName")).isNotNull();
 	}
@@ -116,9 +116,9 @@ public class DefaultSchemaResourceGraphQlSourceBuilderTests {
 	void wiringFactoryList() {
 
 		String schemaContent = "type Query {" +
-				"  q1: String" +
-				"  q2: String" +
-				"}";
+	"  q1: String" +
+	"  q2: String" +
+	"}";
 
 		DataFetcher<?> dataFetcher1 = mock(DataFetcher.class);
 		DataFetcher<?> dataFetcher2 = mock(DataFetcher.class);
@@ -137,9 +137,9 @@ public class DefaultSchemaResourceGraphQlSourceBuilderTests {
 		};
 
 		GraphQLSchema schema = GraphQlSetup.schemaContent(schemaContent)
-				.runtimeWiring(configurer)
-				.toGraphQlSource()
-				.schema();
+	.runtimeWiring(configurer)
+	.toGraphQlSource()
+	.schema();
 
 		assertThat(getDataFetcherForQuery(schema, "q1")).isSameAs(dataFetcher1);
 		assertThat(getDataFetcherForQuery(schema, "q2")).isSameAs(dataFetcher2);
@@ -149,9 +149,9 @@ public class DefaultSchemaResourceGraphQlSourceBuilderTests {
 	void wiringFactoryListAndBuilderWiringFactory() {
 
 		String schemaContent = "type Query {" +
-				"  q1: String" +
-				"  q2: String" +
-				"}";
+	"  q1: String" +
+	"  q2: String" +
+	"}";
 
 		DataFetcher<?> dataFetcher1 = mock(DataFetcher.class);
 		DataFetcher<?> dataFetcher2 = mock(DataFetcher.class);
@@ -170,9 +170,9 @@ public class DefaultSchemaResourceGraphQlSourceBuilderTests {
 		};
 
 		GraphQLSchema schema = GraphQlSetup.schemaContent(schemaContent)
-				.runtimeWiring(configurer)
-				.toGraphQlSource()
-				.schema();
+	.runtimeWiring(configurer)
+	.toGraphQlSource()
+	.schema();
 
 		assertThat(getDataFetcherForQuery(schema, "q1")).isSameAs(dataFetcher1);
 		assertThat(getDataFetcherForQuery(schema, "q2")).isSameAs(dataFetcher2);
@@ -199,7 +199,7 @@ public class DefaultSchemaResourceGraphQlSourceBuilderTests {
 		@Override
 		public boolean providesDataFetcher(FieldWiringEnvironment environment) {
 			return (environment.getParentType().getName().equals("Query") &&
-					environment.getFieldDefinition().getName().equals(this.queryName));
+		environment.getFieldDefinition().getName().equals(this.queryName));
 		}
 
 		@Override

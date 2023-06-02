@@ -85,8 +85,8 @@ class DefaultDataFetcherObservationConventionTests {
 	void fieldPathKeyValueIsPresent() {
 		DataFetchingEnvironment environment = createDataFetchingEnvironment(builder -> {
 			builder.mergedField(MergedField.newMergedField(Field.newField("project").build()).build())
-					.executionStepInfo(ExecutionStepInfo.newExecutionStepInfo().type(new GraphQLObjectType.Builder().name("project").build())
-							.path(ResultPath.parse("/projectBySlug/releases")).build());
+		.executionStepInfo(ExecutionStepInfo.newExecutionStepInfo().type(new GraphQLObjectType.Builder().name("project").build())
+	.path(ResultPath.parse("/projectBySlug/releases")).build());
 		});
 		DataFetcherObservationContext context = new DataFetcherObservationContext(environment);
 		context.setError(new IllegalStateException("custom data fetching failure"));
@@ -96,7 +96,7 @@ class DefaultDataFetcherObservationConventionTests {
 	private DataFetchingEnvironment createDataFetchingEnvironment(Consumer<DataFetchingEnvironmentImpl.Builder> consumer) {
 		GraphQLContext graphQLContext = new GraphQLContext.Builder().build();
 		DataFetchingEnvironmentImpl.Builder builder = DataFetchingEnvironmentImpl.newDataFetchingEnvironment()
-				.graphQLContext(graphQLContext);
+	.graphQLContext(graphQLContext);
 		consumer.accept(builder);
 		return builder.build();
 	}

@@ -38,8 +38,8 @@ public class CachingDocumentSourceTests {
 	@BeforeEach
 	void setUp() {
 		DocumentSource resourceSource = new ResourceDocumentSource(
-				Collections.singletonList(new ClassPathResource("books/")),
-				ResourceDocumentSource.FILE_EXTENSIONS);
+	Collections.singletonList(new ClassPathResource("books/")),
+	ResourceDocumentSource.FILE_EXTENSIONS);
 
 		this.source = new CachingDocumentSource(resourceSource);
 	}

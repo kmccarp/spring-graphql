@@ -47,9 +47,9 @@ public class AnnotatedControllerConfigurerTests {
 
 		List<HandlerMethodArgumentResolver> resolvers = configurer.getArgumentResolvers().getResolvers();
 		int size = resolvers.size();
-		assertThat(resolvers).element(size -1).isInstanceOf(SourceMethodArgumentResolver.class);
-		assertThat(resolvers).element(size -2).isSameAs(customResolver2);
-		assertThat(resolvers).element(size -3).isSameAs(customResolver1);
+		assertThat(resolvers).element(size - 1).isInstanceOf(SourceMethodArgumentResolver.class);
+		assertThat(resolvers).element(size - 2).isSameAs(customResolver2);
+		assertThat(resolvers).element(size - 3).isSameAs(customResolver1);
 	}
 
 	@Test

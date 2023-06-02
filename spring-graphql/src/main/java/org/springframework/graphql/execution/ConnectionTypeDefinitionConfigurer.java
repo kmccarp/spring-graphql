@@ -58,49 +58,49 @@ public class ConnectionTypeDefinitionConfigurer implements TypeDefinitionConfigu
 
 		if (!typeNames.isEmpty()) {
 			registry.add(ObjectTypeDefinition.newObjectTypeDefinition()
-					.name(PAGE_INFO_TYPE.getName())
-					.fieldDefinition(initFieldDefinition("hasPreviousPage", new NonNullType(BOOLEAN_TYPE)))
-					.fieldDefinition(initFieldDefinition("hasNextPage", new NonNullType(BOOLEAN_TYPE)))
-					.fieldDefinition(initFieldDefinition("startCursor", STRING_TYPE))
-					.fieldDefinition(initFieldDefinition("endCursor", STRING_TYPE))
-					.build());
+		.name(PAGE_INFO_TYPE.getName())
+		.fieldDefinition(initFieldDefinition("hasPreviousPage", new NonNullType(BOOLEAN_TYPE)))
+		.fieldDefinition(initFieldDefinition("hasNextPage", new NonNullType(BOOLEAN_TYPE)))
+		.fieldDefinition(initFieldDefinition("startCursor", STRING_TYPE))
+		.fieldDefinition(initFieldDefinition("endCursor", STRING_TYPE))
+		.build());
 
 			typeNames.forEach(typeName -> {
 				String connectionTypeName = typeName + "Connection";
 				String edgeTypeName = typeName + "Edge";
 
 				registry.add(ObjectTypeDefinition.newObjectTypeDefinition()
-						.name(connectionTypeName)
-						.fieldDefinition(initFieldDefinition("edges", new NonNullType(new ListType(new TypeName(edgeTypeName)))))
-						.fieldDefinition(initFieldDefinition("pageInfo", new NonNullType(PAGE_INFO_TYPE)))
-						.build());
+			.name(connectionTypeName)
+			.fieldDefinition(initFieldDefinition("edges", new NonNullType(new ListType(new TypeName(edgeTypeName)))))
+			.fieldDefinition(initFieldDefinition("pageInfo", new NonNullType(PAGE_INFO_TYPE)))
+			.build());
 
 				registry.add(ObjectTypeDefinition.newObjectTypeDefinition()
-						.name(edgeTypeName)
-						.fieldDefinition(initFieldDefinition("cursor", new NonNullType(STRING_TYPE)))
-						.fieldDefinition(initFieldDefinition("node", new NonNullType(new TypeName(typeName))))
-						.build());
+			.name(edgeTypeName)
+			.fieldDefinition(initFieldDefinition("cursor", new NonNullType(STRING_TYPE)))
+			.fieldDefinition(initFieldDefinition("node", new NonNullType(new TypeName(typeName))))
+			.build());
 			});
 		}
 	}
 
 	private static Set<String> findConnectionTypeNames(TypeDefinitionRegistry registry) {
 		return registry.types().values().stream()
-				.filter(definition -> definition instanceof ImplementingTypeDefinition)
-				.flatMap(definition -> {
-					ImplementingTypeDefinition<?> typeDefinition = (ImplementingTypeDefinition<?>) definition;
-					return typeDefinition.getFieldDefinitions().stream()
-							.map(fieldDefinition -> {
-								Type<?> type = fieldDefinition.getType();
-								return (type instanceof NonNullType ? ((NonNullType) type).getType() : type);
-							})
-							.filter(type -> type instanceof TypeName)
-							.map(type -> ((TypeName) type).getName())
-							.filter(name -> name.endsWith("Connection"))
-							.filter(name -> registry.getType(name).isEmpty())
-							.map(name -> name.substring(0, name.length() - "Connection".length()));
-				})
-				.collect(Collectors.toCollection(LinkedHashSet::new));
+	.filter(definition -> definition instanceof ImplementingTypeDefinition)
+	.flatMap(definition -> {
+		ImplementingTypeDefinition<?> typeDefinition = (ImplementingTypeDefinition<?>) definition;
+		return typeDefinition.getFieldDefinitions().stream()
+	.map(fieldDefinition -> {
+		Type<?> type = fieldDefinition.getType();
+		return (type instanceof NonNullType ? ((NonNullType) type).getType() : type);
+	})
+	.filter(type -> type instanceof TypeName)
+	.map(type -> ((TypeName) type).getName())
+	.filter(name -> name.endsWith("Connection"))
+	.filter(name -> registry.getType(name).isEmpty())
+	.map(name -> name.substring(0, name.length() - "Connection".length()));
+	})
+	.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 	private FieldDefinition initFieldDefinition(String name, Type<?> returnType) {

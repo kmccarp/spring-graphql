@@ -67,9 +67,9 @@ public class ResponseHelper {
 
 	private static Configuration initJsonPathConfig() {
 		return Configuration.builder()
-				.jsonProvider(new JacksonJsonProvider())
-				.mappingProvider(new JacksonMappingProvider())
-				.build();
+	.jsonProvider(new JacksonJsonProvider())
+	.mappingProvider(new JacksonMappingProvider())
+	.build();
 	}
 
 

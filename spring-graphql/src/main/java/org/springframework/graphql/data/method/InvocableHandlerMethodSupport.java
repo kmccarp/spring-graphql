@@ -61,8 +61,8 @@ public abstract class InvocableHandlerMethodSupport extends HandlerMethod {
 		this.hasCallableReturnValue = getReturnType().getParameterType().equals(Callable.class);
 		this.executor = executor;
 		Assert.isTrue(!this.hasCallableReturnValue || this.executor != null,
-				"Controller method declared with Callable return value, but no Executor configured: " +
-						handlerMethod.getBridgedMethod().toGenericString());
+	"Controller method declared with Callable return value, but no Executor configured: " +
+handlerMethod.getBridgedMethod().toGenericString());
 	}
 
 
@@ -99,7 +99,7 @@ public abstract class InvocableHandlerMethodSupport extends HandlerMethod {
 			}
 			else {
 				return Mono.error(new IllegalStateException(
-						formatInvokeError("Invocation failure", argValues), targetException));
+			formatInvokeError("Invocation failure", argValues), targetException));
 			}
 		}
 		catch (Throwable ex) {
@@ -111,16 +111,16 @@ public abstract class InvocableHandlerMethodSupport extends HandlerMethod {
 	private Object handleReturnValue(GraphQLContext graphQLContext, @Nullable Object result) {
 		if (this.hasCallableReturnValue && result != null) {
 			return CompletableFuture.supplyAsync(
-					() -> {
-						try {
-							return ContextSnapshot.captureFrom(graphQLContext).wrap((Callable<?>) result).call();
-						}
-						catch (Exception ex) {
-							throw new IllegalStateException(
-									"Failure in Callable returned from " + getBridgedMethod().toGenericString(), ex);
-						}
-					},
-					this.executor);
+		() -> {
+			try {
+				return ContextSnapshot.captureFrom(graphQLContext).wrap((Callable<?>) result).call();
+			}
+			catch (Exception ex) {
+				throw new IllegalStateException(
+			"Failure in Callable returned from " + getBridgedMethod().toGenericString(), ex);
+			}
+		},
+		this.executor);
 		}
 		return result;
 	}

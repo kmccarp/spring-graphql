@@ -114,13 +114,13 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 	private static final ClassLoader classLoader = AnnotatedControllerConfigurer.class.getClassLoader();
 
 	private final static boolean springDataPresent = ClassUtils.isPresent(
-			"org.springframework.data.projection.SpelAwareProxyProjectionFactory", classLoader);
+"org.springframework.data.projection.SpelAwareProxyProjectionFactory", classLoader);
 
 	private final static boolean springSecurityPresent = ClassUtils.isPresent(
-			"org.springframework.security.core.context.SecurityContext", classLoader);
+"org.springframework.security.core.context.SecurityContext", classLoader);
 
 	private final static boolean beanValidationPresent = ClassUtils.isPresent(
-			"jakarta.validation.executable.ExecutableValidator", classLoader);
+"jakarta.validation.executable.ExecutableValidator", classLoader);
 
 
 	private final static Log logger = LogFactory.getLog(AnnotatedControllerConfigurer.class);
@@ -195,7 +195,7 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 
 	HandlerMethodArgumentResolverComposite getArgumentResolvers() {
 		Assert.notNull(this.argumentResolvers,
-				"HandlerMethodArgumentResolverComposite is not yet initialized, was afterPropertiesSet called?");
+	"HandlerMethodArgumentResolverComposite is not yet initialized, was afterPropertiesSet called?");
 		return this.argumentResolvers;
 	}
 
@@ -215,7 +215,7 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 	 */
 	public DataFetcherExceptionResolver getExceptionResolver() {
 		Assert.notNull(this.exceptionResolver,
-				"DataFetcherExceptionResolver is not yet initialized, was afterPropertiesSet called?");
+	"DataFetcherExceptionResolver is not yet initialized, was afterPropertiesSet called?");
 		return (ex, env) -> this.exceptionResolver.resolveException(ex, env, null);
 	}
 
@@ -273,7 +273,7 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 		}
 
 		GraphQlArgumentBinder argumentBinder =
-				new GraphQlArgumentBinder(this.conversionService, this.fallBackOnDirectFieldAccess);
+	new GraphQlArgumentBinder(this.conversionService, this.fallBackOnDirectFieldAccess);
 
 		resolvers.addResolver(new ArgumentMethodArgumentResolver(argumentBinder));
 		resolvers.addResolver(new ArgumentsMethodArgumentResolver(argumentBinder));
@@ -347,13 +347,13 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 			DataFetcher<?> dataFetcher;
 			if (!info.isBatchMapping()) {
 				dataFetcher = new SchemaMappingDataFetcher(
-						info, this.argumentResolvers, this.validationHelper, this.exceptionResolver, this.executor);
+			info, this.argumentResolvers, this.validationHelper, this.exceptionResolver, this.executor);
 			}
 			else {
 				dataFetcher = registerBatchLoader(info);
 			}
 			runtimeWiringBuilder.type(info.getCoordinates().getTypeName(), typeBuilder ->
-					typeBuilder.dataFetcher(info.getCoordinates().getFieldName(), dataFetcher));
+		typeBuilder.dataFetcher(info.getCoordinates().getFieldName(), dataFetcher));
 		});
 	}
 
@@ -386,9 +386,9 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 				MappingInfo existing = result.put(info.getCoordinates(), info);
 				if (existing != null && !existing.getHandlerMethod().equals(handlerMethod)) {
 					throw new IllegalStateException(
-							"Ambiguous mapping. Cannot map '" + handlerMethod.getBean() + "' method \n" +
-									handlerMethod + "\nto " + info.getCoordinates() + ": There is already '" +
-									existing.getHandlerMethod().getBean() + "' bean method\n" + existing + " mapped.");
+				"Ambiguous mapping. Cannot map '" + handlerMethod.getBean() + "' method \n" +
+			handlerMethod + "\nto " + info.getCoordinates() + ": There is already '" +
+			existing.getHandlerMethod().getBean() + "' bean method\n" + existing + " mapped.");
 				}
 			});
 		}
@@ -402,7 +402,7 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 
 		Class<?> userClass = ClassUtils.getUserClass(handlerClass);
 		Map<Method, MappingInfo> map = MethodIntrospector.selectMethods(
-				userClass, (Method method) -> getMappingInfo(method, handler, userClass));
+	userClass, (Method method) -> getMappingInfo(method, handler, userClass));
 
 		Collection<MappingInfo> mappingInfos = map.values();
 
@@ -417,7 +417,7 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 	private MappingInfo getMappingInfo(Method method, Object handler, Class<?> handlerType) {
 
 		Set<Annotation> annotations = AnnotatedElementUtils.findAllMergedAnnotations(
-				method, new LinkedHashSet<>(Arrays.asList(BatchMapping.class, SchemaMapping.class)));
+	method, new LinkedHashSet<>(Arrays.asList(BatchMapping.class, SchemaMapping.class)));
 
 		if (annotations.isEmpty()) {
 			return null;
@@ -425,7 +425,7 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 
 		if (annotations.size() != 1) {
 			throw new IllegalArgumentException(
-					"Expected either @BatchMapping or @SchemaMapping, not both: " + method.toGenericString());
+		"Expected either @BatchMapping or @SchemaMapping, not both: " + method.toGenericString());
 		}
 
 		String typeName;
@@ -474,8 +474,8 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 		}
 
 		Assert.hasText(typeName,
-				"No parentType specified, and a source/parent method argument was also not found: " +
-						handlerMethod.getShortLogMessage());
+	"No parentType specified, and a source/parent method argument was also not found: " +
+handlerMethod.getShortLogMessage());
 
 		return new MappingInfo(typeName, field, batchMapping, batchSize, handlerMethod);
 	}
@@ -483,23 +483,23 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 	private HandlerMethod createHandlerMethod(Method method, Object handler, Class<?> handlerType) {
 		Method theMethod = AopUtils.selectInvocableMethod(method, handlerType);
 		return (handler instanceof String ?
-				new HandlerMethod((String) handler, obtainApplicationContext().getAutowireCapableBeanFactory(), theMethod) :
-				new HandlerMethod(handler, theMethod));
+	new HandlerMethod((String) handler, obtainApplicationContext().getAutowireCapableBeanFactory(), theMethod) :
+	new HandlerMethod(handler, theMethod));
 	}
 
 	private String formatMappings(Class<?> handlerType, Collection<MappingInfo> infos) {
 		String formattedType = Arrays.stream(ClassUtils.getPackageName(handlerType).split("\\."))
-				.map(p -> p.substring(0, 1))
-				.collect(Collectors.joining(".", "", "." + handlerType.getSimpleName()));
+	.map(p -> p.substring(0, 1))
+	.collect(Collectors.joining(".", "", "." + handlerType.getSimpleName()));
 		return infos.stream()
-				.map(mappingInfo -> {
-					Method method = mappingInfo.getHandlerMethod().getMethod();
-					String methodParameters = Arrays.stream(method.getGenericParameterTypes())
-							.map(Type::getTypeName)
-							.collect(Collectors.joining(",", "(", ")"));
-					return mappingInfo.getCoordinates() + " => " + method.getName() + methodParameters;
-				})
-				.collect(Collectors.joining("\n\t", "\n\t" + formattedType + ":" + "\n\t", ""));
+	.map(mappingInfo -> {
+		Method method = mappingInfo.getHandlerMethod().getMethod();
+		String methodParameters = Arrays.stream(method.getGenericParameterTypes())
+	.map(Type::getTypeName)
+	.collect(Collectors.joining(",", "(", ")"));
+		return mappingInfo.getCoordinates() + " => " + method.getName() + methodParameters;
+	})
+	.collect(Collectors.joining("\n\t", "\n\t" + formattedType + ":" + "\n\t", ""));
 	}
 
 	private DataFetcher<Object> registerBatchLoader(MappingInfo info) {
@@ -543,8 +543,8 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 		}
 
 		throw new IllegalStateException(
-				"@BatchMapping method is expected to return " +
-						"Mono<Map<K, V>>, Map<K, V>, Flux<V>, or Collection<V>: " + handlerMethod);
+	"@BatchMapping method is expected to return " +
+"Mono<Map<K, V>>, Map<K, V>, Flux<V>, or Collection<V>: " + handlerMethod);
 	}
 
 	/**
@@ -560,10 +560,10 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 		RuntimeWiring runtimeWiring = wiringBuilder.build();
 
 		runtimeWiring.getDataFetchers().forEach((typeName, dataFetcherMap) ->
-				dataFetcherMap.forEach((key, value) -> {
-					FieldCoordinates coordinates = FieldCoordinates.coordinates(typeName, key);
-					codeRegistryBuilder.dataFetcher(coordinates, (DataFetcher<?>) value);
-				}));
+	dataFetcherMap.forEach((key, value) -> {
+		FieldCoordinates coordinates = FieldCoordinates.coordinates(typeName, key);
+		codeRegistryBuilder.dataFetcher(coordinates, (DataFetcher<?>) value);
+	}));
 	}
 
 
@@ -578,8 +578,8 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 		private final HandlerMethod handlerMethod;
 
 		public MappingInfo(
-				String typeName, String field, boolean batchMapping, int maxBatchSize,
-				HandlerMethod handlerMethod) {
+	String typeName, String field, boolean batchMapping, int maxBatchSize,
+	HandlerMethod handlerMethod) {
 
 			this.coordinates = FieldCoordinates.coordinates(typeName, field);
 			this.batchMapping = batchMapping;
@@ -631,15 +631,15 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 		private final boolean subscription;
 
 		SchemaMappingDataFetcher(
-				MappingInfo info, HandlerMethodArgumentResolverComposite argumentResolvers,
-				@Nullable ValidationHelper helper, AnnotatedControllerExceptionResolver exceptionResolver,
-				@Nullable Executor executor) {
+	MappingInfo info, HandlerMethodArgumentResolverComposite argumentResolvers,
+	@Nullable ValidationHelper helper, AnnotatedControllerExceptionResolver exceptionResolver,
+	@Nullable Executor executor) {
 
 			this.info = info;
 			this.argumentResolvers = argumentResolvers;
 
 			this.methodValidationHelper =
-					(helper != null ? helper.getValidationHelperFor(info.getHandlerMethod()) : null);
+		(helper != null ? helper.getValidationHelperFor(info.getHandlerMethod()) : null);
 
 			// Register controllers early to validate exception handler return types
 			Class<?> controllerType = info.getHandlerMethod().getBeanType();
@@ -673,8 +673,8 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 		public Object get(DataFetchingEnvironment environment) throws Exception {
 
 			DataFetcherHandlerMethod handlerMethod = new DataFetcherHandlerMethod(
-					getHandlerMethod(), this.argumentResolvers, this.methodValidationHelper,
-					this.executor, this.subscription);
+		getHandlerMethod(), this.argumentResolvers, this.methodValidationHelper,
+		this.executor, this.subscription);
 
 			try {
 				Object result = handlerMethod.invoke(environment);
@@ -687,7 +687,7 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 
 		@SuppressWarnings({"unchecked", "ReactiveStreamsUnusedPublisher"})
 		private <T> Object applyExceptionHandling(
-				DataFetchingEnvironment env, DataFetcherHandlerMethod handlerMethod, Object result) {
+	DataFetchingEnvironment env, DataFetcherHandlerMethod handlerMethod, Object result) {
 
 			if (this.subscription && result instanceof Publisher<?> publisher) {
 				result = Flux.from(publisher).onErrorResume(ex -> handleSubscriptionError(ex, env, handlerMethod));
@@ -702,20 +702,20 @@ public class AnnotatedControllerConfigurer implements ApplicationContextAware, I
 		}
 
 		private Mono<DataFetcherResult<Object>> handleException(
-				Throwable ex, DataFetchingEnvironment env, DataFetcherHandlerMethod handlerMethod) {
+	Throwable ex, DataFetchingEnvironment env, DataFetcherHandlerMethod handlerMethod) {
 
 			return this.exceptionResolver.resolveException(ex, env, handlerMethod.getBean())
-					.map(errors -> DataFetcherResult.newResult().errors(errors).build())
-					.switchIfEmpty(Mono.error(ex));
+		.map(errors -> DataFetcherResult.newResult().errors(errors).build())
+		.switchIfEmpty(Mono.error(ex));
 		}
 
 		@SuppressWarnings("unchecked")
 		private <T> Publisher<T> handleSubscriptionError(
-				Throwable ex, DataFetchingEnvironment env, DataFetcherHandlerMethod handlerMethod) {
+	Throwable ex, DataFetchingEnvironment env, DataFetcherHandlerMethod handlerMethod) {
 
 			return (Publisher<T>) this.exceptionResolver.resolveException(ex, env, handlerMethod.getBean())
-					.flatMap(errors -> Mono.error(new SubscriptionPublisherException(errors, ex)))
-					.switchIfEmpty(Mono.error(ex));
+		.flatMap(errors -> Mono.error(new SubscriptionPublisherException(errors, ex)))
+		.switchIfEmpty(Mono.error(ex));
 		}
 
 		@Override

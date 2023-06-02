@@ -61,13 +61,12 @@ public class SchemaMappingPrincipalMethodArgumentResolverTests {
 	private final Authentication authentication = new TestingAuthenticationToken(new Object(), new Object());
 
 	private final Function<Context, Context> reactiveContextWriter = context ->
-			ReactiveSecurityContextHolder.withAuthentication(this.authentication);
+ReactiveSecurityContextHolder.withAuthentication(this.authentication);
 
 	private final Function<Context, Context> threadLocalContextWriter = context ->
-			ContextSnapshot.captureAll().updateContext(context);
+ContextSnapshot.captureAll().updateContext(context);
 
 	private final GreetingController greetingController = new GreetingController();
-
 
 
 	@Test
@@ -102,7 +101,7 @@ public class SchemaMappingPrincipalMethodArgumentResolverTests {
 
 		private void testQuery(String field, Function<Context, Context> contextWriter) {
 			Mono<ExecutionGraphQlResponse> responseMono = executeAsync(
-					"type Query { " + field + ": String }", "{ " + field + " }", contextWriter);
+		"type Query { " + field + ": String }", "{ " + field + " }", contextWriter);
 
 			String greeting = ResponseHelper.forResponse(responseMono).toEntity(field, String.class);
 			assertThat(greeting).isEqualTo("Hello");
@@ -135,12 +134,12 @@ public class SchemaMappingPrincipalMethodArgumentResolverTests {
 			String field = "greetingSubscription";
 
 			Mono<ExecutionGraphQlResponse> responseMono = executeAsync(
-					"type Query { greeting: String } type Subscription { " + field + ": String }",
-					"subscription Greeting { " + field + " }",
-					contextModifier);
+		"type Query { greeting: String } type Subscription { " + field + ": String }",
+		"subscription Greeting { " + field + " }",
+		contextModifier);
 
 			Flux<String> greetingFlux = ResponseHelper.forSubscription(responseMono)
-					.map(response -> response.toEntity(field, String.class));
+		.map(response -> response.toEntity(field, String.class));
 
 			StepVerifier.create(greetingFlux).expectNext("Hello", "Hi").verifyComplete();
 			assertThat(greetingController.principal()).isSameAs(authentication);
@@ -149,27 +148,27 @@ public class SchemaMappingPrincipalMethodArgumentResolverTests {
 	}
 
 	private Mono<ExecutionGraphQlResponse> executeAsync(
-			String schema, String document, Function<Context, Context> contextWriter) {
+String schema, String document, Function<Context, Context> contextWriter) {
 
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		context.registerBean(GreetingController.class, () -> greetingController);
 		context.refresh();
 
 		TestExecutionGraphQlService graphQlService = GraphQlSetup.schemaContent(schema)
-				.runtimeWiringForAnnotatedControllers(context)
-				.toGraphQlService();
+	.runtimeWiringForAnnotatedControllers(context)
+	.toGraphQlService();
 
 		return Mono.delay(Duration.ofMillis(10))
-				.flatMap(aLong -> graphQlService.execute(document))
-				.contextWrite(contextWriter);
+	.flatMap(aLong -> graphQlService.execute(document))
+	.contextWrite(contextWriter);
 	}
 
 
 	@SuppressWarnings("unused")
 	public void handle(
-			Principal principal,
-			Authentication authentication,
-			String s) {
+Principal principal,
+Authentication authentication,
+String s) {
 	}
 
 

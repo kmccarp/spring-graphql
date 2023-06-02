@@ -47,8 +47,8 @@ public class WebSocketGraphQlRequest extends WebGraphQlRequest {
 	 */
 	@Deprecated
 	public WebSocketGraphQlRequest(
-			URI uri, HttpHeaders headers, Map<String, Object> body, String id, @Nullable Locale locale,
-			WebSocketSessionInfo sessionInfo) {
+URI uri, HttpHeaders headers, Map<String, Object> body, String id, @Nullable Locale locale,
+WebSocketSessionInfo sessionInfo) {
 
 		this(uri, headers, null, Collections.emptyMap(), body, id, locale, sessionInfo);
 	}
@@ -66,9 +66,9 @@ public class WebSocketGraphQlRequest extends WebGraphQlRequest {
 	 * @since 1.1.3
 	 */
 	public WebSocketGraphQlRequest(
-			URI uri, HttpHeaders headers, @Nullable MultiValueMap<String, HttpCookie> cookies,
-			Map<String, Object> attributes, Map<String, Object> body, String id, @Nullable Locale locale,
-			WebSocketSessionInfo sessionInfo) {
+URI uri, HttpHeaders headers, @Nullable MultiValueMap<String, HttpCookie> cookies,
+Map<String, Object> attributes, Map<String, Object> body, String id, @Nullable Locale locale,
+WebSocketSessionInfo sessionInfo) {
 
 		super(uri, headers, cookies, attributes, body, id, locale);
 		Assert.notNull(sessionInfo, "WebSocketSessionInfo is required");

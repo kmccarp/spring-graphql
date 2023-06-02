@@ -43,7 +43,7 @@ import org.springframework.graphql.support.DefaultExecutionGraphQlResponse;
 public class DefaultExecutionGraphQlService implements ExecutionGraphQlService {
 
 	private static final BiFunction<ExecutionInput, ExecutionInput.Builder, ExecutionInput> RESET_EXECUTION_ID_CONFIGURER =
-			(executionInput, builder) -> builder.executionId(null).build();
+(executionInput, builder) -> builder.executionId(null).build();
 
 
 	private final GraphQlSource graphQlSource;
@@ -56,7 +56,7 @@ public class DefaultExecutionGraphQlService implements ExecutionGraphQlService {
 	public DefaultExecutionGraphQlService(GraphQlSource graphQlSource) {
 		this.graphQlSource = graphQlSource;
 		this.isDefaultExecutionIdProvider =
-				(graphQlSource.graphQl().getIdProvider() == ExecutionIdProvider.DEFAULT_EXECUTION_ID_PROVIDER);
+	(graphQlSource.graphQl().getIdProvider() == ExecutionIdProvider.DEFAULT_EXECUTION_ID_PROVIDER);
 	}
 
 
@@ -80,7 +80,7 @@ public class DefaultExecutionGraphQlService implements ExecutionGraphQlService {
 			ContextSnapshot.captureFrom(contextView).updateContext(executionInput.getGraphQLContext());
 			ExecutionInput updatedExecutionInput = registerDataLoaders(executionInput);
 			return Mono.fromFuture(this.graphQlSource.graphQl().executeAsync(updatedExecutionInput))
-					.map(result -> new DefaultExecutionGraphQlResponse(updatedExecutionInput, result));
+		.map(result -> new DefaultExecutionGraphQlResponse(updatedExecutionInput, result));
 		});
 	}
 

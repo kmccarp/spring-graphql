@@ -36,9 +36,7 @@ import org.springframework.web.reactive.socket.client.WebSocketClient;
  * @author Rossen Stoyanchev
  * @since 1.0.0
  */
-final class DefaultWebSocketGraphQlTesterBuilder
-		extends AbstractGraphQlTesterBuilder<DefaultWebSocketGraphQlTesterBuilder>
-		implements WebSocketGraphQlTester.Builder<DefaultWebSocketGraphQlTesterBuilder> {
+final class DefaultWebSocketGraphQlTesterBuilderextends AbstractGraphQlTesterBuilder<DefaultWebSocketGraphQlTesterBuilder>implements WebSocketGraphQlTester.Builder<DefaultWebSocketGraphQlTesterBuilder> {
 
 	private final WebSocketGraphQlClient.Builder<?> graphQlClientBuilder;
 
@@ -127,8 +125,8 @@ final class DefaultWebSocketGraphQlTesterBuilder
 		private final Consumer<AbstractGraphQlTesterBuilder<?>> builderInitializer;
 
 		private DefaultWebSocketGraphQlTester(
-				GraphQlTester graphQlTester, WebSocketGraphQlClient client,
-				Consumer<AbstractGraphQlTesterBuilder<?>> builderInitializer) {
+	GraphQlTester graphQlTester, WebSocketGraphQlClient client,
+	Consumer<AbstractGraphQlTesterBuilder<?>> builderInitializer) {
 
 			super(graphQlTester);
 			this.client = client;

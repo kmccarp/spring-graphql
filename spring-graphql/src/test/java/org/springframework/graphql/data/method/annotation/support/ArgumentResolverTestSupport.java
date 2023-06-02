@@ -39,7 +39,8 @@ import org.springframework.util.ClassUtils;
  */
 class ArgumentResolverTestSupport {
 
-	private static final TypeReference<Map<String, Object>> MAP_TYPE_REFERENCE = new TypeReference<>() {};
+	private static final TypeReference<Map<String, Object>> MAP_TYPE_REFERENCE = new TypeReference<>() {
+	};
 
 
 	private final ObjectMapper mapper = new ObjectMapper();

@@ -81,7 +81,7 @@ class SchemaMappingBeanFactoryInitializationAotProcessorTests {
 	@Test
 	void processorIsRegisteredInAotFactories() {
 		assertThat(AotServices.factories(getClass().getClassLoader()).load(BeanFactoryInitializationAotProcessor.class))
-				.anyMatch(SchemaMappingBeanFactoryInitializationAotProcessor.class::isInstance);
+	.anyMatch(SchemaMappingBeanFactoryInitializationAotProcessor.class::isInstance);
 	}
 
 	@Nested
@@ -361,8 +361,8 @@ class SchemaMappingBeanFactoryInitializationAotProcessorTests {
 			processBeanClasses();
 			TypeReference targetWrapper = TypeReference.of("org.springframework.data.projection.SpelEvaluatingMethodInterceptor$TargetWrapper");
 			assertThat(RuntimeHintsPredicates.reflection().onType(targetWrapper)
-					.withMemberCategories(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS,
-							MemberCategory.INVOKE_PUBLIC_METHODS)).accepts(generationContext.getRuntimeHints());
+		.withMemberCategories(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS, MemberCategory.INVOKE_DECLARED_METHODS,
+	MemberCategory.INVOKE_PUBLIC_METHODS)).accepts(generationContext.getRuntimeHints());
 		}
 
 		@Test
@@ -371,7 +371,7 @@ class SchemaMappingBeanFactoryInitializationAotProcessorTests {
 			assertThatIntrospectionOnMethodsHintRegisteredForType(ProjectionController.class);
 			assertThatInvocationHintRegisteredForMethods(ProjectionController.class, "projection");
 			assertThat(RuntimeHintsPredicates.proxies().forInterfaces(BookProjection.class, TargetAware.class,
-					SpringProxy.class, DecoratingProxy.class)).accepts(generationContext.getRuntimeHints());
+		SpringProxy.class, DecoratingProxy.class)).accepts(generationContext.getRuntimeHints());
 		}
 
 
@@ -381,7 +381,7 @@ class SchemaMappingBeanFactoryInitializationAotProcessorTests {
 			assertThatIntrospectionOnMethodsHintRegisteredForType(OptionalProjectionController.class);
 			assertThatInvocationHintRegisteredForMethods(OptionalProjectionController.class, "optionalProjection");
 			assertThat(RuntimeHintsPredicates.proxies().forInterfaces(BookProjection.class, TargetAware.class,
-					SpringProxy.class, DecoratingProxy.class)).accepts(generationContext.getRuntimeHints());
+		SpringProxy.class, DecoratingProxy.class)).accepts(generationContext.getRuntimeHints());
 		}
 
 
@@ -457,37 +457,37 @@ class SchemaMappingBeanFactoryInitializationAotProcessorTests {
 
 	private void assertThatIntrospectionOnMethodsHintRegisteredForType(Class<?> type) {
 		Predicate<RuntimeHints> predicate = RuntimeHintsPredicates.reflection()
-				.onType(type).withAnyMemberCategory(MemberCategory.INTROSPECT_DECLARED_METHODS);
+	.onType(type).withAnyMemberCategory(MemberCategory.INTROSPECT_DECLARED_METHODS);
 		assertThat(predicate).accepts(this.generationContext.getRuntimeHints());
 	}
 
 	private void assertThatInvocationHintRegisteredForMethods(Class<?> type, String... methodNames) {
 		Predicate<RuntimeHints> predicate = Arrays.stream(methodNames)
-				.map(methodName -> (Predicate<RuntimeHints>) RuntimeHintsPredicates.reflection().onMethod(type, methodName))
-				.reduce(Predicate::and)
-				.orElseThrow(() -> new IllegalArgumentException("Could not generate predicate on type " + type + " for methods " + Arrays.toString(methodNames)));
+	.map(methodName -> (Predicate<RuntimeHints>) RuntimeHintsPredicates.reflection().onMethod(type, methodName))
+	.reduce(Predicate::and)
+	.orElseThrow(() -> new IllegalArgumentException("Could not generate predicate on type " + type + " for methods " + Arrays.toString(methodNames)));
 		assertThat(predicate).accepts(this.generationContext.getRuntimeHints());
 	}
 
 	private void assertThatHintsForJavaBeanBindingRegisteredForTypes(Class<?>... types) {
 		Predicate<RuntimeHints> predicate = Arrays.stream(types)
-				.map(this::javaBeanBindingOnType)
-				.reduce(Predicate::and)
-				.orElseThrow(() -> new IllegalArgumentException("Could not generate predicate for types " + types));
+	.map(this::javaBeanBindingOnType)
+	.reduce(Predicate::and)
+	.orElseThrow(() -> new IllegalArgumentException("Could not generate predicate for types " + types));
 		assertThat(predicate).accepts(this.generationContext.getRuntimeHints());
 	}
 
 	private void assertThatHintsAreNotRegisteredForTypes(Class<?>... types) {
 		Predicate<RuntimeHints> predicate = Arrays.stream(types)
-				.map(type -> (Predicate<RuntimeHints>) RuntimeHintsPredicates.reflection().onType(type))
-				.reduce(Predicate::and)
-				.orElseThrow(() -> new IllegalArgumentException("Could not generate predicate for types " + types));
+	.map(type -> (Predicate<RuntimeHints>) RuntimeHintsPredicates.reflection().onType(type))
+	.reduce(Predicate::and)
+	.orElseThrow(() -> new IllegalArgumentException("Could not generate predicate for types " + types));
 		assertThat(predicate).rejects(this.generationContext.getRuntimeHints());
 	}
 
 	private Predicate<RuntimeHints> javaBeanBindingOnType(Class<?> type) {
 		Predicate<RuntimeHints> predicate = RuntimeHintsPredicates.reflection().onType(type)
-				.withMemberCategories(MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
+	.withMemberCategories(MemberCategory.DECLARED_FIELDS, MemberCategory.INVOKE_DECLARED_CONSTRUCTORS);
 		try {
 			BeanInfo beanInfo = Introspector.getBeanInfo(type);
 			PropertyDescriptor[] propertyDescriptors = beanInfo.getPropertyDescriptors();

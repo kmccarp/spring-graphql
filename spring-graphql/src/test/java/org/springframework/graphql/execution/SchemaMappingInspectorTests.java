@@ -464,8 +464,8 @@ class SchemaMappingInspectorTests {
 
 			GraphQLSchema schema = SchemaGenerator.createdMockedSchema(schemaContent);
 			RuntimeWiring wiring = RuntimeWiring.newRuntimeWiring()
-					.type("Query", builder -> builder.dataFetcher("bookById", environment -> null))
-					.build();
+		.type("Query", builder -> builder.dataFetcher("bookById", environment -> null))
+		.build();
 
 			SchemaReport report = SchemaMappingInspector.inspect(schema, wiring);
 			assertThatReport(report).hasUnmappedFieldCount(0).hasSkippedTypeCount(1).containsSkippedTypes("Book");
@@ -497,8 +497,8 @@ class SchemaMappingInspectorTests {
 
 			GraphQLSchema schema = SchemaGenerator.createdMockedSchema(schemaContent);
 			RuntimeWiring wiring = RuntimeWiring.newRuntimeWiring()
-					.type("Query", builder -> builder.dataFetcher("greeting", environment -> null))
-					.build();
+		.type("Query", builder -> builder.dataFetcher("greeting", environment -> null))
+		.build();
 
 			SchemaReport report = SchemaMappingInspector.inspect(schema, wiring);
 			assertThatReport(report).hasUnmappedFieldCount(0).hasSkippedTypeCount(0);
@@ -512,7 +512,7 @@ class SchemaMappingInspectorTests {
 
 		@Test
 		void reportUnmappedField() {
-			 String schema = """
+			String schema = """
 						type Query {
 							allBooks: [Book]
 						}
@@ -532,14 +532,14 @@ class SchemaMappingInspectorTests {
 							id: ID
 						}
 					""";
-			 SchemaReport report = inspectSchema(schema, BookController.class);
+			SchemaReport report = inspectSchema(schema, BookController.class);
 			assertThatReport(report).hasUnmappedFieldCount(1).hasSkippedTypeCount(0);
-			 assertThat(report.toString()).isEqualTo("""
+			assertThat(report.toString()).isEqualTo("""
 					GraphQL schema inspection:
 						Unmapped fields: {Book=[missing]}
 						Unmapped registrations: {Book.fetcher=BookController#fetcher[1 args], Query.paginatedBooks=BookController#paginatedBooks[0 args], Query.bookObject=BookController#bookObject[1 args], Query.bookById=BookController#bookById[1 args]}
 						Skipped types: []""");
-		 }
+		}
 
 	}
 
@@ -688,7 +688,7 @@ class SchemaMappingInspectorTests {
 
 
 	private static class SchemaInspectionReportAssert
-			extends AbstractAssert<SchemaInspectionReportAssert, SchemaReport> {
+extends AbstractAssert<SchemaInspectionReportAssert, SchemaReport> {
 
 		public SchemaInspectionReportAssert(SchemaReport actual) {
 			super(actual, SchemaInspectionReportAssert.class);
@@ -735,9 +735,9 @@ class SchemaMappingInspectorTests {
 			isNotNull();
 			List<String> expected = Arrays.asList(fieldNames);
 			List<String> actual = this.actual.unmappedFields().stream()
-					.filter(coordinates -> coordinates.getTypeName().equals(typeName))
-					.map(FieldCoordinates::getFieldName)
-					.toList();
+		.filter(coordinates -> coordinates.getTypeName().equals(typeName))
+		.map(FieldCoordinates::getFieldName)
+		.toList();
 			if (!actual.containsAll(expected)) {
 				failWithMessage("Expected unmapped fields for %s: %s, found %s", typeName, expected, actual);
 			}
@@ -747,8 +747,8 @@ class SchemaMappingInspectorTests {
 		public SchemaInspectionReportAssert containsUnmappedDataFetchersFor(String typeName, String... fieldNames) {
 			isNotNull();
 			List<FieldCoordinates> expected = Arrays.stream(fieldNames)
-					.map(field -> FieldCoordinates.coordinates(typeName, field))
-					.toList();
+		.map(field -> FieldCoordinates.coordinates(typeName, field))
+		.toList();
 			if (!this.actual.unmappedRegistrations().keySet().containsAll(expected)) {
 				failWithMessage("Expected unmapped DataFetchers for %s, found %s", expected, this.actual.unmappedRegistrations());
 			}
@@ -759,8 +759,8 @@ class SchemaMappingInspectorTests {
 			isNotNull();
 			List<String> expected = Arrays.asList(fieldCoordinates);
 			List<String> actual = this.actual.skippedTypes().stream()
-					.map(skippedType -> ((GraphQLNamedType) skippedType.type()).getName())
-					.toList();
+		.map(skippedType -> ((GraphQLNamedType) skippedType.type()).getName())
+		.toList();
 			if (!actual.containsAll(expected)) {
 				failWithMessage("Expected skipped types: %s, found %s", expected, actual);
 			}

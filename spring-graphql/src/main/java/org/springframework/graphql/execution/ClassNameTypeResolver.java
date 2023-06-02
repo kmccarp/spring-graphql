@@ -90,8 +90,8 @@ public class ClassNameTypeResolver implements TypeResolver {
 			GraphQLObjectType objectType = schema.getObjectType(name);
 			if (objectType == null) {
 				throw new IllegalStateException(
-						"Invalid mapping for " + clazz.getName() + ". " +
-								"No GraphQL Object type with name '" + name + "'.");
+			"Invalid mapping for " + clazz.getName() + ". " +
+		"No GraphQL Object type with name '" + name + "'.");
 			}
 			return objectType;
 		}

@@ -75,7 +75,7 @@ public class ProjectedPayloadMethodArgumentResolver implements HandlerMethodArgu
 		Assert.notNull(applicationContext, "ApplicationContext must not be null");
 		this.projectionFactory.setBeanFactory(applicationContext);
 		ClassLoader classLoader = applicationContext.getClassLoader();
-		if(classLoader != null) {
+		if (classLoader != null) {
 			this.projectionFactory.setBeanClassLoader(classLoader);
 		}
 	}
@@ -99,14 +99,14 @@ public class ProjectedPayloadMethodArgumentResolver implements HandlerMethodArgu
 	private static Class<?> getTargetType(MethodParameter parameter) {
 		Class<?> type = parameter.getParameterType();
 		return (type.equals(Optional.class) || type.equals(ArgumentValue.class) ?
-				parameter.nested().getNestedParameterType() : parameter.getParameterType());
+	parameter.nested().getNestedParameterType() : parameter.getParameterType());
 	}
 
 	@Override
 	public Object resolveArgument(MethodParameter parameter, DataFetchingEnvironment environment) throws Exception {
 
 		String name = (parameter.hasParameterAnnotation(Argument.class) ?
-				ArgumentMethodArgumentResolver.getArgumentName(parameter) : null);
+	ArgumentMethodArgumentResolver.getArgumentName(parameter) : null);
 
 		Class<?> targetType = parameter.getParameterType();
 		boolean isOptional = (targetType == Optional.class);
@@ -125,7 +125,7 @@ public class ProjectedPayloadMethodArgumentResolver implements HandlerMethodArgu
 		}
 		else if (isArgumentValue) {
 			return (name != null && arguments.containsKey(name) ?
-					ArgumentValue.ofNullable(value) : ArgumentValue.omitted());
+		ArgumentValue.ofNullable(value) : ArgumentValue.omitted());
 		}
 		else {
 			return value;
@@ -140,7 +140,7 @@ public class ProjectedPayloadMethodArgumentResolver implements HandlerMethodArgu
 	 * or the map of arguments
 	 * @return the created project instance
 	 */
-	protected Object createProjection(Class<?> targetType, Object rawValue){
+	protected Object createProjection(Class<?> targetType, Object rawValue) {
 		return this.projectionFactory.createProjection(targetType, rawValue);
 	}
 

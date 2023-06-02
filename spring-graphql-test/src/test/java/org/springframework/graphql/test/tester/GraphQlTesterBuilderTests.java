@@ -60,15 +60,15 @@ public class GraphQlTesterBuilderTests extends GraphQlTesterTestSupport {
 	void mutateDocumentSource() {
 
 		DocumentSource documentSource = name -> name.equals("name") ?
-				Mono.just(DOCUMENT) : Mono.error(new IllegalArgumentException());
+	Mono.just(DOCUMENT) : Mono.error(new IllegalArgumentException());
 
 		getGraphQlService().setDataAsJson(DOCUMENT, "{}");
 
 		// Original
 		ExecutionGraphQlServiceTester tester = graphQlTesterBuilder()
-				.documentSource(documentSource)
-				.configureExecutionInput((executionInput, builder) -> builder.operationName("A").build())
-				.build();
+	.documentSource(documentSource)
+	.configureExecutionInput((executionInput, builder) -> builder.operationName("A").build())
+	.build();
 		tester.documentName("name").execute();
 
 		ExecutionGraphQlRequest request = getGraphQlService().getGraphQlRequest();
@@ -78,8 +78,8 @@ public class GraphQlTesterBuilderTests extends GraphQlTesterTestSupport {
 		// Mutate
 		ExecutionId id = ExecutionId.from("123");
 		tester = tester.mutate()
-				.configureExecutionInput((executionInput, builder) -> builder.executionId(id).build())
-				.build();
+	.configureExecutionInput((executionInput, builder) -> builder.executionId(id).build())
+	.build();
 		tester.documentName("name").execute();
 
 		request = getGraphQlService().getGraphQlRequest();
@@ -94,15 +94,15 @@ public class GraphQlTesterBuilderTests extends GraphQlTesterTestSupport {
 		TestJackson2JsonDecoder testDecoder = new TestJackson2JsonDecoder();
 
 		ExecutionGraphQlServiceTester.Builder<?> builder = graphQlTesterBuilder()
-				.encoder(new Jackson2JsonEncoder())
-				.decoder(testDecoder);
+	.encoder(new Jackson2JsonEncoder())
+	.decoder(testDecoder);
 
 		String document = "{me {name}}";
 		MovieCharacter character = MovieCharacter.create("Luke Skywalker");
 		getGraphQlService().setResponse(document,
-				ExecutionResultImpl.newExecutionResult()
-						.data(Collections.singletonMap("me", character))
-						.build());
+	ExecutionResultImpl.newExecutionResult()
+.data(Collections.singletonMap("me", character))
+.build());
 
 		GraphQlTester client = builder.build();
 		GraphQlTester.Response response = client.document(document).execute();
@@ -122,17 +122,17 @@ public class GraphQlTesterBuilderTests extends GraphQlTesterTestSupport {
 		String document = "{me {name, friends}}";
 
 		getGraphQlService().setErrors(
-				document,
-				GraphqlErrorBuilder.newError().message("some error").build(),
-				GraphqlErrorBuilder.newError().message("some other error").build());
+	document,
+	GraphqlErrorBuilder.newError().message("some error").build(),
+	GraphqlErrorBuilder.newError().message("some other error").build());
 
 		graphQlTesterBuilder()
-				.errorFilter((error) -> error.getMessage().startsWith("some "))
-				.build()
-				.document(document)
-				.execute()
-				.errors().verify()
-				.path("me").pathDoesNotExist();
+	.errorFilter((error) -> error.getMessage().startsWith("some "))
+	.build()
+	.document(document)
+	.execute()
+	.errors().verify()
+	.path("me").pathDoesNotExist();
 
 		assertThat(getActualRequestDocument()).contains(document);
 	}
@@ -150,7 +150,7 @@ public class GraphQlTesterBuilderTests extends GraphQlTesterTestSupport {
 
 		@Override
 		public Object decode(DataBuffer dataBuffer, ResolvableType targetType,
-				@Nullable MimeType mimeType, @Nullable Map<String, Object> hints) throws DecodingException {
+	@Nullable MimeType mimeType, @Nullable Map<String, Object> hints) throws DecodingException {
 
 			this.lastValue = super.decode(dataBuffer, targetType, mimeType, hints);
 			return this.lastValue;

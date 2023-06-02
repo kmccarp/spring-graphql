@@ -109,7 +109,7 @@ public abstract class QuerydslDataFetcher<T> {
 	private final static Log logger = LogFactory.getLog(QueryByExampleDataFetcher.class);
 
 	private static final QuerydslPredicateBuilder BUILDER = new QuerydslPredicateBuilder(
-			DefaultConversionService.getSharedInstance(), SimpleEntityPathResolver.INSTANCE);
+DefaultConversionService.getSharedInstance(), SimpleEntityPathResolver.INSTANCE);
 
 	@SuppressWarnings("rawtypes")
 	private static final QuerydslBinderCustomizer NO_OP_BINDER_CUSTOMIZER = (bindings, root) -> {
@@ -125,8 +125,8 @@ public abstract class QuerydslDataFetcher<T> {
 
 
 	QuerydslDataFetcher(
-			TypeInformation<T> domainType, QuerydslBinderCustomizer<EntityPath<?>> customizer,
-			@Nullable CursorStrategy<ScrollPosition> cursorStrategy) {
+TypeInformation<T> domainType, QuerydslBinderCustomizer<EntityPath<?>> customizer,
+@Nullable CursorStrategy<ScrollPosition> cursorStrategy) {
 
 		this.domainType = domainType;
 		this.customizer = customizer;
@@ -191,8 +191,8 @@ public abstract class QuerydslDataFetcher<T> {
 
 		// Compute selection only for non-projections
 		if (this.domainType.getType().equals(resultType) ||
-			this.domainType.getType().isAssignableFrom(resultType) ||
-			this.domainType.isSubTypeOf(resultType)) {
+	this.domainType.getType().isAssignableFrom(resultType) ||
+	this.domainType.isSubTypeOf(resultType)) {
 			return PropertySelection.create(this.domainType, selection).toList();
 		}
 		return Collections.emptyList();
@@ -238,8 +238,8 @@ public abstract class QuerydslDataFetcher<T> {
 	 * {@link ReactiveBuilder}.
 	 */
 	public static RuntimeWiringConfigurer autoRegistrationConfigurer(
-			List<QuerydslPredicateExecutor<?>> executors,
-			List<ReactiveQuerydslPredicateExecutor<?>> reactiveExecutors) {
+List<QuerydslPredicateExecutor<?>> executors,
+List<ReactiveQuerydslPredicateExecutor<?>> reactiveExecutors) {
 
 		return autoRegistrationConfigurer(executors, reactiveExecutors, null, null);
 	}
@@ -267,10 +267,10 @@ public abstract class QuerydslDataFetcher<T> {
 	 */
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public static RuntimeWiringConfigurer autoRegistrationConfigurer(
-			List<QuerydslPredicateExecutor<?>> executors,
-			List<ReactiveQuerydslPredicateExecutor<?>> reactiveExecutors,
-			@Nullable CursorStrategy<ScrollPosition> cursorStrategy,
-			@Nullable ScrollSubrange defaultScrollSubrange) {
+List<QuerydslPredicateExecutor<?>> executors,
+List<ReactiveQuerydslPredicateExecutor<?>> reactiveExecutors,
+@Nullable CursorStrategy<ScrollPosition> cursorStrategy,
+@Nullable ScrollSubrange defaultScrollSubrange) {
 
 		Map<String, DataFetcherFactory> factories = new HashMap<>();
 
@@ -278,10 +278,10 @@ public abstract class QuerydslDataFetcher<T> {
 			String typeName = RepositoryUtils.getGraphQlTypeName(executor);
 			if (typeName != null) {
 				Builder builder = customize(executor,
-						QuerydslDataFetcher.builder(executor)
-								.cursorStrategy(cursorStrategy)
-								.defaultScrollSubrange(defaultScrollSubrange)
-								.customizer(customizer(executor)));
+			QuerydslDataFetcher.builder(executor)
+		.cursorStrategy(cursorStrategy)
+		.defaultScrollSubrange(defaultScrollSubrange)
+		.customizer(customizer(executor)));
 
 				factories.put(typeName, new DataFetcherFactory() {
 					@Override
@@ -306,10 +306,10 @@ public abstract class QuerydslDataFetcher<T> {
 			String typeName = RepositoryUtils.getGraphQlTypeName(executor);
 			if (typeName != null) {
 				ReactiveBuilder builder = customize(executor,
-						QuerydslDataFetcher.builder(executor)
-								.cursorStrategy(cursorStrategy)
-								.defaultScrollSubrange(defaultScrollSubrange)
-								.customizer(customizer(executor)));
+			QuerydslDataFetcher.builder(executor)
+		.cursorStrategy(cursorStrategy)
+		.defaultScrollSubrange(defaultScrollSubrange)
+		.customizer(customizer(executor)));
 
 				factories.put(typeName, new DataFetcherFactory() {
 					@Override
@@ -357,8 +357,8 @@ public abstract class QuerydslDataFetcher<T> {
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Deprecated
 	public static GraphQLTypeVisitor autoRegistrationTypeVisitor(
-			List<QuerydslPredicateExecutor<?>> executors,
-			List<ReactiveQuerydslPredicateExecutor<?>> reactiveExecutors) {
+List<QuerydslPredicateExecutor<?>> executors,
+List<ReactiveQuerydslPredicateExecutor<?>> reactiveExecutors) {
 
 		Map<String, Function<Boolean, DataFetcher<?>>> factories = new HashMap<>();
 
@@ -383,7 +383,7 @@ public abstract class QuerydslDataFetcher<T> {
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	private static Builder customize(QuerydslPredicateExecutor<?> executor, Builder builder) {
-		if(executor instanceof QuerydslBuilderCustomizer<?> customizer){
+		if (executor instanceof QuerydslBuilderCustomizer<?> customizer) {
 			return customizer.customize(builder);
 		}
 		return builder;
@@ -391,7 +391,7 @@ public abstract class QuerydslDataFetcher<T> {
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	private static ReactiveBuilder customize(ReactiveQuerydslPredicateExecutor<?> executor, ReactiveBuilder builder) {
-		if(executor instanceof ReactiveQuerydslBuilderCustomizer<?> customizer){
+		if (executor instanceof ReactiveQuerydslBuilderCustomizer<?> customizer) {
 			return customizer.customize(builder);
 		}
 		return builder;
@@ -400,8 +400,8 @@ public abstract class QuerydslDataFetcher<T> {
 	@SuppressWarnings("rawtypes")
 	private static QuerydslBinderCustomizer customizer(Object executor) {
 		return (executor instanceof QuerydslBinderCustomizer<?> ?
-				(QuerydslBinderCustomizer<? extends EntityPath<?>>) executor :
-				NO_OP_BINDER_CUSTOMIZER);
+	(QuerydslBinderCustomizer<? extends EntityPath<?>>) executor :
+	NO_OP_BINDER_CUSTOMIZER);
 	}
 
 
@@ -433,12 +433,12 @@ public abstract class QuerydslDataFetcher<T> {
 		@SuppressWarnings("unchecked")
 		Builder(QuerydslPredicateExecutor<T> executor, Class<R> domainType) {
 			this(executor, TypeInformation.of((Class<T>) domainType),
-					domainType, null, null, Sort.unsorted(), NO_OP_BINDER_CUSTOMIZER);
+		domainType, null, null, Sort.unsorted(), NO_OP_BINDER_CUSTOMIZER);
 		}
 
 		Builder(QuerydslPredicateExecutor<T> executor, TypeInformation<T> domainType, Class<R> resultType,
-				@Nullable CursorStrategy<ScrollPosition> cursorStrategy, @Nullable ScrollSubrange defaultSubrange,
-				Sort sort, QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
+	@Nullable CursorStrategy<ScrollPosition> cursorStrategy, @Nullable ScrollSubrange defaultSubrange,
+	Sort sort, QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
 
 			this.executor = executor;
 			this.domainType = domainType;
@@ -461,7 +461,7 @@ public abstract class QuerydslDataFetcher<T> {
 		public <P> Builder<T, P> projectAs(Class<P> projectionType) {
 			Assert.notNull(projectionType, "Projection type must not be null");
 			return new Builder<>(this.executor, this.domainType, projectionType,
-					this.cursorStrategy, this.defaultSubrange, this.sort, this.customizer);
+		this.cursorStrategy, this.defaultSubrange, this.sort, this.customizer);
 		}
 
 		/**
@@ -475,7 +475,7 @@ public abstract class QuerydslDataFetcher<T> {
 		 */
 		public Builder<T, R> cursorStrategy(@Nullable CursorStrategy<ScrollPosition> cursorStrategy) {
 			return new Builder<>(this.executor, this.domainType, this.resultType,
-					cursorStrategy, this.defaultSubrange, this.sort, this.customizer);
+		cursorStrategy, this.defaultSubrange, this.sort, this.customizer);
 		}
 
 		/**
@@ -489,7 +489,7 @@ public abstract class QuerydslDataFetcher<T> {
 		 */
 		public Builder<T, R> defaultScrollSubrange(@Nullable ScrollSubrange defaultSubrange) {
 			return new Builder<>(this.executor, this.domainType, this.resultType,
-					this.cursorStrategy, defaultSubrange, this.sort, this.customizer);
+		this.cursorStrategy, defaultSubrange, this.sort, this.customizer);
 		}
 
 		/**
@@ -501,7 +501,7 @@ public abstract class QuerydslDataFetcher<T> {
 		public Builder<T, R> sortBy(Sort sort) {
 			Assert.notNull(sort, "Sort must not be null");
 			return new Builder<>(this.executor, this.domainType, this.resultType,
-					this.cursorStrategy, this.defaultSubrange, sort, customizer);
+		this.cursorStrategy, this.defaultSubrange, sort, customizer);
 		}
 
 		/**
@@ -520,7 +520,7 @@ public abstract class QuerydslDataFetcher<T> {
 		public Builder<T, R> customizer(QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
 			Assert.notNull(customizer, "QuerydslBinderCustomizer must not be null");
 			return new Builder<>(this.executor, this.domainType, this.resultType,
-					this.cursorStrategy, this.defaultSubrange, this.sort, customizer);
+		this.cursorStrategy, this.defaultSubrange, this.sort, customizer);
 		}
 
 		/**
@@ -528,7 +528,7 @@ public abstract class QuerydslDataFetcher<T> {
 		 */
 		public DataFetcher<R> single() {
 			return new SingleEntityFetcher<>(
-					this.executor, this.domainType, this.resultType, this.sort, this.customizer);
+		this.executor, this.domainType, this.resultType, this.sort, this.customizer);
 		}
 
 		/**
@@ -536,7 +536,7 @@ public abstract class QuerydslDataFetcher<T> {
 		 */
 		public DataFetcher<Iterable<R>> many() {
 			return new ManyEntityFetcher<>(
-					this.executor, this.domainType, this.resultType, null, this.sort, this.customizer);
+		this.executor, this.domainType, this.resultType, null, this.sort, this.customizer);
 		}
 
 		/**
@@ -546,10 +546,10 @@ public abstract class QuerydslDataFetcher<T> {
 		 */
 		public DataFetcher<Iterable<R>> scrollable() {
 			return new ScrollableEntityFetcher<>(
-					this.executor, this.domainType, this.resultType,
-					(this.cursorStrategy != null ? this.cursorStrategy : RepositoryUtils.defaultCursorStrategy()),
-					(this.defaultSubrange != null ? this.defaultSubrange : RepositoryUtils.defaultScrollSubrange()),
-					this.sort, this.customizer);
+		this.executor, this.domainType, this.resultType,
+		(this.cursorStrategy != null ? this.cursorStrategy : RepositoryUtils.defaultCursorStrategy()),
+		(this.defaultSubrange != null ? this.defaultSubrange : RepositoryUtils.defaultScrollSubrange()),
+		this.sort, this.customizer);
 		}
 
 	}
@@ -604,13 +604,13 @@ public abstract class QuerydslDataFetcher<T> {
 		@SuppressWarnings("unchecked")
 		ReactiveBuilder(ReactiveQuerydslPredicateExecutor<T> executor, Class<R> domainType) {
 			this(executor, TypeInformation.of((Class<T>) domainType),
-					domainType, null, null, Sort.unsorted(), NO_OP_BINDER_CUSTOMIZER);
+		domainType, null, null, Sort.unsorted(), NO_OP_BINDER_CUSTOMIZER);
 		}
 
 		ReactiveBuilder(
-				ReactiveQuerydslPredicateExecutor<T> executor, TypeInformation<T> domainType, Class<R> resultType,
-				@Nullable CursorStrategy<ScrollPosition> cursorStrategy, @Nullable ScrollSubrange defaultSubrange,
-				Sort sort, QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
+	ReactiveQuerydslPredicateExecutor<T> executor, TypeInformation<T> domainType, Class<R> resultType,
+	@Nullable CursorStrategy<ScrollPosition> cursorStrategy, @Nullable ScrollSubrange defaultSubrange,
+	Sort sort, QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
 
 			this.executor = executor;
 			this.domainType = domainType;
@@ -633,7 +633,7 @@ public abstract class QuerydslDataFetcher<T> {
 		public <P> ReactiveBuilder<T, P> projectAs(Class<P> projectionType) {
 			Assert.notNull(projectionType, "Projection type must not be null");
 			return new ReactiveBuilder<>(this.executor, this.domainType, projectionType,
-					this.cursorStrategy, this.defaultSubrange, this.sort, this.customizer);
+		this.cursorStrategy, this.defaultSubrange, this.sort, this.customizer);
 		}
 
 		/**
@@ -647,7 +647,7 @@ public abstract class QuerydslDataFetcher<T> {
 		 */
 		public ReactiveBuilder<T, R> cursorStrategy(@Nullable CursorStrategy<ScrollPosition> cursorStrategy) {
 			return new ReactiveBuilder<>(this.executor, this.domainType, this.resultType,
-					cursorStrategy, this.defaultSubrange, this.sort, this.customizer);
+		cursorStrategy, this.defaultSubrange, this.sort, this.customizer);
 		}
 
 		/**
@@ -661,7 +661,7 @@ public abstract class QuerydslDataFetcher<T> {
 		 */
 		public ReactiveBuilder<T, R> defaultScrollSubrange(@Nullable ScrollSubrange defaultSubrange) {
 			return new ReactiveBuilder<>(this.executor, this.domainType, this.resultType,
-					this.cursorStrategy, defaultSubrange, this.sort, this.customizer);
+		this.cursorStrategy, defaultSubrange, this.sort, this.customizer);
 		}
 
 		/**
@@ -673,7 +673,7 @@ public abstract class QuerydslDataFetcher<T> {
 		public ReactiveBuilder<T, R> sortBy(Sort sort) {
 			Assert.notNull(sort, "Sort must not be null");
 			return new ReactiveBuilder<>(this.executor, this.domainType, this.resultType,
-					this.cursorStrategy, this.defaultSubrange, sort, this.customizer);
+		this.cursorStrategy, this.defaultSubrange, sort, this.customizer);
 		}
 
 		/**
@@ -692,7 +692,7 @@ public abstract class QuerydslDataFetcher<T> {
 		public ReactiveBuilder<T, R> customizer(QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
 			Assert.notNull(customizer, "QuerydslBinderCustomizer must not be null");
 			return new ReactiveBuilder<>(this.executor, this.domainType, this.resultType,
-					this.cursorStrategy, this.defaultSubrange, this.sort, customizer);
+		this.cursorStrategy, this.defaultSubrange, this.sort, customizer);
 		}
 
 		/**
@@ -700,7 +700,7 @@ public abstract class QuerydslDataFetcher<T> {
 		 */
 		public DataFetcher<Mono<R>> single() {
 			return new ReactiveSingleEntityFetcher<>(
-					this.executor, this.domainType, this.resultType, this.sort, this.customizer);
+		this.executor, this.domainType, this.resultType, this.sort, this.customizer);
 		}
 
 		/**
@@ -708,7 +708,7 @@ public abstract class QuerydslDataFetcher<T> {
 		 */
 		public DataFetcher<Flux<R>> many() {
 			return new ReactiveManyEntityFetcher<>(
-					this.executor, this.domainType, this.resultType, this.sort, this.customizer);
+		this.executor, this.domainType, this.resultType, this.sort, this.customizer);
 		}
 
 		/**
@@ -718,10 +718,10 @@ public abstract class QuerydslDataFetcher<T> {
 		 */
 		public DataFetcher<Mono<Iterable<R>>> scrollable() {
 			return new ReactiveScrollableEntityFetcher<>(
-					this.executor, this.domainType, this.resultType,
-					(this.cursorStrategy != null ? this.cursorStrategy : RepositoryUtils.defaultCursorStrategy()),
-					(this.defaultSubrange != null ? this.defaultSubrange : RepositoryUtils.defaultScrollSubrange()),
-					this.sort, this.customizer);
+		this.executor, this.domainType, this.resultType,
+		(this.cursorStrategy != null ? this.cursorStrategy : RepositoryUtils.defaultCursorStrategy()),
+		(this.defaultSubrange != null ? this.defaultSubrange : RepositoryUtils.defaultScrollSubrange()),
+		this.sort, this.customizer);
 		}
 
 	}
@@ -749,7 +749,7 @@ public abstract class QuerydslDataFetcher<T> {
 
 
 	private static class SingleEntityFetcher<T, R>
-			extends QuerydslDataFetcher<T> implements SelfDescribingDataFetcher<R> {
+extends QuerydslDataFetcher<T> implements SelfDescribingDataFetcher<R> {
 
 		private final QuerydslPredicateExecutor<T> executor;
 
@@ -759,10 +759,10 @@ public abstract class QuerydslDataFetcher<T> {
 
 		@SuppressWarnings({"unchecked", "rawtypes"})
 		SingleEntityFetcher(QuerydslPredicateExecutor<T> executor,
-				TypeInformation<T> domainType,
-				Class<R> resultType,
-				Sort sort,
-				QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
+	TypeInformation<T> domainType,
+	Class<R> resultType,
+	Sort sort,
+	QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
 
 			super(domainType, (QuerydslBinderCustomizer) customizer, null);
 			this.executor = executor;
@@ -781,12 +781,12 @@ public abstract class QuerydslDataFetcher<T> {
 			return this.executor.findBy(buildPredicate(env), query -> {
 				FetchableFluentQuery<R> queryToUse = (FetchableFluentQuery<R>) query;
 
-				if (this.sort.isSorted()){
+				if (this.sort.isSorted()) {
 					queryToUse = queryToUse.sortBy(this.sort);
 				}
 
 				Class<R> resultType = this.resultType;
-				if (requiresProjection(resultType)){
+				if (requiresProjection(resultType)) {
 					queryToUse = queryToUse.as(resultType);
 				}
 				else {
@@ -801,7 +801,7 @@ public abstract class QuerydslDataFetcher<T> {
 
 
 	private static class ManyEntityFetcher<T, R>
-			extends QuerydslDataFetcher<T> implements SelfDescribingDataFetcher<Iterable<R>> {
+extends QuerydslDataFetcher<T> implements SelfDescribingDataFetcher<Iterable<R>> {
 
 		private final QuerydslPredicateExecutor<T> executor;
 
@@ -811,11 +811,11 @@ public abstract class QuerydslDataFetcher<T> {
 
 		@SuppressWarnings({"unchecked", "rawtypes"})
 		ManyEntityFetcher(QuerydslPredicateExecutor<T> executor,
-				TypeInformation<T> domainType,
-				Class<R> resultType,
-				@Nullable CursorStrategy<ScrollPosition> cursorStrategy,
-				Sort sort,
-				QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
+	TypeInformation<T> domainType,
+	Class<R> resultType,
+	@Nullable CursorStrategy<ScrollPosition> cursorStrategy,
+	Sort sort,
+	QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
 			super(domainType, (QuerydslBinderCustomizer) customizer, cursorStrategy);
 			this.executor = executor;
 			this.resultType = resultType;
@@ -833,11 +833,11 @@ public abstract class QuerydslDataFetcher<T> {
 			return this.executor.findBy(buildPredicate(env), query -> {
 				FetchableFluentQuery<R> queryToUse = (FetchableFluentQuery<R>) query;
 
-				if (this.sort.isSorted()){
+				if (this.sort.isSorted()) {
 					queryToUse = queryToUse.sortBy(this.sort);
 				}
 
-				if (requiresProjection(this.resultType)){
+				if (requiresProjection(this.resultType)) {
 					queryToUse = queryToUse.as(this.resultType);
 				}
 				else {
@@ -860,12 +860,12 @@ public abstract class QuerydslDataFetcher<T> {
 		private final ScrollSubrange defaultSubrange;
 
 		ScrollableEntityFetcher(QuerydslPredicateExecutor<T> executor,
-				TypeInformation<T> domainType,
-				Class<R> resultType,
-				CursorStrategy<ScrollPosition> cursorStrategy,
-				ScrollSubrange defaultSubrange,
-				Sort sort,
-				QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
+	TypeInformation<T> domainType,
+	Class<R> resultType,
+	CursorStrategy<ScrollPosition> cursorStrategy,
+	ScrollSubrange defaultSubrange,
+	Sort sort,
+	QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
 
 			super(executor, domainType, resultType, cursorStrategy, sort, customizer);
 
@@ -890,7 +890,7 @@ public abstract class QuerydslDataFetcher<T> {
 
 
 	private static class ReactiveSingleEntityFetcher<T, R>
-			extends QuerydslDataFetcher<T> implements SelfDescribingDataFetcher<Mono<R>> {
+extends QuerydslDataFetcher<T> implements SelfDescribingDataFetcher<Mono<R>> {
 
 		private final ReactiveQuerydslPredicateExecutor<T> executor;
 
@@ -900,10 +900,10 @@ public abstract class QuerydslDataFetcher<T> {
 
 		@SuppressWarnings({"unchecked", "rawtypes"})
 		ReactiveSingleEntityFetcher(ReactiveQuerydslPredicateExecutor<T> executor,
-				TypeInformation<T> domainType,
-				Class<R> resultType,
-				Sort sort,
-				QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
+	TypeInformation<T> domainType,
+	Class<R> resultType,
+	Sort sort,
+	QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
 
 			super(domainType, (QuerydslBinderCustomizer) customizer, null);
 			this.executor = executor;
@@ -922,11 +922,11 @@ public abstract class QuerydslDataFetcher<T> {
 			return this.executor.findBy(buildPredicate(env), query -> {
 				FluentQuery.ReactiveFluentQuery<R> queryToUse = (FluentQuery.ReactiveFluentQuery<R>) query;
 
-				if (this.sort.isSorted()){
+				if (this.sort.isSorted()) {
 					queryToUse = queryToUse.sortBy(this.sort);
 				}
 
-				if (requiresProjection(this.resultType)){
+				if (requiresProjection(this.resultType)) {
 					queryToUse = queryToUse.as(this.resultType);
 				}
 				else {
@@ -941,7 +941,7 @@ public abstract class QuerydslDataFetcher<T> {
 
 
 	private static class ReactiveManyEntityFetcher<T, R>
-			extends QuerydslDataFetcher<T> implements SelfDescribingDataFetcher<Flux<R>> {
+extends QuerydslDataFetcher<T> implements SelfDescribingDataFetcher<Flux<R>> {
 
 		private final ReactiveQuerydslPredicateExecutor<T> executor;
 
@@ -951,10 +951,10 @@ public abstract class QuerydslDataFetcher<T> {
 
 		@SuppressWarnings({"unchecked", "rawtypes"})
 		ReactiveManyEntityFetcher(ReactiveQuerydslPredicateExecutor<T> executor,
-				TypeInformation<T> domainType,
-				Class<R> resultType,
-				Sort sort,
-				QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
+	TypeInformation<T> domainType,
+	Class<R> resultType,
+	Sort sort,
+	QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
 
 			super(domainType, (QuerydslBinderCustomizer) customizer, null);
 			this.executor = executor;
@@ -973,11 +973,11 @@ public abstract class QuerydslDataFetcher<T> {
 			return this.executor.findBy(buildPredicate(env), query -> {
 				FluentQuery.ReactiveFluentQuery<R> queryToUse = (FluentQuery.ReactiveFluentQuery<R>) query;
 
-				if (this.sort.isSorted()){
+				if (this.sort.isSorted()) {
 					queryToUse = queryToUse.sortBy(this.sort);
 				}
 
-				if (requiresProjection(this.resultType)){
+				if (requiresProjection(this.resultType)) {
 					queryToUse = queryToUse.as(this.resultType);
 				}
 				else {
@@ -992,7 +992,7 @@ public abstract class QuerydslDataFetcher<T> {
 
 
 	private static class ReactiveScrollableEntityFetcher<T, R>
-			extends QuerydslDataFetcher<T> implements SelfDescribingDataFetcher<Mono<Iterable<R>>> {
+extends QuerydslDataFetcher<T> implements SelfDescribingDataFetcher<Mono<Iterable<R>>> {
 
 		private final ReactiveQuerydslPredicateExecutor<T> executor;
 
@@ -1006,11 +1006,11 @@ public abstract class QuerydslDataFetcher<T> {
 
 		@SuppressWarnings({"unchecked", "rawtypes"})
 		ReactiveScrollableEntityFetcher(ReactiveQuerydslPredicateExecutor<T> executor,
-				TypeInformation<T> domainType,
-				Class<R> resultType,
-				CursorStrategy<ScrollPosition> cursorStrategy, ScrollSubrange defaultSubrange,
-				Sort sort,
-				QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
+	TypeInformation<T> domainType,
+	Class<R> resultType,
+	CursorStrategy<ScrollPosition> cursorStrategy, ScrollSubrange defaultSubrange,
+	Sort sort,
+	QuerydslBinderCustomizer<? extends EntityPath<T>> customizer) {
 
 			super(domainType, (QuerydslBinderCustomizer) customizer, cursorStrategy);
 
@@ -1037,11 +1037,11 @@ public abstract class QuerydslDataFetcher<T> {
 			return this.executor.findBy(buildPredicate(env), query -> {
 				FluentQuery.ReactiveFluentQuery<R> queryToUse = (FluentQuery.ReactiveFluentQuery<R>) query;
 
-				if (this.sort.isSorted()){
+				if (this.sort.isSorted()) {
 					queryToUse = queryToUse.sortBy(this.sort);
 				}
 
-				if (requiresProjection(this.resultType)){
+				if (requiresProjection(this.resultType)) {
 					queryToUse = queryToUse.as(this.resultType);
 				}
 				else {

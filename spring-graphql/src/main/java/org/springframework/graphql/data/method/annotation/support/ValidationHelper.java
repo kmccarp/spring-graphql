@@ -89,14 +89,14 @@ class ValidationHelper {
 				else if (annot.annotationType().equals(Validated.class)) {
 					Class<?>[] groups = ((Validated) annot).value();
 					parameterValidator = (parameterValidator != null ?
-							parameterValidator.andThen(new MethodParameterValidator(i, groups)) :
-							new MethodParameterValidator(i, groups));
+				parameterValidator.andThen(new MethodParameterValidator(i, groups)) :
+				new MethodParameterValidator(i, groups));
 				}
 			}
 		}
 
 		BiConsumer<Object, Object[]> result = (requiresMethodValidation ?
-				new HandlerMethodValidator(handlerMethod, methodValidationGroups) : null);
+	new HandlerMethodValidator(handlerMethod, methodValidationGroups) : null);
 
 		if (parameterValidator != null) {
 			return (result != null ? result.andThen(parameterValidator) : parameterValidator);
@@ -151,15 +151,15 @@ class ValidationHelper {
 		HandlerMethodValidator(HandlerMethod handlerMethod, @Nullable Class<?>[] validationGroups) {
 			Assert.notNull(handlerMethod, "HandlerMethod is required");
 			this.method = handlerMethod.getMethod();
-			this.validationGroups = (validationGroups != null ? validationGroups : new Class<?>[] {});
+			this.validationGroups = (validationGroups != null ? validationGroups : new Class<?>[]{});
 		}
 
 		@Override
 		public void accept(Object controller, Object[] arguments) {
 
 			Set<ConstraintViolation<Object>> violations =
-					ValidationHelper.this.validator.forExecutables()
-							.validateParameters(controller, this.method, arguments, this.validationGroups);
+		ValidationHelper.this.validator.forExecutables()
+	.validateParameters(controller, this.method, arguments, this.validationGroups);
 
 			if (!violations.isEmpty()) {
 				throw new ConstraintViolationException(violations);
@@ -181,14 +181,14 @@ class ValidationHelper {
 
 		MethodParameterValidator(int index, @Nullable Class<?>[] validationGroups) {
 			this.index = index;
-			this.validationGroups = (validationGroups != null ? validationGroups : new Class<?>[] {});
+			this.validationGroups = (validationGroups != null ? validationGroups : new Class<?>[]{});
 		}
 
 		@Override
 		public void accept(Object controller, Object[] arguments) {
 
 			Set<ConstraintViolation<Object>> violations =
-					ValidationHelper.this.validator.validate(arguments[this.index], this.validationGroups);
+		ValidationHelper.this.validator.validate(arguments[this.index], this.validationGroups);
 
 			if (!violations.isEmpty()) {
 				throw new ConstraintViolationException(violations);

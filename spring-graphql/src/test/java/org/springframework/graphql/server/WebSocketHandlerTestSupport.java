@@ -31,52 +31,52 @@ public abstract class WebSocketHandlerTestSupport {
 
 	static {
 		BOOK_QUERY_PAYLOAD = "{\"query\": \"" +
-				"  query TestQuery {" +
-				"    bookById(id: \\\"1\\\"){ " +
-				"      id" +
-				"      name" +
-				"      author {" +
-				"        firstName" +
-				"        lastName" +
-				"      }" +
-				"  }}\"}";
+	"  query TestQuery {" +
+	"    bookById(id: \\\"1\\\"){ " +
+	"      id" +
+	"      name" +
+	"      author {" +
+	"        firstName" +
+	"        lastName" +
+	"      }" +
+	"  }}\"}";
 
 		BOOK_QUERY = "{" +
-				"\"id\":\"" + WebSocketHandlerTestSupport.SUBSCRIPTION_ID + "\"," +
-				"\"type\":\"subscribe\"," +
-				"\"payload\":" + BOOK_QUERY_PAYLOAD +
-				"}";
+	"\"id\":\"" + WebSocketHandlerTestSupport.SUBSCRIPTION_ID + "\"," +
+	"\"type\":\"subscribe\"," +
+	"\"payload\":" + BOOK_QUERY_PAYLOAD +
+	"}";
 	}
 
 	protected static final String BOOK_SUBSCRIPTION = "{" +
-			"\"id\":\"" + SUBSCRIPTION_ID + "\"," +
-			"\"type\":\"subscribe\"," +
-			"\"payload\":{\"query\": \"" +
-			"  subscription TestSubscription {" +
-			"    bookSearch(author: \\\"George\\\") {" +
-			"      id" +
-			"      name" +
-			"      author {" +
-			"        firstName" +
-			"        lastName" +
-			"      }" +
-			"  }}\"}" +
-			"}";
+"\"id\":\"" + SUBSCRIPTION_ID + "\"," +
+"\"type\":\"subscribe\"," +
+"\"payload\":{\"query\": \"" +
+"  subscription TestSubscription {" +
+"    bookSearch(author: \\\"George\\\") {" +
+"      id" +
+"      name" +
+"      author {" +
+"        firstName" +
+"        lastName" +
+"      }" +
+"  }}\"}" +
+"}";
 
 
 	protected WebGraphQlHandler initHandler(WebGraphQlInterceptor... interceptors) {
 		return GraphQlSetup.schemaResource(BookSource.schema)
-				.queryFetcher("bookById", environment -> {
-					Long id = Long.parseLong(environment.getArgument("id"));
-					return BookSource.getBook(id);
-				})
-				.subscriptionFetcher("bookSearch", environment -> {
-					String author = environment.getArgument("author");
-					return Flux.fromIterable(BookSource.books())
-							.filter((book) -> book.getAuthor().getFullName().contains(author));
-				})
-				.interceptor(interceptors)
-				.toWebGraphQlHandler();
+	.queryFetcher("bookById", environment -> {
+		Long id = Long.parseLong(environment.getArgument("id"));
+		return BookSource.getBook(id);
+	})
+	.subscriptionFetcher("bookSearch", environment -> {
+		String author = environment.getArgument("author");
+		return Flux.fromIterable(BookSource.books())
+	.filter((book) -> book.getAuthor().getFullName().contains(author));
+	})
+	.interceptor(interceptors)
+	.toWebGraphQlHandler();
 	}
 
 }

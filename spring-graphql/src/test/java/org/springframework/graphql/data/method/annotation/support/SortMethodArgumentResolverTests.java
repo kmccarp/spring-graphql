@@ -71,11 +71,11 @@ public class SortMethodArgumentResolverTests extends ArgumentResolverTestSupport
 		Sort sort = resolveFunction.apply(environment);
 
 		assertThat(sort.stream().collect(Collectors.toList()))
-				.hasSize(3)
-				.containsExactly(
-						new Sort.Order(Sort.Direction.DESC, "firstName"),
-						new Sort.Order(Sort.Direction.DESC, "lastName"),
-						new Sort.Order(Sort.Direction.DESC, "id"));
+	.hasSize(3)
+	.containsExactly(
+new Sort.Order(Sort.Direction.DESC, "firstName"),
+new Sort.Order(Sort.Direction.DESC, "lastName"),
+new Sort.Order(Sort.Direction.DESC, "id"));
 	}
 
 

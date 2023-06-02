@@ -36,12 +36,12 @@ class RequestErrorInterceptor implements WebGraphQlInterceptor {
 			}
 
 			List<GraphQLError> errors = response.getErrors().stream() // <2>
-					.map(error -> {
-						GraphqlErrorBuilder<?> builder = GraphqlErrorBuilder.newError();
-						// ...
-						return builder.build();
-					})
-					.toList();
+		.map(error -> {
+			GraphqlErrorBuilder<?> builder = GraphqlErrorBuilder.newError();
+			// ...
+			return builder.build();
+		})
+		.toList();
 
 			return response.transform(builder -> builder.errors(errors).build()); // <3>
 		});

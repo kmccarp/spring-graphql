@@ -99,8 +99,8 @@ public abstract class DataFetcherExceptionResolverAdapter implements DataFetcher
 		}
 		try {
 			return ContextSnapshot.captureFrom(env.getGraphQlContext())
-					.wrap(() -> resolveToMultipleErrors(exception, env))
-					.call();
+		.wrap(() -> resolveToMultipleErrors(exception, env))
+		.call();
 		}
 		catch (Exception ex2) {
 			logger.warn("Failed to resolve " + exception, ex2);
@@ -141,7 +141,7 @@ public abstract class DataFetcherExceptionResolverAdapter implements DataFetcher
 	 */
 	@Deprecated
 	public static DataFetcherExceptionResolverAdapter from(
-			BiFunction<Throwable, DataFetchingEnvironment, GraphQLError> resolver) {
+BiFunction<Throwable, DataFetchingEnvironment, GraphQLError> resolver) {
 
 		return new DataFetcherExceptionResolverAdapter() {
 

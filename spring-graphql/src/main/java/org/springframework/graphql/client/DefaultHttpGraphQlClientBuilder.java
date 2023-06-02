@@ -35,9 +35,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @author Rossen Stoyanchev
  * @since 1.0.0
  */
-final class DefaultHttpGraphQlClientBuilder
-		extends AbstractGraphQlClientBuilder<DefaultHttpGraphQlClientBuilder>
-		implements HttpGraphQlClient.Builder<DefaultHttpGraphQlClientBuilder>  {
+final class DefaultHttpGraphQlClientBuilderextends AbstractGraphQlClientBuilder<DefaultHttpGraphQlClientBuilder>implements HttpGraphQlClient.Builder<DefaultHttpGraphQlClientBuilder> {
 
 	private final WebClient.Builder webClientBuilder;
 
@@ -106,9 +104,9 @@ final class DefaultHttpGraphQlClientBuilder
 
 		// Pass the codecs to the parent for response decoding
 		this.webClientBuilder.codecs(configurer ->
-				setJsonCodecs(
-						CodecDelegate.findJsonEncoder(configurer),
-						CodecDelegate.findJsonDecoder(configurer)));
+	setJsonCodecs(
+CodecDelegate.findJsonEncoder(configurer),
+CodecDelegate.findJsonDecoder(configurer)));
 
 		WebClient webClient = this.webClientBuilder.build();
 
@@ -127,8 +125,8 @@ final class DefaultHttpGraphQlClientBuilder
 		private final Consumer<AbstractGraphQlClientBuilder<?>> builderInitializer;
 
 		DefaultHttpGraphQlClient(
-				GraphQlClient delegate, WebClient webClient,
-				Consumer<AbstractGraphQlClientBuilder<?>> builderInitializer) {
+	GraphQlClient delegate, WebClient webClient,
+	Consumer<AbstractGraphQlClientBuilder<?>> builderInitializer) {
 
 			super(delegate);
 

@@ -48,7 +48,7 @@ class TestWebSocketSession extends AbstractWebSocketSession<Object> {
 
 	TestWebSocketSession(String id, URI uri, Flux<WebSocketMessage> input) {
 		super(new Object(), id, new HandshakeInfo(uri, new HttpHeaders(), Mono.empty(), null),
-				DefaultDataBufferFactory.sharedInstance);
+	DefaultDataBufferFactory.sharedInstance);
 		this.input = input;
 	}
 

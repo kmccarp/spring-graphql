@@ -109,8 +109,8 @@ final class DefaultClientResponseField implements ClientResponseField {
 		return (list != null ? list : Collections.emptyList());
 	}
 
-		@SuppressWarnings("unchecked")
-		@Nullable
+	@SuppressWarnings("unchecked")
+	@Nullable
 	private <T> T toEntity(ResolvableType targetType) {
 		if (getValue() == null) {
 			if (this.response.isValid() && getErrors().isEmpty()) {
@@ -124,7 +124,7 @@ final class DefaultClientResponseField implements ClientResponseField {
 		Map<String, Object> hints = Collections.emptyMap();
 
 		DataBuffer buffer = ((Encoder<T>) this.response.getEncoder()).encodeValue(
-				(T) getValue(), bufferFactory, ResolvableType.forInstance(getValue()), mimeType, hints);
+	(T) getValue(), bufferFactory, ResolvableType.forInstance(getValue()), mimeType, hints);
 
 		return ((Decoder<T>) this.response.getDecoder()).decode(buffer, targetType, mimeType, hints);
 	}

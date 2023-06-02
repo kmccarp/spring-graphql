@@ -31,8 +31,7 @@ import org.springframework.graphql.data.pagination.CursorStrategy;
  * @author Oliver Drotbohm
  * @since 1.2.0
  */
-public final class SliceConnectionAdapter
-		extends ConnectionAdapterSupport<ScrollPosition> implements ConnectionAdapter {
+public final class SliceConnectionAdapterextends ConnectionAdapterSupport<ScrollPosition> implements ConnectionAdapter {
 
 
 	/**

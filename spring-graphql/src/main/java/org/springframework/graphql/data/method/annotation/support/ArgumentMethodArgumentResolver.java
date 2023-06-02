@@ -61,7 +61,7 @@ public class ArgumentMethodArgumentResolver implements HandlerMethodArgumentReso
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return (parameter.getParameterAnnotation(Argument.class) != null ||
-				parameter.getParameterType() == ArgumentValue.class);
+	parameter.getParameterType() == ArgumentValue.class);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class ArgumentMethodArgumentResolver implements HandlerMethodArgumentReso
 		}
 		else if (parameter.getParameterType() != ArgumentValue.class) {
 			throw new IllegalStateException(
-					"Expected either @Argument or a method parameter of type ArgumentValue");
+		"Expected either @Argument or a method parameter of type ArgumentValue");
 		}
 
 		String parameterName = parameter.getParameterName();
@@ -89,8 +89,8 @@ public class ArgumentMethodArgumentResolver implements HandlerMethodArgumentReso
 		}
 
 		throw new IllegalArgumentException(
-				"Name for argument of type [" + parameter.getNestedParameterType().getName() +
-						"] not specified, and parameter name information not found in class file either.");
+	"Name for argument of type [" + parameter.getNestedParameterType().getName() +
+"] not specified, and parameter name information not found in class file either.");
 	}
 
 }

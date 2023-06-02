@@ -44,8 +44,8 @@ public class SchemaHandler {
 
 	public Mono<ServerResponse> handleRequest(ServerRequest request) {
 		return ServerResponse.ok()
-				.contentType(MediaType.TEXT_PLAIN)
-				.bodyValue(this.printer.print(graphQlSource.schema()));
+	.contentType(MediaType.TEXT_PLAIN)
+	.bodyValue(this.printer.print(graphQlSource.schema()));
 	}
 
 }

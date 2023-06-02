@@ -90,29 +90,29 @@ public class ResourceDocumentSource implements DocumentSource {
 	@Override
 	public Mono<String> getDocument(String name) {
 		return Flux.fromIterable(this.locations)
-				.flatMapIterable(location -> getCandidateResources(name, location))
-				.filter(Resource::exists)
-				.next()
-				.map(this::resourceToString)
-				.switchIfEmpty(Mono.fromRunnable(() -> {
-					throw new IllegalStateException(
-							"Failed to find document, name='" + name + "', under location(s)=" +
-									this.locations.stream().map(Resource::toString).toList());
-				}))
-				.subscribeOn(Schedulers.boundedElastic());
+	.flatMapIterable(location -> getCandidateResources(name, location))
+	.filter(Resource::exists)
+	.next()
+	.map(this::resourceToString)
+	.switchIfEmpty(Mono.fromRunnable(() -> {
+		throw new IllegalStateException(
+	"Failed to find document, name='" + name + "', under location(s)=" +
+this.locations.stream().map(Resource::toString).toList());
+	}))
+	.subscribeOn(Schedulers.boundedElastic());
 	}
 
 	private List<Resource> getCandidateResources(String name, Resource location) {
 		return this.extensions.stream()
-				.map(ext -> {
-					try {
-						return location.createRelative(name + ext);
-					}
-					catch (IOException ex) {
-						throw new IllegalStateException(ex);
-					}
-				})
-				.collect(Collectors.toList());
+	.map(ext -> {
+		try {
+			return location.createRelative(name + ext);
+		}
+		catch (IOException ex) {
+			throw new IllegalStateException(ex);
+		}
+	})
+	.collect(Collectors.toList());
 	}
 
 	private String resourceToString(Resource resource) {
@@ -123,7 +123,7 @@ public class ResourceDocumentSource implements DocumentSource {
 		}
 		catch (IOException ex) {
 			throw new IllegalArgumentException(
-					"Found resource: " + resource.getDescription() + " but failed to read it", ex);
+		"Found resource: " + resource.getDescription() + " but failed to read it", ex);
 		}
 	}
 

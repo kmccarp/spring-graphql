@@ -75,7 +75,6 @@ public interface GraphQlSource {
 	}
 
 
-
 	/**
 	 * Common configuration options for all {@link GraphQlSource} builders,
 	 * independent of how {@link GraphQLSchema} is created.

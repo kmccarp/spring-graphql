@@ -61,8 +61,8 @@ public class DefaultGraphQlRequest implements GraphQlRequest {
 	 * @param extensions implementor specific, protocol extensions
 	 */
 	public DefaultGraphQlRequest(
-			String document, @Nullable String operationName,
-			@Nullable Map<String, Object> variables, @Nullable Map<String, Object> extensions) {
+String document, @Nullable String operationName,
+@Nullable Map<String, Object> variables, @Nullable Map<String, Object> extensions) {
 
 		Assert.notNull(document, "'document' is required");
 		this.document = document;
@@ -112,30 +112,30 @@ public class DefaultGraphQlRequest implements GraphQlRequest {
 
 	@Override
 	public boolean equals(Object o) {
-		if (! (o instanceof DefaultGraphQlRequest)) {
+		if (!(o instanceof DefaultGraphQlRequest)) {
 			return false;
 		}
 		DefaultGraphQlRequest other = (DefaultGraphQlRequest) o;
 		return (getDocument().equals(other.getDocument()) &&
-				ObjectUtils.nullSafeEquals(getOperationName(), other.getOperationName()) &&
-				ObjectUtils.nullSafeEquals(getVariables(), other.getVariables()) &&
-				ObjectUtils.nullSafeEquals(getExtensions(), other.getExtensions()));
+	ObjectUtils.nullSafeEquals(getOperationName(), other.getOperationName()) &&
+	ObjectUtils.nullSafeEquals(getVariables(), other.getVariables()) &&
+	ObjectUtils.nullSafeEquals(getExtensions(), other.getExtensions()));
 	}
 
 	@Override
 	public int hashCode() {
 		return this.document.hashCode() +
-				31 * ObjectUtils.nullSafeHashCode(this.operationName) +
-				31 * this.variables.hashCode() +
-				31 * this.extensions.hashCode();
+	31 * ObjectUtils.nullSafeHashCode(this.operationName) +
+	31 * this.variables.hashCode() +
+	31 * this.extensions.hashCode();
 	}
 
 	@Override
 	public String toString() {
 		return "document='" + getDocument() + "'" +
-				((getOperationName() != null) ? ", operationName='" + getOperationName() + "'" : "") +
-				(!CollectionUtils.isEmpty(getVariables()) ? ", variables=" + getVariables() : "" +
-				(!CollectionUtils.isEmpty(getExtensions()) ? ", extensions=" + getExtensions() : ""));
+	((getOperationName() != null) ? ", operationName='" + getOperationName() + "'" : "") +
+	(!CollectionUtils.isEmpty(getVariables()) ? ", variables=" + getVariables() : "" +
+(!CollectionUtils.isEmpty(getExtensions()) ? ", extensions=" + getExtensions() : ""));
 	}
 
 }

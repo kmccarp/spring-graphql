@@ -106,7 +106,7 @@ abstract class AbstractGraphQlSourceBuilder<B extends GraphQlSource.Builder<B>> 
 
 		GraphQL.Builder builder = GraphQL.newGraphQL(schema);
 		builder.defaultDataFetcherExceptionHandler(
-				DataFetcherExceptionResolver.createExceptionHandler(this.exceptionResolvers));
+	DataFetcherExceptionResolver.createExceptionHandler(this.exceptionResolvers));
 
 		if (!this.instrumentations.isEmpty()) {
 			builder = builder.instrumentation(new ChainedInstrumentation(this.instrumentations));

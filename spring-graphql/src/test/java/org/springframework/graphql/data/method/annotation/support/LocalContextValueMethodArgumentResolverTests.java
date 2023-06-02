@@ -40,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LocalContextValueMethodArgumentResolverTests {
 
 	private static final Method method = ClassUtils.getMethod(
-			LocalContextValueMethodArgumentResolverTests.class, "handle", (Class<?>[]) null);
+LocalContextValueMethodArgumentResolverTests.class, "handle", (Class<?>[]) null);
 
 	private final LocalContextValueMethodArgumentResolver resolver = new LocalContextValueMethodArgumentResolver();
 
@@ -65,9 +65,9 @@ public class LocalContextValueMethodArgumentResolverTests {
 	private Object resolveValue(@Nullable GraphQLContext localContext, int index) {
 
 		DataFetchingEnvironment environment = DataFetchingEnvironmentImpl.newDataFetchingEnvironment()
-				.localContext(localContext)
-				.graphQLContext(GraphQLContext.newContext().build())
-				.build();
+	.localContext(localContext)
+	.graphQLContext(GraphQLContext.newContext().build())
+	.build();
 
 		return this.resolver.resolveArgument(methodParam(index), environment);
 	}
@@ -81,8 +81,8 @@ public class LocalContextValueMethodArgumentResolverTests {
 
 	@SuppressWarnings("unused")
 	public void handle(
-			@ContextValue Book book,
-			@LocalContextValue Book localBook) {
+@ContextValue Book book,
+@LocalContextValue Book localBook) {
 	}
 
 }

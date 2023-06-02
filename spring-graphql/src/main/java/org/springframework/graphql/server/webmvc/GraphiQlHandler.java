@@ -73,8 +73,8 @@ public class GraphiQlHandler {
 	 */
 	public ServerResponse handleRequest(ServerRequest request) {
 		return (request.param("path").isPresent() ?
-				ServerResponse.ok().contentType(MediaType.TEXT_HTML).body(this.htmlResource) :
-				ServerResponse.temporaryRedirect(getRedirectUrl(request)).build());
+	ServerResponse.ok().contentType(MediaType.TEXT_HTML).body(this.htmlResource) :
+	ServerResponse.temporaryRedirect(getRedirectUrl(request)).build());
 	}
 
 	private URI getRedirectUrl(ServerRequest request) {

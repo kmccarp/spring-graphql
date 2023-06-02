@@ -60,20 +60,20 @@ class AuthenticationPrincipalArgumentResolverTests {
 	private final static Class<UserDetails> USER_DETAILS_CLASS = UserDetails.class;
 
 	private final static Class<?> MONO_USER_DETAILS_CLASS =
-			ResolvableType.forClassWithGenerics(Mono.class, UserDetails.class).getRawClass();
+ResolvableType.forClassWithGenerics(Mono.class, UserDetails.class).getRawClass();
 
 	private final static Class<?> MONO_STRING_CLASS =
-			ResolvableType.forClassWithGenerics(Mono.class, String.class).getRawClass();
+ResolvableType.forClassWithGenerics(Mono.class, String.class).getRawClass();
 
 	private final static Class<?> PUBLISHER_USER_DETAILS_CLASS =
-			ResolvableType.forClassWithGenerics(Publisher.class, UserDetails.class).getRawClass();
+ResolvableType.forClassWithGenerics(Publisher.class, UserDetails.class).getRawClass();
 
 	private final static Class<?> TESTPUBLISHER_USER_DETAILS_CLASS =
-			ResolvableType.forClassWithGenerics(TestPublisher.class, UserDetails.class).getRawClass();
+ResolvableType.forClassWithGenerics(TestPublisher.class, UserDetails.class).getRawClass();
 
 
 	private final AuthenticationPrincipalArgumentResolver resolver =
-			new AuthenticationPrincipalArgumentResolver((beanName, context) -> new PrincipalConverter());
+new AuthenticationPrincipalArgumentResolver((beanName, context) -> new PrincipalConverter());
 
 
 	@AfterEach
@@ -81,7 +81,7 @@ class AuthenticationPrincipalArgumentResolverTests {
 		SecurityContextHolder.clearContext();
 	}
 
-	
+
 	@Test
 	void supportsParameterWhenNoAnnotation() {
 		MethodParameter parameter = firstParameter(UserController.class, "noParameter", USER_DETAILS_CLASS);
@@ -156,7 +156,7 @@ class AuthenticationPrincipalArgumentResolverTests {
 		MethodParameter parameter = firstParameter(UserController.class, "errorOnInvalidType", String.class);
 		Mono<Object> details = (Mono<Object>) this.resolver.resolveArgument(parameter, null);
 		assertThatExceptionOfType(ClassCastException.class)
-				.isThrownBy(() -> details.contextWrite(authenticationContext()).block());
+	.isThrownBy(() -> details.contextWrite(authenticationContext()).block());
 	}
 
 	@Test
@@ -240,7 +240,7 @@ class AuthenticationPrincipalArgumentResolverTests {
 		MethodParameter parameter = firstParameter(UserController.class, "errorOnInvalidType", MONO_STRING_CLASS);
 		Mono<Mono<Object>> details = (Mono<Mono<Object>>) this.resolver.resolveArgument(parameter, null);
 		assertThatExceptionOfType(ClassCastException.class)
-				.isThrownBy(() -> details.flatMap(u -> u).contextWrite(authenticationContext()).block());
+	.isThrownBy(() -> details.flatMap(u -> u).contextWrite(authenticationContext()).block());
 	}
 
 	@Test
@@ -269,7 +269,7 @@ class AuthenticationPrincipalArgumentResolverTests {
 		MethodParameter parameter = firstParameter(UserController.class, "errorOnInvalidType", TESTPUBLISHER_USER_DETAILS_CLASS);
 		Mono<Mono<UserDetails>> details = (Mono<Mono<UserDetails>>) this.resolver.resolveArgument(parameter, null);
 		assertThatExceptionOfType(ClassCastException.class)
-				.isThrownBy(() -> details.flatMap(u -> u).contextWrite(authenticationContext()).block());
+	.isThrownBy(() -> details.flatMap(u -> u).contextWrite(authenticationContext()).block());
 	}
 
 	private MethodParameter firstParameter(Class<?> clazz, String methodName, Class<?>... paramTypes) {
@@ -333,7 +333,7 @@ class AuthenticationPrincipalArgumentResolverTests {
 
 		@QueryMapping
 		public UserDetails beanName(
-				@AuthenticationPrincipal(expression = "@bean.convert(#this)") UserDetails userDetails) {
+	@AuthenticationPrincipal(expression = "@bean.convert(#this)") UserDetails userDetails) {
 
 			return userDetails;
 		}
@@ -375,21 +375,21 @@ class AuthenticationPrincipalArgumentResolverTests {
 
 		@QueryMapping
 		public Mono<UserDetails> beanName(
-				@AuthenticationPrincipal(expression = "@bean.convert(#this)") Mono<UserDetails> userDetails) {
+	@AuthenticationPrincipal(expression = "@bean.convert(#this)") Mono<UserDetails> userDetails) {
 
 			return userDetails;
 		}
 
 		@QueryMapping
 		public Mono<String> errorOnInvalidType(
-				@AuthenticationPrincipal(errorOnInvalidType = true) Mono<String> userDetails) {
+	@AuthenticationPrincipal(errorOnInvalidType = true) Mono<String> userDetails) {
 
 			return userDetails;
 		}
 
 		@QueryMapping
 		public Publisher<UserDetails> errorOnInvalidType(
-				@AuthenticationPrincipal(errorOnInvalidType = true) TestPublisher<UserDetails> userDetails) {
+	@AuthenticationPrincipal(errorOnInvalidType = true) TestPublisher<UserDetails> userDetails) {
 
 			return userDetails;
 		}

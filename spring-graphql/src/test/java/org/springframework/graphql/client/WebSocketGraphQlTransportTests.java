@@ -65,14 +65,14 @@ public class WebSocketGraphQlTransportTests {
 	private final MockGraphQlWebSocketServer mockServer = new MockGraphQlWebSocketServer();
 
 	private final TestWebSocketClient webSocketClient = new TestWebSocketClient(this.mockServer);
-	
+
 	private final WebSocketGraphQlTransport transport = createTransport(this.webSocketClient);
 
 	private final GraphQlResponse response1 = new ResponseMapGraphQlResponse(
-			Collections.singletonMap("data", Collections.singletonMap("key1", "value1")));
+Collections.singletonMap("data", Collections.singletonMap("key1", "value1")));
 
 	private final GraphQlResponse response2 = new ResponseMapGraphQlResponse(
-			Collections.singletonMap("data", Collections.singletonMap("key2", "value2")));
+Collections.singletonMap("data", Collections.singletonMap("key2", "value2")));
 
 
 	@Test
@@ -80,12 +80,12 @@ public class WebSocketGraphQlTransportTests {
 		GraphQlRequest request = this.mockServer.expectOperation("{Query1}").andRespond(this.response1);
 
 		StepVerifier.create(this.transport.execute(request))
-				.expectNext(this.response1).expectComplete()
-				.verify(TIMEOUT);
+	.expectNext(this.response1).expectComplete()
+	.verify(TIMEOUT);
 
 		assertActualClientMessages(
-				GraphQlWebSocketMessage.connectionInit(null),
-				GraphQlWebSocketMessage.subscribe("1", request));
+	GraphQlWebSocketMessage.connectionInit(null),
+	GraphQlWebSocketMessage.subscribe("1", request));
 	}
 
 	@Test
@@ -93,48 +93,48 @@ public class WebSocketGraphQlTransportTests {
 		GraphQlRequest request = this.mockServer.expectOperation("{Sub1}").andStream(Flux.just(this.response1, response2));
 
 		StepVerifier.create(this.transport.executeSubscription(request))
-				.expectNext(this.response1, response2).expectComplete()
-				.verify(TIMEOUT);
+	.expectNext(this.response1, response2).expectComplete()
+	.verify(TIMEOUT);
 
 		assertActualClientMessages(
-				GraphQlWebSocketMessage.connectionInit(null),
-				GraphQlWebSocketMessage.subscribe("1", request));
+	GraphQlWebSocketMessage.connectionInit(null),
+	GraphQlWebSocketMessage.subscribe("1", request));
 	}
 
 	@Test
 	void requestError() {
 		GraphQlRequest request = this.mockServer.expectOperation("{Query1}")
-				.andRespondWithError(GraphqlErrorBuilder.newError().message("boo").build());
+	.andRespondWithError(GraphqlErrorBuilder.newError().message("boo").build());
 
 		StepVerifier.create(this.transport.execute(request))
-				.consumeNextWith(result -> {
-					assertThat(result.isValid()).isFalse();
-					assertThat(result.getErrors()).extracting(ResponseError::getMessage).containsExactly("boo");
-				})
-				.expectComplete()
-				.verify(TIMEOUT);
+	.consumeNextWith(result -> {
+		assertThat(result.isValid()).isFalse();
+		assertThat(result.getErrors()).extracting(ResponseError::getMessage).containsExactly("boo");
+	})
+	.expectComplete()
+	.verify(TIMEOUT);
 
 		assertActualClientMessages(
-				GraphQlWebSocketMessage.connectionInit(null),
-				GraphQlWebSocketMessage.subscribe("1", request));
+	GraphQlWebSocketMessage.connectionInit(null),
+	GraphQlWebSocketMessage.subscribe("1", request));
 	}
 
 	@Test
 	void requestStreamError() {
 		GraphQlRequest request = this.mockServer.expectOperation("{Sub1}")
-				.andStreamWithError(Flux.just(this.response1), GraphqlErrorBuilder.newError().message("boo").build());
+	.andStreamWithError(Flux.just(this.response1), GraphqlErrorBuilder.newError().message("boo").build());
 
 		StepVerifier.create(this.transport.executeSubscription(request))
-				.expectNext(this.response1)
-				.expectErrorSatisfies(actualEx -> {
-					List<ResponseError> errors = ((SubscriptionErrorException) actualEx).getErrors();
-					assertThat(errors).extracting(ResponseError::getMessage).containsExactly("boo");
-				})
-				.verify(TIMEOUT);
+	.expectNext(this.response1)
+	.expectErrorSatisfies(actualEx -> {
+		List<ResponseError> errors = ((SubscriptionErrorException) actualEx).getErrors();
+		assertThat(errors).extracting(ResponseError::getMessage).containsExactly("boo");
+	})
+	.verify(TIMEOUT);
 
 		assertActualClientMessages(
-				GraphQlWebSocketMessage.connectionInit(null),
-				GraphQlWebSocketMessage.subscribe("1", request));
+	GraphQlWebSocketMessage.connectionInit(null),
+	GraphQlWebSocketMessage.subscribe("1", request));
 	}
 
 	@Test
@@ -142,30 +142,30 @@ public class WebSocketGraphQlTransportTests {
 		GraphQlRequest request = this.mockServer.expectOperation("{Query1}").andRespond(Mono.never());
 
 		StepVerifier.create(this.transport.execute(request))
-				.thenAwait(Duration.ofMillis(200))
-				.thenCancel()
-				.verify(TIMEOUT);
+	.thenAwait(Duration.ofMillis(200))
+	.thenCancel()
+	.verify(TIMEOUT);
 
 		assertActualClientMessages(
-				GraphQlWebSocketMessage.connectionInit(null),
-				GraphQlWebSocketMessage.subscribe("1", request));
+	GraphQlWebSocketMessage.connectionInit(null),
+	GraphQlWebSocketMessage.subscribe("1", request));
 	}
 
 	@Test
 	void requestStreamCancelled() {
 		GraphQlRequest request = this.mockServer.expectOperation("{Sub1}")
-				.andStream(Flux.just(this.response1).concatWith(Flux.never()));
+	.andStream(Flux.just(this.response1).concatWith(Flux.never()));
 
 		StepVerifier.create(this.transport.executeSubscription(request))
-				.expectNext(this.response1)
-				.thenAwait(Duration.ofMillis(200))
-				.thenCancel()
-				.verify(TIMEOUT);
+	.expectNext(this.response1)
+	.thenAwait(Duration.ofMillis(200))
+	.thenCancel()
+	.verify(TIMEOUT);
 
 		assertActualClientMessages(
-				GraphQlWebSocketMessage.connectionInit(null),
-				GraphQlWebSocketMessage.subscribe("1", request),
-				GraphQlWebSocketMessage.complete("1"));
+	GraphQlWebSocketMessage.connectionInit(null),
+	GraphQlWebSocketMessage.subscribe("1", request),
+	GraphQlWebSocketMessage.complete("1"));
 	}
 
 	@Test
@@ -175,14 +175,14 @@ public class WebSocketGraphQlTransportTests {
 		WebSocketGraphQlTransport transport = createTransport(client);
 
 		StepVerifier.create(transport.execute(new DefaultGraphQlRequest("{Query1}")))
-				.expectNext(this.response1)
-				.expectComplete()
-				.verify(TIMEOUT);
+	.expectNext(this.response1)
+	.expectComplete()
+	.verify(TIMEOUT);
 
 		assertActualClientMessages(client.getConnection(0),
-				GraphQlWebSocketMessage.connectionInit(null),
-				GraphQlWebSocketMessage.pong(null),
-				GraphQlWebSocketMessage.subscribe("1", new DefaultGraphQlRequest("{Query1}")));
+	GraphQlWebSocketMessage.connectionInit(null),
+	GraphQlWebSocketMessage.pong(null),
+	GraphQlWebSocketMessage.subscribe("1", new DefaultGraphQlRequest("{Query1}")));
 	}
 
 	@Test
@@ -210,7 +210,7 @@ public class WebSocketGraphQlTransportTests {
 
 
 		WebSocketGraphQlTransport transport = new WebSocketGraphQlTransport(
-				URI.create("/"), HttpHeaders.EMPTY, client, ClientCodecConfigurer.create(), interceptor);
+	URI.create("/"), HttpHeaders.EMPTY, client, ClientCodecConfigurer.create(), interceptor);
 
 		transport.start().block(TIMEOUT);
 
@@ -235,8 +235,8 @@ public class WebSocketGraphQlTransportTests {
 		// New requests are rejected
 		GraphQlRequest request = this.mockServer.expectOperation("{Query1}").andRespond(this.response1);
 		StepVerifier.create(this.transport.execute(request))
-				.expectErrorMessage("WebSocketGraphQlTransport has been stopped")
-				.verify(TIMEOUT);
+	.expectErrorMessage("WebSocketGraphQlTransport has been stopped")
+	.verify(TIMEOUT);
 
 		// Start
 		this.transport.start().block(TIMEOUT);
@@ -246,8 +246,8 @@ public class WebSocketGraphQlTransportTests {
 		// Requests allowed again
 		request = this.mockServer.expectOperation("{Query1}").andRespond(this.response1);
 		StepVerifier.create(this.transport.execute(request))
-				.expectNext(this.response1).expectComplete()
-				.verify(TIMEOUT);
+	.expectNext(this.response1).expectComplete()
+	.verify(TIMEOUT);
 	}
 
 	@Test
@@ -284,11 +284,11 @@ public class WebSocketGraphQlTransportTests {
 
 		WebSocketClient client = mock(WebSocketClient.class);
 		when(client.execute(any(URI.class), any(HttpHeaders.class), any(WebSocketHandler.class)))
-				.thenReturn(Mono.error(ex));
+	.thenReturn(Mono.error(ex));
 
 		StepVerifier.create(createTransport(client).start())
-				.expectErrorMessage(ex.getMessage())
-				.verify(TIMEOUT);
+	.expectErrorMessage(ex.getMessage())
+	.verify(TIMEOUT);
 	}
 
 	@Test
@@ -302,8 +302,8 @@ public class WebSocketGraphQlTransportTests {
 		TestWebSocketClient client = new TestWebSocketClient(handler);
 
 		StepVerifier.create(createTransport(client).start())
-				.expectErrorMessage("boo")
-				.verify(TIMEOUT);
+	.expectErrorMessage("boo")
+	.verify(TIMEOUT);
 	}
 
 	@Test
@@ -317,14 +317,15 @@ public class WebSocketGraphQlTransportTests {
 		String expectedMessage = "disconnected with CloseStatus[code=4400, reason=Invalid message]";
 
 		StepVerifier.create(transport.execute(new DefaultGraphQlRequest("{Query1}")))
-				.expectErrorSatisfies(ex -> assertThat(ex).hasMessageEndingWith(expectedMessage))
-				.verify(TIMEOUT);
+	.expectErrorSatisfies(ex -> assertThat(ex).hasMessageEndingWith(expectedMessage))
+	.verify(TIMEOUT);
 	}
 
 	private static WebSocketGraphQlTransport createTransport(WebSocketClient client) {
 		return new WebSocketGraphQlTransport(
-				URI.create("/"), HttpHeaders.EMPTY, client, ClientCodecConfigurer.create(),
-				new WebSocketGraphQlClientInterceptor() {});
+	URI.create("/"), HttpHeaders.EMPTY, client, ClientCodecConfigurer.create(),
+	new WebSocketGraphQlClientInterceptor() {
+	});
 	}
 
 	private void assertActualClientMessages(GraphQlWebSocketMessage... expectedMessages) {
@@ -332,11 +333,11 @@ public class WebSocketGraphQlTransportTests {
 	}
 
 	private void assertActualClientMessages(
-			TestWebSocketConnection connection, GraphQlWebSocketMessage... expectedMessages) {
+TestWebSocketConnection connection, GraphQlWebSocketMessage... expectedMessages) {
 
 		List<GraphQlWebSocketMessage> actualMessages = connection.getClientMessages().stream()
-				.map(CODEC_DELEGATE::decode)
-				.collect(Collectors.toList());
+	.map(CODEC_DELEGATE::decode)
+	.collect(Collectors.toList());
 
 		assertThat(actualMessages).containsExactly(expectedMessages);
 	}
@@ -358,18 +359,18 @@ public class WebSocketGraphQlTransportTests {
 		@Override
 		public Mono<Void> handle(WebSocketSession session) {
 			return session.send(session.receive()
-					.flatMap(webSocketMessage -> {
-						GraphQlWebSocketMessage message = this.codecDelegate.decode(webSocketMessage);
-						return switch (message.resolvedType()) {
-							case CONNECTION_INIT -> Flux.just(
-									GraphQlWebSocketMessage.connectionAck(null),
-									GraphQlWebSocketMessage.ping(null));
-							case SUBSCRIBE -> Flux.just(GraphQlWebSocketMessage.next("1", this.response.toMap()));
-							case PONG -> Flux.empty();
-							default -> Flux.error(new IllegalStateException("Unexpected message: " + message));
-						};
-					})
-					.map(graphQlMessage -> this.codecDelegate.encode(session, graphQlMessage))
+		.flatMap(webSocketMessage -> {
+			GraphQlWebSocketMessage message = this.codecDelegate.decode(webSocketMessage);
+			return switch (message.resolvedType()) {
+				case CONNECTION_INIT -> Flux.just(
+			GraphQlWebSocketMessage.connectionAck(null),
+			GraphQlWebSocketMessage.ping(null));
+				case SUBSCRIBE -> Flux.just(GraphQlWebSocketMessage.next("1", this.response.toMap()));
+				case PONG -> Flux.empty();
+				default -> Flux.error(new IllegalStateException("Unexpected message: " + message));
+			};
+		})
+		.map(graphQlMessage -> this.codecDelegate.encode(session, graphQlMessage))
 			);
 		}
 
@@ -392,9 +393,9 @@ public class WebSocketGraphQlTransportTests {
 				String id = inputMessage.getId();
 
 				GraphQlWebSocketMessage outputMessage =
-						(inputMessage.resolvedType() == GraphQlWebSocketMessageType.CONNECTION_INIT ?
-								GraphQlWebSocketMessage.connectionAck(null) :
-								GraphQlWebSocketMessage.subscribe(id, new DefaultGraphQlRequest("")));
+			(inputMessage.resolvedType() == GraphQlWebSocketMessageType.CONNECTION_INIT ?
+		GraphQlWebSocketMessage.connectionAck(null) :
+		GraphQlWebSocketMessage.subscribe(id, new DefaultGraphQlRequest("")));
 
 				return Flux.just(this.codecDelegate.encode(session, outputMessage));
 			}));

@@ -86,7 +86,7 @@ public class RSocketGraphQlClientBuilderTests {
 	}
 
 
-	private static class BuilderSetup  {
+	private static class BuilderSetup {
 
 		private final MockExecutionGraphQlService graphQlService = new MockExecutionGraphQlService();
 
@@ -108,15 +108,15 @@ public class RSocketGraphQlClientBuilderTests {
 		public RSocketGraphQlClient.Builder<?> initBuilder() {
 
 			GraphQlRSocketController controller = new GraphQlRSocketController(
-					new GraphQlRSocketHandler(this.graphQlService, Collections.emptyList(), new Jackson2JsonEncoder()));
+		new GraphQlRSocketHandler(this.graphQlService, Collections.emptyList(), new Jackson2JsonEncoder()));
 
 			this.server = RSocketServer.create()
-					.acceptor(createSocketAcceptor(controller))
-					.bind(LocalServerTransport.create("local"))
-					.block();
+		.acceptor(createSocketAcceptor(controller))
+		.bind(LocalServerTransport.create("local"))
+		.block();
 
 			return RSocketGraphQlClient.builder()
-					.clientTransport(LocalClientTransport.create("local"));
+		.clientTransport(LocalClientTransport.create("local"));
 		}
 
 		private SocketAcceptor createSocketAcceptor(GraphQlRSocketController controller) {

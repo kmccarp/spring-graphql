@@ -29,9 +29,7 @@ import org.springframework.util.Assert;
  * @author Rossen Stoyanchev
  * @since 1.0.0
  */
-final class ExternalSchemaGraphQlSourceBuilder
-		extends AbstractGraphQlSourceBuilder<ExternalSchemaGraphQlSourceBuilder>
-		implements GraphQlSource.Builder<ExternalSchemaGraphQlSourceBuilder> {
+final class ExternalSchemaGraphQlSourceBuilderextends AbstractGraphQlSourceBuilder<ExternalSchemaGraphQlSourceBuilder>implements GraphQlSource.Builder<ExternalSchemaGraphQlSourceBuilder> {
 
 	private final GraphQLSchema schema;
 

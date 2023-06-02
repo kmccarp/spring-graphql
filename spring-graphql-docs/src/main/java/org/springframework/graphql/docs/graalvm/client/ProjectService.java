@@ -45,8 +45,8 @@ public class ProjectService {
 				""";
 
 		return this.graphQlClient.document(document)
-				.variable("projectSlug", projectSlug)
-				.retrieve("project")
-				.toEntity(Project.class); // <1>
+	.variable("projectSlug", projectSlug)
+	.retrieve("project")
+	.toEntity(Project.class); // <1>
 	}
 }

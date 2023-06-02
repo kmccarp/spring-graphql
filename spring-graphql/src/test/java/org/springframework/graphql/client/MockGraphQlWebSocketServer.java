@@ -79,10 +79,10 @@ public final class MockGraphQlWebSocketServer implements WebSocketHandler {
 	@Override
 	public Mono<Void> handle(WebSocketSession session) {
 		return session.send(session.receive()
-				.map(codecDelegate::decode)
-				.flatMap(this::handleMessage)
-				.map(message -> codecDelegate.encode(session, message)))
-				.doOnError(ex -> logger.error("Session handling error: " + ex.getMessage(), ex));
+	.map(codecDelegate::decode)
+	.flatMap(this::handleMessage)
+	.map(message -> codecDelegate.encode(session, message)))
+	.doOnError(ex -> logger.error("Session handling error: " + ex.getMessage(), ex));
 	}
 
 	@SuppressWarnings("SuspiciousMethodCalls")
@@ -104,11 +104,11 @@ public final class MockGraphQlWebSocketServer implements WebSocketHandler {
 					return Flux.error(new IllegalStateException("Unexpected request: " + message));
 				}
 				return request.getResponseFlux()
-						.map(response -> GraphQlWebSocketMessage.next(id, response.toMap()))
-						.concatWithValues(
-								request.getError() != null ?
-										GraphQlWebSocketMessage.error(id, Collections.singletonList(request.getError())) :
-										GraphQlWebSocketMessage.complete(id));
+			.map(response -> GraphQlWebSocketMessage.next(id, response.toMap()))
+			.concatWithValues(
+		request.getError() != null ?
+	GraphQlWebSocketMessage.error(id, Collections.singletonList(request.getError())) :
+	GraphQlWebSocketMessage.complete(id));
 			}
 			case COMPLETE -> {
 				return Flux.empty();

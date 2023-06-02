@@ -90,20 +90,20 @@ public class RSocketGraphQlTesterBuilderTests {
 		TestJackson2JsonDecoder testDecoder = new TestJackson2JsonDecoder();
 
 		RSocketGraphQlTester.Builder<?> builder = this.builderSetup.initBuilder()
-				.rsocketRequester(requesterBuilder -> {
-					RSocketStrategies strategies = RSocketStrategies.builder()
-							.encoder(new Jackson2JsonEncoder())
-							.decoder(testDecoder)
-							.build();
-					requesterBuilder.rsocketStrategies(strategies);
-				});
+	.rsocketRequester(requesterBuilder -> {
+		RSocketStrategies strategies = RSocketStrategies.builder()
+	.encoder(new Jackson2JsonEncoder())
+	.decoder(testDecoder)
+	.build();
+		requesterBuilder.rsocketStrategies(strategies);
+	});
 
 		String document = "{me {name}}";
 		MovieCharacter character = MovieCharacter.create("Luke Skywalker");
 		this.builderSetup.getGraphQlService().setResponse(document,
-				ExecutionResultImpl.newExecutionResult()
-						.data(Collections.singletonMap("me", character))
-						.build());
+	ExecutionResultImpl.newExecutionResult()
+.data(Collections.singletonMap("me", character))
+.build());
 
 		RSocketGraphQlTester client = builder.build();
 		GraphQlTester.Response response = client.document(document).execute();
@@ -117,8 +117,8 @@ public class RSocketGraphQlTesterBuilderTests {
 		assertThat(testDecoder.getLastValue()).isEqualTo(character);
 	}
 
-	
-	private static class BuilderSetup  {
+
+	private static class BuilderSetup {
 
 		private final MockExecutionGraphQlService graphQlService = new MockExecutionGraphQlService();
 
@@ -132,15 +132,15 @@ public class RSocketGraphQlTesterBuilderTests {
 		public RSocketGraphQlTester.Builder<?> initBuilder() {
 
 			GraphQlRSocketController controller = new GraphQlRSocketController(
-					new GraphQlRSocketHandler(this.graphQlService, Collections.emptyList(), new Jackson2JsonEncoder()));
+		new GraphQlRSocketHandler(this.graphQlService, Collections.emptyList(), new Jackson2JsonEncoder()));
 
 			this.server = RSocketServer.create()
-					.acceptor(createSocketAcceptor(controller))
-					.bind(LocalServerTransport.create("local"))
-					.block();
+		.acceptor(createSocketAcceptor(controller))
+		.bind(LocalServerTransport.create("local"))
+		.block();
 
 			return RSocketGraphQlTester.builder()
-					.clientTransport(LocalClientTransport.create("local"));
+		.clientTransport(LocalClientTransport.create("local"));
 		}
 
 		private SocketAcceptor createSocketAcceptor(GraphQlRSocketController controller) {
@@ -207,7 +207,7 @@ public class RSocketGraphQlTesterBuilderTests {
 
 		@Override
 		public Object decode(DataBuffer dataBuffer, ResolvableType targetType,
-				@Nullable MimeType mimeType, @Nullable Map<String, Object> hints) throws DecodingException {
+	@Nullable MimeType mimeType, @Nullable Map<String, Object> hints) throws DecodingException {
 
 			this.lastValue = super.decode(dataBuffer, targetType, mimeType, hints);
 			return this.lastValue;

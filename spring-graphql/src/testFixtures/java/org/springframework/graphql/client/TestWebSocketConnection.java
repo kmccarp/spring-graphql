@@ -81,10 +81,10 @@ public final class TestWebSocketConnection {
 		Sinks.One<CloseStatus> serverStatusSink = Sinks.one();
 
 		this.clientSession = new TestWebSocketSession("client-session-" + id, url, headers,
-				clientSink, serverSink.asFlux(), clientStatusSink, serverStatusSink.asMono());
+	clientSink, serverSink.asFlux(), clientStatusSink, serverStatusSink.asMono());
 
 		this.serverSession = new TestWebSocketSession("server-session-" + id, url, headers,
-				serverSink, clientSink.asFlux(), serverStatusSink, clientStatusSink.asMono());
+	serverSink, clientSink.asFlux(), serverStatusSink, clientStatusSink.asMono());
 	}
 
 
@@ -143,11 +143,11 @@ public final class TestWebSocketConnection {
 	 */
 	private Mono<Void> invokeHandler(WebSocketHandler handler, TestWebSocketSession session, boolean isClient) {
 		return handler.handle(session)
-				.then(Mono.defer(() -> session.close(CloseStatus.NORMAL)))
-				.onErrorResume(ex -> {
-					logger.error("Unhandled " + (isClient ? "client" : "server") + " error: " + ex.getMessage());
-					return session.close(CloseStatus.PROTOCOL_ERROR).then(Mono.error(ex));
-				});
+	.then(Mono.defer(() -> session.close(CloseStatus.NORMAL)))
+	.onErrorResume(ex -> {
+		logger.error("Unhandled " + (isClient ? "client" : "server") + " error: " + ex.getMessage());
+		return session.close(CloseStatus.PROTOCOL_ERROR).then(Mono.error(ex));
+	});
 	}
 
 
@@ -189,11 +189,11 @@ public final class TestWebSocketConnection {
 
 
 		TestWebSocketSession(String sessionId, URI url, HttpHeaders headers,
-				Sinks.Many<WebSocketMessage> sendSink, Flux<WebSocketMessage> receiveFlux,
-				Sinks.One<CloseStatus> closeStatusSink, Mono<CloseStatus> remoteCloseStatusMono) {
+	Sinks.Many<WebSocketMessage> sendSink, Flux<WebSocketMessage> receiveFlux,
+	Sinks.One<CloseStatus> closeStatusSink, Mono<CloseStatus> remoteCloseStatusMono) {
 
 			super(new Object(), sessionId, new HandshakeInfo(url, headers, Mono.empty(), null),
-					DefaultDataBufferFactory.sharedInstance);
+		DefaultDataBufferFactory.sharedInstance);
 
 			this.sendSink = sendSink;
 			this.receiveFlux = receiveFlux.cache();
@@ -225,12 +225,12 @@ public final class TestWebSocketConnection {
 		@Override
 		public Mono<Void> send(Publisher<WebSocketMessage> messages) {
 			return Flux.from(messages)
-					.doOnNext(this::saveMessage)
-					.doOnNext(message -> {
-						Sinks.EmitResult result = this.sendSink.tryEmitNext(message);
-						Assert.state(result.isSuccess(), this + " failed to send: " + message + ", with " + result);
-					})
-					.then();
+		.doOnNext(this::saveMessage)
+		.doOnNext(message -> {
+			Sinks.EmitResult result = this.sendSink.tryEmitNext(message);
+			Assert.state(result.isSuccess(), this + " failed to send: " + message + ", with " + result);
+		})
+		.then();
 		}
 
 		private void saveMessage(WebSocketMessage message) {
@@ -267,7 +267,8 @@ public final class TestWebSocketConnection {
 			}
 			else {
 				this.closeStatusSink.tryEmitEmpty();
-			};
+			}
+			;
 		}
 
 		@Override

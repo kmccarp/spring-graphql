@@ -46,8 +46,8 @@ final class DefaultGraphQlClient implements GraphQlClient {
 
 
 	DefaultGraphQlClient(
-			DocumentSource documentSource, GraphQlClientInterceptor.Chain executeChain,
-			GraphQlClientInterceptor.SubscriptionChain executeSubscriptionChain) {
+DocumentSource documentSource, GraphQlClientInterceptor.Chain executeChain,
+GraphQlClientInterceptor.SubscriptionChain executeSubscriptionChain) {
 
 		Assert.notNull(documentSource, "DocumentSource is required");
 		Assert.notNull(executeChain, "GraphQlClientInterceptor.Chain is required");
@@ -156,22 +156,22 @@ final class DefaultGraphQlClient implements GraphQlClient {
 		@Override
 		public Mono<ClientGraphQlResponse> execute() {
 			return initRequest().flatMap(request -> executeChain.next(request)
-					.onErrorResume(
-							ex -> !(ex instanceof GraphQlClientException),
-							ex -> Mono.error(new GraphQlTransportException(ex, request))));
+		.onErrorResume(
+	ex -> !(ex instanceof GraphQlClientException),
+	ex -> Mono.error(new GraphQlTransportException(ex, request))));
 		}
 
 		@Override
 		public Flux<ClientGraphQlResponse> executeSubscription() {
 			return initRequest().flatMapMany(request -> executeSubscriptionChain.next(request)
-					.onErrorResume(
-							ex -> !(ex instanceof GraphQlClientException),
-							ex -> Mono.error(new GraphQlTransportException(ex, request))));
+		.onErrorResume(
+	ex -> !(ex instanceof GraphQlClientException),
+	ex -> Mono.error(new GraphQlTransportException(ex, request))));
 		}
 
 		private Mono<ClientGraphQlRequest> initRequest() {
 			return this.documentMono.map(document ->
-					new DefaultClientGraphQlRequest(document, this.operationName, this.variables, this.extensions, this.attributes));
+		new DefaultClientGraphQlRequest(document, this.operationName, this.variables, this.extensions, this.attributes));
 		}
 
 	}
@@ -196,7 +196,7 @@ final class DefaultGraphQlClient implements GraphQlClient {
 			ClientResponseField field = response.field(this.path);
 			if (!response.isValid() || !field.getErrors().isEmpty()) {
 				throw new FieldAccessException(
-						((DefaultClientGraphQlResponse) response).getRequest(), response, field);
+			((DefaultClientGraphQlResponse) response).getRequest(), response, field);
 			}
 			return (field.getValue() != null ? field : null);
 		}

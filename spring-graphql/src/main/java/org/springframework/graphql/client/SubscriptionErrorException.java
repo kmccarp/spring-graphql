@@ -41,7 +41,7 @@ public class SubscriptionErrorException extends GraphQlTransportException {
 	 */
 	public SubscriptionErrorException(GraphQlRequest request, List<ResponseError> errors) {
 		super("GraphQL subscription completed with an \"error\" message, " +
-				"with the following errors: " + errors, null, request);
+	"with the following errors: " + errors, null, request);
 		this.errors = errors;
 	}
 

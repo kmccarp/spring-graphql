@@ -85,8 +85,8 @@ import static org.springframework.core.annotation.MergedAnnotations.SearchStrate
 class SchemaMappingBeanFactoryInitializationAotProcessor implements BeanFactoryInitializationAotProcessor {
 
 	private final static boolean springDataPresent = ClassUtils.isPresent(
-			"org.springframework.data.projection.SpelAwareProxyProjectionFactory",
-			SchemaMappingBeanFactoryInitializationAotProcessor.class.getClassLoader());
+"org.springframework.data.projection.SpelAwareProxyProjectionFactory",
+SchemaMappingBeanFactoryInitializationAotProcessor.class.getClassLoader());
 
 
 	@Override
@@ -94,15 +94,15 @@ class SchemaMappingBeanFactoryInitializationAotProcessor implements BeanFactoryI
 		List<Class<?>> controllers = new ArrayList<>();
 		List<Class<?>> controllerAdvices = new ArrayList<>();
 		Arrays.stream(beanFactory.getBeanDefinitionNames())
-				.map(beanName -> RegisteredBean.of(beanFactory, beanName).getBeanClass())
-				.forEach(beanClass -> {
-					if (isController(beanClass)) {
-						controllers.add(beanClass);
-					}
-					else if (isControllerAdvice(beanClass)) {
-						controllerAdvices.add(beanClass);
-					}
-				});
+	.map(beanName -> RegisteredBean.of(beanFactory, beanName).getBeanClass())
+	.forEach(beanClass -> {
+		if (isController(beanClass)) {
+			controllers.add(beanClass);
+		}
+		else if (isControllerAdvice(beanClass)) {
+			controllerAdvices.add(beanClass);
+		}
+	});
 		return new SchemaMappingBeanFactoryInitializationAotContribution(controllers, controllerAdvices);
 	}
 
@@ -116,7 +116,7 @@ class SchemaMappingBeanFactoryInitializationAotProcessor implements BeanFactoryI
 
 
 	private static class SchemaMappingBeanFactoryInitializationAotContribution
-			implements BeanFactoryInitializationAotContribution {
+implements BeanFactoryInitializationAotContribution {
 
 		private final List<Class<?>> controllers;
 
@@ -144,27 +144,27 @@ class SchemaMappingBeanFactoryInitializationAotProcessor implements BeanFactoryI
 			this.controllers.forEach(controller -> {
 				runtimeHints.reflection().registerType(controller, MemberCategory.INTROSPECT_DECLARED_METHODS);
 				ReflectionUtils.doWithMethods(controller,
-						method -> processSchemaMappingMethod(runtimeHints, method),
-						this::isGraphQlHandlerMethod);
+			method -> processSchemaMappingMethod(runtimeHints, method),
+			this::isGraphQlHandlerMethod);
 				ReflectionUtils.doWithMethods(controller,
-						method -> processExceptionHandlerMethod(runtimeHints, method),
-						this::isExceptionHandlerMethod);
+			method -> processExceptionHandlerMethod(runtimeHints, method),
+			this::isExceptionHandlerMethod);
 			});
 			this.controllerAdvices.forEach(controllerAdvice -> {
 				runtimeHints.reflection().registerType(controllerAdvice, MemberCategory.INTROSPECT_DECLARED_METHODS);
 				ReflectionUtils.doWithMethods(controllerAdvice,
-						method -> processExceptionHandlerMethod(runtimeHints, method),
-						this::isExceptionHandlerMethod);
+			method -> processExceptionHandlerMethod(runtimeHints, method),
+			this::isExceptionHandlerMethod);
 			});
 		}
 
 		private void registerSpringDataSpelSupport(RuntimeHints runtimeHints) {
 			if (springDataPresent) {
 				runtimeHints.reflection()
-						.registerType(SpelAwareProxyProjectionFactory.class)
-						.registerType(TypeReference.of("org.springframework.data.projection.SpelEvaluatingMethodInterceptor$TargetWrapper"),
-								builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
-										MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.INVOKE_PUBLIC_METHODS));
+			.registerType(SpelAwareProxyProjectionFactory.class)
+			.registerType(TypeReference.of("org.springframework.data.projection.SpelEvaluatingMethodInterceptor$TargetWrapper"),
+		builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_CONSTRUCTORS,
+	MemberCategory.INVOKE_DECLARED_METHODS, MemberCategory.INVOKE_PUBLIC_METHODS));
 			}
 		}
 
@@ -208,11 +208,11 @@ class SchemaMappingBeanFactoryInitializationAotProcessor implements BeanFactoryI
 		void apply(RuntimeHints runtimeHints);
 
 		static MethodParameterRuntimeHintsRegistrar fromMethodParameter(
-				HandlerMethodArgumentResolverComposite resolvers, MethodParameter parameter) {
+	HandlerMethodArgumentResolverComposite resolvers, MethodParameter parameter) {
 
 			HandlerMethodArgumentResolver resolver = resolvers.getArgumentResolver(parameter);
 			if (resolver instanceof ArgumentMethodArgumentResolver
-					|| resolver instanceof ArgumentsMethodArgumentResolver) {
+		|| resolver instanceof ArgumentsMethodArgumentResolver) {
 				return new ArgumentBindingHints(parameter);
 			}
 			if (resolver instanceof DataLoaderMethodArgumentResolver) {
@@ -268,7 +268,7 @@ class SchemaMappingBeanFactoryInitializationAotProcessor implements BeanFactoryI
 		@Override
 		public void apply(RuntimeHints hints) {
 			bindingRegistrar.registerReflectionHints(
-					hints.reflection(), this.methodParameter.nested().getNestedGenericParameterType());
+		hints.reflection(), this.methodParameter.nested().getNestedGenericParameterType());
 		}
 	}
 

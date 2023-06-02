@@ -50,10 +50,10 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 public class GraphQlHttpHandlerTests {
 
 	private static final List<HttpMessageConverter<?>> MESSAGE_READERS =
-			Collections.singletonList(new MappingJackson2HttpMessageConverter());
+Collections.singletonList(new MappingJackson2HttpMessageConverter());
 
 	private final GraphQlHttpHandler greetingHandler = GraphQlSetup.schemaContent("type Query { greeting: String }")
-			.queryFetcher("greeting", (env) -> "Hello").toHttpHandler();
+.queryFetcher("greeting", (env) -> "Hello").toHttpHandler();
 
 	@Test
 	void shouldProduceApplicationJsonByDefault() throws Exception {
@@ -79,8 +79,8 @@ public class GraphQlHttpHandlerTests {
 	@Test
 	void locale() throws Exception {
 		GraphQlHttpHandler handler = GraphQlSetup.schemaContent("type Query { greeting: String }")
-				.queryFetcher("greeting", (env) -> "Hello in " + env.getLocale())
-				.toHttpHandler();
+	.queryFetcher("greeting", (env) -> "Hello in " + env.getLocale())
+	.toHttpHandler();
 		MockHttpServletRequest servletRequest = createServletRequest("{\"query\":\"{ greeting }\"}", MediaType.APPLICATION_GRAPHQL_RESPONSE_VALUE);
 		LocaleContextHolder.setLocale(Locale.FRENCH);
 
@@ -88,7 +88,7 @@ public class GraphQlHttpHandlerTests {
 			MockHttpServletResponse servletResponse = handleRequest(servletRequest, handler);
 
 			assertThat(servletResponse.getContentAsString())
-					.isEqualTo("{\"data\":{\"greeting\":\"Hello in fr\"}}");
+		.isEqualTo("{\"data\":{\"greeting\":\"Hello in fr\"}}");
 		}
 		finally {
 			LocaleContextHolder.resetLocaleContext();
@@ -98,8 +98,8 @@ public class GraphQlHttpHandlerTests {
 	@Test
 	void shouldSetExecutionId() throws Exception {
 		GraphQlHttpHandler handler = GraphQlSetup.schemaContent("type Query { showId: ID! }")
-				.queryFetcher("showId", (env) -> env.getExecutionId().toString())
-				.toHttpHandler();
+	.queryFetcher("showId", (env) -> env.getExecutionId().toString())
+	.toHttpHandler();
 
 		MockHttpServletRequest servletRequest = createServletRequest("{\"query\":\"{ showId }\"}", MediaType.APPLICATION_GRAPHQL_RESPONSE_VALUE);
 
@@ -119,7 +119,7 @@ public class GraphQlHttpHandlerTests {
 	}
 
 	private MockHttpServletResponse handleRequest(
-			MockHttpServletRequest servletRequest, GraphQlHttpHandler handler) throws ServletException, IOException {
+MockHttpServletRequest servletRequest, GraphQlHttpHandler handler) throws ServletException, IOException {
 
 		ServerRequest request = ServerRequest.create(servletRequest, MESSAGE_READERS);
 		ServerResponse response = ((AsyncServerResponse) handler.handleRequest(request)).block();

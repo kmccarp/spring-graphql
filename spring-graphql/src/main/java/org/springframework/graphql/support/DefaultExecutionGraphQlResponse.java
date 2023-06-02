@@ -131,9 +131,9 @@ public class DefaultExecutionGraphQlResponse extends AbstractGraphQlResponse imp
 		@Override
 		public String getPath() {
 			return getParsedPath().stream()
-					.reduce("",
-							(s, o) -> s + (o instanceof Integer ? "[" + o + "]" : (s.isEmpty() ? o : "." + o)),
-							(s, s2) -> null);
+		.reduce("",
+	(s, o) -> s + (o instanceof Integer ? "[" + o + "]" : (s.isEmpty() ? o : "." + o)),
+	(s, s2) -> null);
 		}
 
 		@Override

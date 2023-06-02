@@ -51,34 +51,31 @@ public class CompositeSubscriptionExceptionResolverTests {
 		String schema = "type Subscription { greetings: String! } type Query { greeting: String! }";
 
 		GraphQL graphQL = GraphQlSetup.schemaContent(schema)
-				.subscriptionFetcher("greetings", env ->
-						Flux.create(emitter -> {
-							emitter.next("a");
-							emitter.error(new RuntimeException("Test Exception"));
-							emitter.next("b");
-						}))
-				.subscriptionExceptionResolvers(SubscriptionExceptionResolver.forSingleError(exception ->
-						GraphqlErrorBuilder.newError()
-								.message("Error: " + exception.getMessage())
-								.errorType(ErrorType.BAD_REQUEST)
-								.build()))
-				.toGraphQl();
+	.subscriptionFetcher("greetings", env ->
+Flux.create(emitter -> {
+	emitter.next("a");
+	emitter.error(new RuntimeException("Test Exception"));
+	emitter.next("b");
+}))
+	.subscriptionExceptionResolvers(SubscriptionExceptionResolver.forSingleError(exception ->
+GraphqlErrorBuilder.newError().message("Error: " + exception.getMessage()).errorType(ErrorType.BAD_REQUEST).build()))
+	.toGraphQl();
 
 		ExecutionInput input = ExecutionInput.newExecutionInput(query).build();
 		Flux<ResponseHelper> flux = Mono.fromFuture(graphQL.executeAsync(input))
-				.map(ResponseHelper::forSubscription)
-				.block(TIMEOUT);
+	.map(ResponseHelper::forSubscription)
+	.block(TIMEOUT);
 
 		StepVerifier.create(flux)
-				.consumeNextWith((helper) -> assertThat(helper.toEntity("greetings", String.class)).isEqualTo("a"))
-				.consumeErrorWith((ex) -> {
-					SubscriptionPublisherException theEx = (SubscriptionPublisherException) ex;
-					List<GraphQLError> errors = theEx.getErrors();
-					assertThat(errors).hasSize(1);
-					assertThat(errors.get(0).getMessage()).isEqualTo("Error: Test Exception");
-					assertThat(errors.get(0).getErrorType()).isEqualTo(ErrorType.BAD_REQUEST);
-				})
-				.verify(TIMEOUT);
+	.consumeNextWith((helper) -> assertThat(helper.toEntity("greetings", String.class)).isEqualTo("a"))
+	.consumeErrorWith((ex) -> {
+		SubscriptionPublisherException theEx = (SubscriptionPublisherException) ex;
+		List<GraphQLError> errors = theEx.getErrors();
+		assertThat(errors).hasSize(1);
+		assertThat(errors.get(0).getMessage()).isEqualTo("Error: Test Exception");
+		assertThat(errors.get(0).getErrorType()).isEqualTo(ErrorType.BAD_REQUEST);
+	})
+	.verify(TIMEOUT);
 	}
 
 	@Test
@@ -92,40 +89,40 @@ public class CompositeSubscriptionExceptionResolverTests {
 
 		try {
 			SubscriptionExceptionResolverAdapter resolver = SubscriptionExceptionResolver.forSingleError(exception ->
-					GraphqlErrorBuilder.newError()
-							.message("Error: " + exception.getMessage() + ", name=" + threadLocal.get())
-							.errorType(ErrorType.BAD_REQUEST)
-							.build());
+		GraphqlErrorBuilder.newError()
+	.message("Error: " + exception.getMessage() + ", name=" + threadLocal.get())
+	.errorType(ErrorType.BAD_REQUEST)
+	.build());
 			resolver.setThreadLocalContextAware(true);
 
 			GraphQL graphQL = GraphQlSetup.schemaContent(schema)
-					.subscriptionFetcher("greetings", env ->
-							Flux.create(emitter -> {
-								emitter.next("a");
-								emitter.error(new RuntimeException("Test Exception"));
-							}))
-					.subscriptionExceptionResolvers(resolver)
-					.toGraphQl();
+		.subscriptionFetcher("greetings", env ->
+	Flux.create(emitter -> {
+		emitter.next("a");
+		emitter.error(new RuntimeException("Test Exception"));
+	}))
+		.subscriptionExceptionResolvers(resolver)
+		.toGraphQl();
 
 			ExecutionInput input = ExecutionInput.newExecutionInput(query).build();
 			ContextSnapshot.captureAll().updateContext(input.getGraphQLContext());
 
 			Flux<ResponseHelper> flux = Mono.defer(() -> Mono.fromFuture(graphQL.executeAsync(input)))
-					.map(ResponseHelper::forSubscription)
-					.subscribeOn(Schedulers.boundedElastic()) // restore on different thread for DataFetcher
-					.block(TIMEOUT)
-					.subscribeOn(Schedulers.boundedElastic()); // restore on different thread for SubscriptionExceptionResolver
+		.map(ResponseHelper::forSubscription)
+		.subscribeOn(Schedulers.boundedElastic()) // restore on different thread for DataFetcher
+		.block(TIMEOUT)
+		.subscribeOn(Schedulers.boundedElastic()); // restore on different thread for SubscriptionExceptionResolver
 
 			StepVerifier.create(flux)
-					.consumeNextWith((helper) -> assertThat(helper.toEntity("greetings", String.class)).isEqualTo("a"))
-					.consumeErrorWith((ex) -> {
-						SubscriptionPublisherException theEx = (SubscriptionPublisherException) ex;
-						List<GraphQLError> errors = theEx.getErrors();
-						assertThat(errors).hasSize(1);
-						assertThat(errors.get(0).getMessage()).isEqualTo("Error: Test Exception, name=007");
-						assertThat(errors.get(0).getErrorType()).isEqualTo(ErrorType.BAD_REQUEST);
-					})
-					.verify(TIMEOUT);
+		.consumeNextWith((helper) -> assertThat(helper.toEntity("greetings", String.class)).isEqualTo("a"))
+		.consumeErrorWith((ex) -> {
+			SubscriptionPublisherException theEx = (SubscriptionPublisherException) ex;
+			List<GraphQLError> errors = theEx.getErrors();
+			assertThat(errors).hasSize(1);
+			assertThat(errors.get(0).getMessage()).isEqualTo("Error: Test Exception, name=007");
+			assertThat(errors.get(0).getErrorType()).isEqualTo(ErrorType.BAD_REQUEST);
+		})
+		.verify(TIMEOUT);
 		}
 		finally {
 			threadLocal.remove();

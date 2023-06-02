@@ -44,8 +44,8 @@ final class GraphQlServiceGraphQlTransport extends AbstractDirectGraphQlTranspor
 
 
 	GraphQlServiceGraphQlTransport(
-			ExecutionGraphQlService graphQlService,
-			List<BiFunction<ExecutionInput, ExecutionInput.Builder, ExecutionInput>> executionInputConfigurers) {
+ExecutionGraphQlService graphQlService,
+List<BiFunction<ExecutionInput, ExecutionInput.Builder, ExecutionInput>> executionInputConfigurers) {
 
 		Assert.notNull(graphQlService, "GraphQlService is required");
 		this.graphQlService = graphQlService;

@@ -69,7 +69,7 @@ class GraphiQlHandlerTests {
 	@Test
 	void shouldRedirectWithPathAndWsPathQueryParameter() {
 		GraphiQlHandler wsHandler = new GraphiQlHandler("/graphql", "/graphql",
-				new ByteArrayResource("GRAPHIQL".getBytes(StandardCharsets.UTF_8)));
+	new ByteArrayResource("GRAPHIQL".getBytes(StandardCharsets.UTF_8)));
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.get("/graphiql").build();
 		MockServerWebExchange exchange = MockServerWebExchange.from(httpRequest);
 		ServerRequest request = ServerRequest.create(exchange, MESSAGE_READERS);

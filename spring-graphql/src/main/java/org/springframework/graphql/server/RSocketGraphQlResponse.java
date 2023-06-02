@@ -63,7 +63,7 @@ public class RSocketGraphQlResponse extends DefaultExecutionGraphQlResponse {
 	 * Builder to transform a {@link RSocketGraphQlResponse}.
 	 */
 	public static final class Builder
-			extends DefaultExecutionGraphQlResponse.Builder<Builder, RSocketGraphQlResponse> {
+extends DefaultExecutionGraphQlResponse.Builder<Builder, RSocketGraphQlResponse> {
 
 		private Builder(RSocketGraphQlResponse original) {
 			super(original);

@@ -63,11 +63,11 @@ class ValidationHelperTests {
 		MyBean bean = new MyBean();
 
 		BiConsumer<Object, Object[]> validator1 = createValidator(MyBean.class, "myValidMethod");
-		assertViolation(() -> validator1.accept(bean, new Object[] {null, 2}), "myValidMethod.arg0");
-		assertViolation(() -> validator1.accept(bean, new Object[] {"test", 12}), "myValidMethod.arg1");
+		assertViolation(() -> validator1.accept(bean, new Object[]{null, 2}), "myValidMethod.arg0");
+		assertViolation(() -> validator1.accept(bean, new Object[]{"test", 12}), "myValidMethod.arg1");
 
 		BiConsumer<Object, Object[]> validator2 = createValidator(MyBean.class, "myValidatedParameterMethod");
-		assertViolation(() -> validator2.accept(bean, new Object[] {new ConstrainedInput(100)}), "integerValue");
+		assertViolation(() -> validator2.accept(bean, new Object[]{new ConstrainedInput(100)}), "integerValue");
 	}
 
 	@Test
@@ -75,10 +75,10 @@ class ValidationHelperTests {
 		MyValidationGroupsBean bean = new MyValidationGroupsBean();
 
 		BiConsumer<Object, Object[]> validator1 = createValidator(MyValidationGroupsBean.class, "myValidMethodWithGroup");
-		assertViolation(() -> validator1.accept(bean, new Object[] {null}), "myValidMethodWithGroup.arg0");
+		assertViolation(() -> validator1.accept(bean, new Object[]{null}), "myValidMethodWithGroup.arg0");
 
 		BiConsumer<Object, Object[]> validator2 = createValidator(MyValidationGroupsBean.class, "myValidMethodWithGroupOnType");
-		assertViolation(() -> validator2.accept(bean, new Object[] {null}), "myValidMethodWithGroupOnType.arg0");
+		assertViolation(() -> validator2.accept(bean, new Object[]{null}), "myValidMethodWithGroupOnType.arg0");
 	}
 
 	@Test
@@ -98,30 +98,29 @@ class ValidationHelperTests {
 
 	private BiConsumer<Object, Object[]> createValidator(Class<?> handlerType, String methodName) {
 		return ValidationHelper.create(Validation.buildDefaultValidatorFactory().getValidator())
-				.getValidationHelperFor(findHandlerMethod(handlerType, methodName));
+	.getValidationHelperFor(findHandlerMethod(handlerType, methodName));
 	}
 
 	private HandlerMethod findHandlerMethod(Class<?> handlerType, String methodName) {
 		Object handler = BeanUtils.instantiateClass(handlerType);
 		Method method = Arrays.stream(handlerType.getMethods())
-				.filter(m -> m.getName().equals(methodName))
-				.findAny()
-				.orElseThrow(() -> new IllegalArgumentException("Invalid method name"));
+	.filter(m -> m.getName().equals(methodName))
+	.findAny()
+	.orElseThrow(() -> new IllegalArgumentException("Invalid method name"));
 		return new HandlerMethod(handler, method);
 	}
 
 	private IterableAssert<ConstraintViolation> assertViolations(ThrowableAssert.ThrowingCallable callable) {
 		return assertThatThrownBy(callable)
-				.isInstanceOf(ConstraintViolationException.class)
-				.extracting("constraintViolations")
-				.asInstanceOf(InstanceOfAssertFactories.iterable(ConstraintViolation.class));
+	.isInstanceOf(ConstraintViolationException.class)
+	.extracting("constraintViolations")
+	.asInstanceOf(InstanceOfAssertFactories.iterable(ConstraintViolation.class));
 	}
 
 	private void assertViolation(ThrowableAssert.ThrowingCallable callable, String propertyPath) {
 		assertViolations(callable).anyMatch(violation ->
-				violation.getPropertyPath().toString().equals(propertyPath));
+	violation.getPropertyPath().toString().equals(propertyPath));
 	}
-
 
 
 	private static class ConstrainedInput {

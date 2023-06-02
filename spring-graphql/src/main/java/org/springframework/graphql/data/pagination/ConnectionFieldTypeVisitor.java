@@ -77,7 +77,7 @@ public final class ConnectionFieldTypeVisitor extends GraphQLTypeVisitorStub {
 
 	@Override
 	public TraversalControl visitGraphQLFieldDefinition(
-			GraphQLFieldDefinition fieldDefinition, TraverserContext<GraphQLSchemaElement> context) {
+GraphQLFieldDefinition fieldDefinition, TraverserContext<GraphQLSchemaElement> context) {
 
 		GraphQLCodeRegistry.Builder codeRegistry = context.getVarFromParents(GraphQLCodeRegistry.Builder.class);
 		GraphQLFieldsContainer parent = (GraphQLFieldsContainer) context.getParentNode();
@@ -91,8 +91,8 @@ public final class ConnectionFieldTypeVisitor extends GraphQLTypeVisitorStub {
 			if (dataFetcher instanceof TrivialDataFetcher<?>) {
 				if (logger.isDebugEnabled()) {
 					logger.debug("Connection field " +
-							"'" + parent.getName() + ":" + fieldDefinition.getName() + "' " +
-							"is mapped to trivial data fetcher: " + dataFetcher.getClass().getName());
+				"'" + parent.getName() + ":" + fieldDefinition.getName() + "' " +
+				"is mapped to trivial data fetcher: " + dataFetcher.getClass().getName());
 				}
 			}
 			else {
@@ -122,7 +122,7 @@ public final class ConnectionFieldTypeVisitor extends GraphQLTypeVisitorStub {
 			return false;
 		}
 		if (pageInfoType.getField("hasPreviousPage") == null || pageInfoType.getField("hasNextPage") == null ||
-				pageInfoType.getField("startCursor") == null || pageInfoType.getField("endCursor") == null) {
+	pageInfoType.getField("startCursor") == null || pageInfoType.getField("endCursor") == null) {
 			return false;
 		}
 
@@ -172,7 +172,7 @@ public final class ConnectionFieldTypeVisitor extends GraphQLTypeVisitorStub {
 	private record ConnectionDataFetcher(DataFetcher<?> delegate, ConnectionAdapter adapter) implements DataFetcher<Object> {
 
 		private final static Connection<?> EMPTY_CONNECTION =
-				new DefaultConnection<>(Collections.emptyList(), new DefaultPageInfo(null, null, false, false));
+	new DefaultConnection<>(Collections.emptyList(), new DefaultPageInfo(null, null, false, false));
 
 
 		private ConnectionDataFetcher {
@@ -209,7 +209,7 @@ public final class ConnectionFieldTypeVisitor extends GraphQLTypeVisitorStub {
 					return container;
 				}
 				throw new IllegalStateException(
-						"No ConnectionAdapter for: " + container.getClass().getName());
+			"No ConnectionAdapter for: " + container.getClass().getName());
 			}
 
 			Collection<T> nodes = this.adapter.getContent(container);
@@ -221,8 +221,8 @@ public final class ConnectionFieldTypeVisitor extends GraphQLTypeVisitorStub {
 			}
 
 			DefaultPageInfo pageInfo = new DefaultPageInfo(
-					edges.get(0).getCursor(), edges.get(edges.size() - 1).getCursor(),
-					this.adapter.hasPrevious(container), this.adapter.hasNext(container));
+		edges.get(0).getCursor(), edges.get(edges.size() - 1).getCursor(),
+		this.adapter.hasPrevious(container), this.adapter.hasNext(container));
 
 			return new DefaultConnection<>(edges, pageInfo);
 		}

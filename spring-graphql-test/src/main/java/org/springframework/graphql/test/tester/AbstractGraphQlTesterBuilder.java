@@ -58,7 +58,7 @@ import org.springframework.util.ClassUtils;
 public abstract class AbstractGraphQlTesterBuilder<B extends AbstractGraphQlTesterBuilder<B>> implements GraphQlTester.Builder<B> {
 
 	private static final boolean jackson2Present = ClassUtils.isPresent(
-			"com.fasterxml.jackson.databind.ObjectMapper", AbstractGraphQlClientBuilder.class.getClassLoader());
+"com.fasterxml.jackson.databind.ObjectMapper", AbstractGraphQlClientBuilder.class.getClassLoader());
 
 	private static final Duration DEFAULT_RESPONSE_DURATION = Duration.ofSeconds(5);
 
@@ -79,8 +79,8 @@ public abstract class AbstractGraphQlTesterBuilder<B extends AbstractGraphQlTest
 
 	private static DocumentSource initDocumentSource() {
 		return new ResourceDocumentSource(
-				Collections.singletonList(new ClassPathResource("graphql-test/")),
-				ResourceDocumentSource.FILE_EXTENSIONS);
+	Collections.singletonList(new ClassPathResource("graphql-test/")),
+	ResourceDocumentSource.FILE_EXTENSIONS);
 	}
 
 
@@ -131,7 +131,7 @@ public abstract class AbstractGraphQlTesterBuilder<B extends AbstractGraphQlTest
 		}
 
 		return new DefaultGraphQlTester(transport, this.errorFilter,
-				this.jsonPathConfig, this.documentSource, this.responseTimeout);
+	this.jsonPathConfig, this.documentSource, this.responseTimeout);
 	}
 
 	/**
@@ -160,21 +160,21 @@ public abstract class AbstractGraphQlTesterBuilder<B extends AbstractGraphQlTest
 			@Override
 			public Mono<GraphQlResponse> execute(GraphQlRequest request) {
 				return client
-						.document(request.getDocument())
-						.operationName(request.getOperationName())
-						.variables(request.getVariables())
-						.execute()
-						.cast(GraphQlResponse.class);
+			.document(request.getDocument())
+			.operationName(request.getOperationName())
+			.variables(request.getVariables())
+			.execute()
+			.cast(GraphQlResponse.class);
 			}
 
 			@Override
 			public Flux<GraphQlResponse> executeSubscription(GraphQlRequest request) {
 				return client
-						.document(request.getDocument())
-						.operationName(request.getOperationName())
-						.variables(request.getVariables())
-						.executeSubscription()
-						.cast(GraphQlResponse.class);
+			.document(request.getDocument())
+			.operationName(request.getOperationName())
+			.variables(request.getVariables())
+			.executeSubscription()
+			.cast(GraphQlResponse.class);
 			}
 		};
 	}

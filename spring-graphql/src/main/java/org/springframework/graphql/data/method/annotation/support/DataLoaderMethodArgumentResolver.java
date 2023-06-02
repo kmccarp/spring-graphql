@@ -41,7 +41,7 @@ import org.springframework.util.Assert;
  * @since 1.0.0
  */
 public class DataLoaderMethodArgumentResolver implements HandlerMethodArgumentResolver {
-	
+
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return parameter.getParameterType().equals(DataLoader.class);
@@ -81,34 +81,34 @@ public class DataLoaderMethodArgumentResolver implements HandlerMethodArgumentRe
 			if (parameterizedType.getActualTypeArguments().length == 2) {
 				Type valueType = parameterizedType.getActualTypeArguments()[1];
 				return (valueType instanceof Class ?
-						(Class<?>) valueType : ResolvableType.forType(valueType).resolve());
+			(Class<?>) valueType : ResolvableType.forType(valueType).resolve());
 			}
 		}
 		return null;
 	}
 
 	private String getErrorMessage(
-			MethodParameter parameter, DataFetchingEnvironment environment,
-			@Nullable Class<?> valueType, @Nullable String parameterName) {
+MethodParameter parameter, DataFetchingEnvironment environment,
+@Nullable Class<?> valueType, @Nullable String parameterName) {
 
 		String message = "Cannot resolve DataLoader for parameter" +
-				(parameterName != null ? " '" + parameterName + "'" : "[" + parameter.getParameterIndex() + "]" ) +
-				" in method " + parameter.getMethod().toGenericString() + ". ";
+	(parameterName != null ? " '" + parameterName + "'" : "[" + parameter.getParameterIndex() + "]") +
+	" in method " + parameter.getMethod().toGenericString() + ". ";
 
 		if (valueType == null) {
 			message += "If the batch loader was registered without a name, " +
-					"then declaring the DataLoader argument with generic types should help " +
-					"to look up the DataLoader based on the value type name.";
+		"then declaring the DataLoader argument with generic types should help " +
+		"to look up the DataLoader based on the value type name.";
 		}
 		else if (parameterName == null) {
 			message += "If the batch loader was registered with a name, " +
-					"then compiling with \"-parameters\" should help " +
-					"to look up the DataLoader based on the parameter name.";
+		"then compiling with \"-parameters\" should help " +
+		"to look up the DataLoader based on the parameter name.";
 		}
 		else {
 			message += "Neither the name of the declared value type '" + valueType + "' " +
-					"nor the method parameter name '" + parameterName + "' match to any DataLoader. " +
-					"The DataLoaderRegistry contains: " + environment.getDataLoaderRegistry().getKeys();
+		"nor the method parameter name '" + parameterName + "' match to any DataLoader. " +
+		"The DataLoaderRegistry contains: " + environment.getDataLoaderRegistry().getKeys();
 		}
 
 		return message;

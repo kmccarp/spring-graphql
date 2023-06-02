@@ -56,15 +56,16 @@ public class GraphQlHttpHandler {
 	private static final Log logger = LogFactory.getLog(GraphQlHttpHandler.class);
 
 	private static final ParameterizedTypeReference<Map<String, Object>> MAP_PARAMETERIZED_TYPE_REF =
-			new ParameterizedTypeReference<Map<String, Object>>() {};
+new ParameterizedTypeReference<Map<String, Object>>() {
+};
 
 	// To be removed in favor of Framework's MediaType.APPLICATION_GRAPHQL_RESPONSE
 	private static final MediaType APPLICATION_GRAPHQL_RESPONSE =
-			new MediaType("application", "graphql-response+json");
+new MediaType("application", "graphql-response+json");
 
 	@SuppressWarnings("removal")
 	private static final List<MediaType> SUPPORTED_MEDIA_TYPES =
-			Arrays.asList(APPLICATION_GRAPHQL_RESPONSE, MediaType.APPLICATION_JSON, MediaType.APPLICATION_GRAPHQL);
+Arrays.asList(APPLICATION_GRAPHQL_RESPONSE, MediaType.APPLICATION_JSON, MediaType.APPLICATION_GRAPHQL);
 
 	private final IdGenerator idGenerator = new AlternativeJdkIdGenerator();
 
@@ -89,24 +90,24 @@ public class GraphQlHttpHandler {
 	public ServerResponse handleRequest(ServerRequest serverRequest) throws ServletException {
 
 		WebGraphQlRequest graphQlRequest = new WebGraphQlRequest(
-				serverRequest.uri(), serverRequest.headers().asHttpHeaders(), initCookies(serverRequest),
-				serverRequest.attributes(), readBody(serverRequest), this.idGenerator.generateId().toString(),
-				LocaleContextHolder.getLocale());
+	serverRequest.uri(), serverRequest.headers().asHttpHeaders(), initCookies(serverRequest),
+	serverRequest.attributes(), readBody(serverRequest), this.idGenerator.generateId().toString(),
+	LocaleContextHolder.getLocale());
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("Executing: " + graphQlRequest);
 		}
 
 		Mono<ServerResponse> responseMono = this.graphQlHandler.handleRequest(graphQlRequest)
-				.map(response -> {
-					if (logger.isDebugEnabled()) {
-						logger.debug("Execution complete");
-					}
-					ServerResponse.BodyBuilder builder = ServerResponse.ok();
-					builder.headers(headers -> headers.putAll(response.getResponseHeaders()));
-					builder.contentType(selectResponseMediaType(serverRequest));
-					return builder.body(response.toMap());
-				});
+	.map(response -> {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Execution complete");
+		}
+		ServerResponse.BodyBuilder builder = ServerResponse.ok();
+		builder.headers(headers -> headers.putAll(response.getResponseHeaders()));
+		builder.contentType(selectResponseMediaType(serverRequest));
+		return builder.body(response.toMap());
+	});
 
 		return ServerResponse.async(responseMono);
 	}

@@ -32,7 +32,7 @@ public class GraphQlConfiguration {
 	RuntimeWiringConfigurer customWiringConfigurer(BookRepository bookRepository) { // <1>
 		DataFetcher<Book> dataFetcher = QuerydslDataFetcher.builder(bookRepository).single();
 		return wiringBuilder -> wiringBuilder
-				.type("Query", builder -> builder.dataFetcher("book", dataFetcher)); // <2>
+	.type("Query", builder -> builder.dataFetcher("book", dataFetcher)); // <2>
 	}
 
 }

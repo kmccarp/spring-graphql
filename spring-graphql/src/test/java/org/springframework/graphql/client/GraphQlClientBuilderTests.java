@@ -50,7 +50,7 @@ public class GraphQlClientBuilderTests extends GraphQlClientTestSupport {
 	void mutateDocumentSource() {
 
 		DocumentSource documentSource = name -> name.equals("name") ?
-				Mono.just(DOCUMENT) : Mono.error(new IllegalArgumentException());
+	Mono.just(DOCUMENT) : Mono.error(new IllegalArgumentException());
 
 		getGraphQlService().setDataAsJson(DOCUMENT, "{}");
 
@@ -79,10 +79,10 @@ public class GraphQlClientBuilderTests extends GraphQlClientTestSupport {
 		Map<String, Object> savedAttributes = new HashMap<>();
 
 		GraphQlClientInterceptor savingInterceptor =
-				initInterceptor(request -> savedAttributes.putAll(request.getAttributes()));
+	initInterceptor(request -> savedAttributes.putAll(request.getAttributes()));
 
 		GraphQlClientInterceptor changingInterceptor =
-				initInterceptor(request -> request.getAttributes().computeIfPresent(name, (k, v) -> v + "2"));
+	initInterceptor(request -> request.getAttributes().computeIfPresent(name, (k, v) -> v + "2"));
 
 		getGraphQlService().setDataAsJson(DOCUMENT, "{}");
 

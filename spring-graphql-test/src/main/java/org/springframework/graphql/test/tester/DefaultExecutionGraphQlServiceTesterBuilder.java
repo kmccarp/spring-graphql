@@ -39,9 +39,7 @@ import org.springframework.util.Assert;
  * @author Rossen Stoyanchev
  * @since 1.0.0
  */
-final class DefaultExecutionGraphQlServiceTesterBuilder
-		extends AbstractGraphQlTesterBuilder<DefaultExecutionGraphQlServiceTesterBuilder>
-		implements ExecutionGraphQlServiceTester.Builder<DefaultExecutionGraphQlServiceTesterBuilder> {
+final class DefaultExecutionGraphQlServiceTesterBuilderextends AbstractGraphQlTesterBuilder<DefaultExecutionGraphQlServiceTesterBuilder>implements ExecutionGraphQlServiceTester.Builder<DefaultExecutionGraphQlServiceTesterBuilder> {
 
 	private final ExecutionGraphQlService service;
 
@@ -67,7 +65,7 @@ final class DefaultExecutionGraphQlServiceTesterBuilder
 
 	@Override
 	public DefaultExecutionGraphQlServiceTesterBuilder configureExecutionInput(
-			BiFunction<ExecutionInput, ExecutionInput.Builder, ExecutionInput> configurer) {
+BiFunction<ExecutionInput, ExecutionInput.Builder, ExecutionInput> configurer) {
 
 		this.executionInputConfigurers.add(configurer);
 		return this;
@@ -97,7 +95,7 @@ final class DefaultExecutionGraphQlServiceTesterBuilder
 		if (this.encoder != null && this.decoder != null) {
 			configureJsonPathConfig(config -> {
 				EncoderDecoderMappingProvider provider = new EncoderDecoderMappingProvider(
-						Collections.singletonList(this.encoder), Collections.singletonList(this.decoder));
+			Collections.singletonList(this.encoder), Collections.singletonList(this.decoder));
 				return config.mappingProvider(provider);
 			});
 		}
@@ -112,14 +110,14 @@ final class DefaultExecutionGraphQlServiceTesterBuilder
 	 * Default {@link ExecutionGraphQlServiceTester} implementation.
 	 */
 	private static class DefaultExecutionGraphQlServiceTester
-			extends AbstractDelegatingGraphQlTester implements ExecutionGraphQlServiceTester {
+extends AbstractDelegatingGraphQlTester implements ExecutionGraphQlServiceTester {
 
 		private final GraphQlServiceGraphQlTransport transport;
 
 		private final Consumer<AbstractGraphQlTesterBuilder<?>> builderInitializer;
 
 		private DefaultExecutionGraphQlServiceTester(GraphQlTester tester, GraphQlServiceGraphQlTransport transport,
-				Consumer<AbstractGraphQlTesterBuilder<?>> builderInitializer) {
+	Consumer<AbstractGraphQlTesterBuilder<?>> builderInitializer) {
 
 			super(tester);
 

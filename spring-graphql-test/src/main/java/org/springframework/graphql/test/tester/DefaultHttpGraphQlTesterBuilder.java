@@ -35,9 +35,7 @@ import org.springframework.web.util.UriComponentsBuilder;
  * @author Rossen Stoyanchev
  * @since 1.0.0
  */
-final class DefaultHttpGraphQlTesterBuilder
-		extends AbstractGraphQlTesterBuilder<DefaultHttpGraphQlTesterBuilder>
-		implements HttpGraphQlTester.Builder<DefaultHttpGraphQlTesterBuilder> {
+final class DefaultHttpGraphQlTesterBuilderextends AbstractGraphQlTesterBuilder<DefaultHttpGraphQlTesterBuilder>implements HttpGraphQlTester.Builder<DefaultHttpGraphQlTesterBuilder> {
 
 	private final WebTestClient.Builder webTestClientBuilder;
 
@@ -94,10 +92,10 @@ final class DefaultHttpGraphQlTesterBuilder
 
 	private void registerJsonPathMappingProvider() {
 		this.webTestClientBuilder.codecs(codecConfigurer ->
-				configureJsonPathConfig(config -> {
-					EncoderDecoderMappingProvider provider = new EncoderDecoderMappingProvider(codecConfigurer);
-					return config.mappingProvider(provider);
-				}));
+	configureJsonPathConfig(config -> {
+		EncoderDecoderMappingProvider provider = new EncoderDecoderMappingProvider(codecConfigurer);
+		return config.mappingProvider(provider);
+	}));
 	}
 
 
@@ -112,7 +110,7 @@ final class DefaultHttpGraphQlTesterBuilder
 		private final Consumer<AbstractGraphQlTesterBuilder<?>> builderInitializer;
 
 		private DefaultHttpGraphQlTester(GraphQlTester graphQlTester, WebTestClient webTestClient,
-				Consumer<AbstractGraphQlTesterBuilder<?>> builderInitializer) {
+	Consumer<AbstractGraphQlTesterBuilder<?>> builderInitializer) {
 
 			super(graphQlTester);
 			this.webTestClient = webTestClient;

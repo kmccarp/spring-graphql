@@ -55,7 +55,7 @@ public final class TestWebSocketClient implements WebSocketClient {
 	 */
 	public TestWebSocketConnection getConnection(int index) {
 		Assert.isTrue(index < this.connections.size(),
-				"No connection at index=" + index + ", total=" + this.connections.size());
+	"No connection at index=" + index + ", total=" + this.connections.size());
 		return connections.get(index);
 	}
 

@@ -47,10 +47,10 @@ public class LocalContextValueMethodArgumentResolver implements HandlerMethodArg
 
 		Object localContext = environment.getLocalContext();
 		Assert.state(localContext == null || localContext instanceof GraphQLContext,
-				"Local context is not an instance of  graphql.GraphQLContext");
+	"Local context is not an instance of  graphql.GraphQLContext");
 
 		return ContextValueMethodArgumentResolver.resolveContextValue(
-				name, annotation.required(), parameter, (GraphQLContext) localContext);
+	name, annotation.required(), parameter, (GraphQLContext) localContext);
 	}
 
 

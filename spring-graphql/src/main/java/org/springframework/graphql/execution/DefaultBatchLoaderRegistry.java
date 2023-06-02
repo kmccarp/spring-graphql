@@ -52,9 +52,9 @@ import org.springframework.util.StringUtils;
  */
 public class DefaultBatchLoaderRegistry implements BatchLoaderRegistry {
 
-	private final List<ReactorBatchLoader<?,?>> loaders = new ArrayList<>();
+	private final List<ReactorBatchLoader<?, ?>> loaders = new ArrayList<>();
 
-	private final List<ReactorMappedBatchLoader<?,?>> mappedLoaders = new ArrayList<>();
+	private final List<ReactorMappedBatchLoader<?, ?>> mappedLoaders = new ArrayList<>();
 
 	private final Supplier<DataLoaderOptions> defaultOptionsSupplier;
 
@@ -144,7 +144,7 @@ public class DefaultBatchLoaderRegistry implements BatchLoaderRegistry {
 		@Override
 		public RegistrationSpec<K, V> withOptions(Consumer<DataLoaderOptions> optionsConsumer) {
 			this.optionsConsumer = (this.optionsConsumer != null ?
-					this.optionsConsumer.andThen(optionsConsumer) : optionsConsumer);
+		this.optionsConsumer.andThen(optionsConsumer) : optionsConsumer);
 			return this;
 		}
 
@@ -157,13 +157,13 @@ public class DefaultBatchLoaderRegistry implements BatchLoaderRegistry {
 		@Override
 		public void registerBatchLoader(BiFunction<List<K>, BatchLoaderEnvironment, Flux<V>> loader) {
 			DefaultBatchLoaderRegistry.this.loaders.add(
-					new ReactorBatchLoader<>(initName(), loader, initOptionsSupplier()));
+		new ReactorBatchLoader<>(initName(), loader, initOptionsSupplier()));
 		}
 
 		@Override
 		public void registerMappedBatchLoader(BiFunction<Set<K>, BatchLoaderEnvironment, Mono<Map<K, V>>> loader) {
 			DefaultBatchLoaderRegistry.this.mappedLoaders.add(
-					new ReactorMappedBatchLoader<>(initName(), loader, initOptionsSupplier()));
+		new ReactorMappedBatchLoader<>(initName(), loader, initOptionsSupplier()));
 		}
 
 		@Nullable
@@ -173,7 +173,7 @@ public class DefaultBatchLoaderRegistry implements BatchLoaderRegistry {
 			}
 
 			Supplier<DataLoaderOptions> optionsSupplier =
-					(this.options != null ? () -> this.options : defaultOptionsSupplier);
+		(this.options != null ? () -> this.options : defaultOptionsSupplier);
 
 			if (this.optionsConsumer == null) {
 				return optionsSupplier;
@@ -210,8 +210,8 @@ public class DefaultBatchLoaderRegistry implements BatchLoaderRegistry {
 		private final Supplier<DataLoaderOptions> optionsSupplier;
 
 		private ReactorBatchLoader(String name,
-				BiFunction<List<K>, BatchLoaderEnvironment, Flux<V>> loader,
-				@Nullable Supplier<DataLoaderOptions> optionsSupplier) {
+	BiFunction<List<K>, BatchLoaderEnvironment, Flux<V>> loader,
+	@Nullable Supplier<DataLoaderOptions> optionsSupplier) {
 
 			this.name = name;
 			this.loader = loader;
@@ -233,11 +233,11 @@ public class DefaultBatchLoaderRegistry implements BatchLoaderRegistry {
 			ContextSnapshot snapshot = ContextSnapshot.captureFrom(graphQLContext);
 			try {
 				return snapshot.wrap(() ->
-								this.loader.apply(keys, environment)
-										.collectList()
-										.contextWrite(snapshot::updateContext)
-										.toFuture())
-						.call();
+			this.loader.apply(keys, environment)
+		.collectList()
+		.contextWrite(snapshot::updateContext)
+		.toFuture())
+			.call();
 			}
 			catch (Exception ex) {
 				return CompletableFuture.failedFuture(ex);
@@ -260,8 +260,8 @@ public class DefaultBatchLoaderRegistry implements BatchLoaderRegistry {
 		private final Supplier<DataLoaderOptions> optionsSupplier;
 
 		private ReactorMappedBatchLoader(String name,
-				BiFunction<Set<K>, BatchLoaderEnvironment, Mono<Map<K, V>>> loader,
-				@Nullable Supplier<DataLoaderOptions> optionsSupplier) {
+	BiFunction<Set<K>, BatchLoaderEnvironment, Mono<Map<K, V>>> loader,
+	@Nullable Supplier<DataLoaderOptions> optionsSupplier) {
 
 			this.name = name;
 			this.loader = loader;
@@ -283,10 +283,10 @@ public class DefaultBatchLoaderRegistry implements BatchLoaderRegistry {
 			ContextSnapshot snapshot = ContextSnapshot.captureFrom(graphQLContext);
 			try {
 				return snapshot.wrap(() ->
-								this.loader.apply(keys, environment)
-										.contextWrite(snapshot::updateContext)
-										.toFuture())
-						.call();
+			this.loader.apply(keys, environment)
+		.contextWrite(snapshot::updateContext)
+		.toFuture())
+			.call();
 			}
 			catch (Exception ex) {
 				return CompletableFuture.failedFuture(ex);

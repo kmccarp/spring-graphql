@@ -47,7 +47,7 @@ public class SubrangeMethodArgumentResolver<P> implements HandlerMethodArgumentR
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		return (parameter.getParameterType().equals(Subrange.class) &&
-				this.cursorStrategy.supports(parameter.nested().getNestedParameterType()));
+	this.cursorStrategy.supports(parameter.nested().getNestedParameterType()));
 	}
 
 	@Override

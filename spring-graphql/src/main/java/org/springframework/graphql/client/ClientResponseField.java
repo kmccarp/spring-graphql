@@ -61,15 +61,15 @@ public interface ClientResponseField extends ResponseField {
 	 */
 	<D> List<D> toEntityList(Class<D> elementType);
 
-		/**
-		 * Variant of {@link #toEntity(Class)} to decode to a list of entities.
-		 * @param elementType the type of elements in the list
-		 * @return the list of decoded entities, or an empty list if the field is
+	/**
+	 * Variant of {@link #toEntity(Class)} to decode to a list of entities.
+	 * @param elementType the type of elements in the list
+	 * @return the list of decoded entities, or an empty list if the field is
 		 * {@code null} but otherwise there are no errors
-		 * @throws FieldAccessException if the target field is {@code null} and the
+	 * @throws FieldAccessException if the target field is {@code null} and the
 		 * response is not {@link GraphQlResponse#isValid() valid} or the field has
 		 * {@link ResponseField#getErrors() errors}.
-		 */
+	 */
 	<D> List<D> toEntityList(ParameterizedTypeReference<D> elementType);
 
 }

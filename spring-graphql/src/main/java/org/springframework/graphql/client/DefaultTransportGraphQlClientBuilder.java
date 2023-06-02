@@ -28,8 +28,7 @@ import org.springframework.util.Assert;
  * @author Rossen Stoyanchev
  * @since 1.0.0
  */
-final class DefaultTransportGraphQlClientBuilder
-		extends AbstractGraphQlClientBuilder<DefaultTransportGraphQlClientBuilder> {
+final class DefaultTransportGraphQlClientBuilderextends AbstractGraphQlClientBuilder<DefaultTransportGraphQlClientBuilder> {
 
 	private final GraphQlTransport transport;
 
@@ -58,8 +57,8 @@ final class DefaultTransportGraphQlClientBuilder
 
 
 		DefaultTransportGraphQlClient(
-				GraphQlClient graphQlClient, GraphQlTransport transport,
-				Consumer<AbstractGraphQlClientBuilder<?>> builderInitializer) {
+	GraphQlClient graphQlClient, GraphQlTransport transport,
+	Consumer<AbstractGraphQlClientBuilder<?>> builderInitializer) {
 
 			super(graphQlClient);
 			Assert.notNull(transport, "GraphQlTransport is required");

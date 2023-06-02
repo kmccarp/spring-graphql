@@ -62,14 +62,14 @@ public class ContextValueMethodArgumentResolver implements HandlerMethodArgument
 			return parameterName;
 		}
 		throw new IllegalArgumentException("Name for " + annotation.getClass().getSimpleName() + " argument " +
-				"of type [" + parameter.getNestedParameterType().getName() + "] not specified, " +
-				"and parameter name information not found in class file either.");
+	"of type [" + parameter.getNestedParameterType().getName() + "] not specified, " +
+	"and parameter name information not found in class file either.");
 	}
 
 	@Nullable
 	static Object resolveContextValue(
-			String contextValueName, boolean required, MethodParameter parameter,
-			@Nullable GraphQLContext graphQlContext) {
+String contextValueName, boolean required, MethodParameter parameter,
+@Nullable GraphQLContext graphQlContext) {
 
 		Class<?> parameterType = parameter.getParameterType();
 		Object value = (graphQlContext != null ? graphQlContext.get(contextValueName) : null);
@@ -85,7 +85,7 @@ public class ContextValueMethodArgumentResolver implements HandlerMethodArgument
 			if (value == null) {
 				value = Mono.empty();
 			}
-			else if (!( value instanceof Mono)) {
+			else if (!(value instanceof Mono)) {
 				value = Mono.just(value);
 			}
 			return Mono.just(value);

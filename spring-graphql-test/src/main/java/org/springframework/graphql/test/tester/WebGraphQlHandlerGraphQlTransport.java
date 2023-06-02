@@ -49,7 +49,7 @@ final class WebGraphQlHandlerGraphQlTransport extends AbstractDirectGraphQlTrans
 
 
 	WebGraphQlHandlerGraphQlTransport(
-			@Nullable URI url, HttpHeaders headers, WebGraphQlHandler handler, CodecConfigurer configurer) {
+@Nullable URI url, HttpHeaders headers, WebGraphQlHandler handler, CodecConfigurer configurer) {
 
 		this.url = (url != null ? url : URI.create(""));
 		this.headers.addAll(headers);
@@ -79,8 +79,8 @@ final class WebGraphQlHandlerGraphQlTransport extends AbstractDirectGraphQlTrans
 	protected Mono<ExecutionGraphQlResponse> executeInternal(ExecutionGraphQlRequest executionRequest) {
 
 		WebGraphQlRequest request = new WebGraphQlRequest(
-				this.url, this.headers, null,  Collections.emptyMap(), executionRequest.toMap(),
-				idGenerator.generateId().toString(), null);
+	this.url, this.headers, null, Collections.emptyMap(), executionRequest.toMap(),
+	idGenerator.generateId().toString(), null);
 
 		return this.graphQlHandler.handleRequest(request).cast(ExecutionGraphQlResponse.class);
 	}

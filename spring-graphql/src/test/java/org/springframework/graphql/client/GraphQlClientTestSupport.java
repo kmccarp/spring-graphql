@@ -71,14 +71,14 @@ public class GraphQlClientTestSupport {
 		@Override
 		public Mono<GraphQlResponse> execute(GraphQlRequest request) {
 			return graphQlService.execute(
-							new DefaultExecutionGraphQlRequest(
-									request.getDocument(),
-									request.getOperationName(),
-									request.getVariables(),
-									request.getExtensions(),
-									"1",
-									null))
-					.cast(GraphQlResponse.class);
+		new DefaultExecutionGraphQlRequest(
+	request.getDocument(),
+	request.getOperationName(),
+	request.getVariables(),
+	request.getExtensions(),
+	"1",
+	null))
+		.cast(GraphQlResponse.class);
 		}
 
 		@Override

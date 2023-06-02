@@ -70,36 +70,32 @@ public class RSocketGraphQlTransportTests {
 	void subscriptionError() {
 
 		RSocketGraphQlTransport transport = createTransport(SocketAcceptor.forRequestStream(payload ->
-				Flux.error(new RejectedException(
-						"[{\"message\":\"boo\"," +
-								"\"locations\":[]," +
-								"\"errorType\":\"DataFetchingException\"," +
-								"\"path\":null," +
-								"\"extensions\":null}]"))));
+	Flux.error(new RejectedException(
+"[{\"message\":\"boo\"," +"\"locations\":[]," +"\"errorType\":\"DataFetchingException\"," +"\"path\":null," +"\"extensions\":null}]"))));
 
 		Flux<GraphQlResponse> responseFlux =
-				transport.executeSubscription(new DefaultGraphQlRequest("subscription { greetings }"));
+	transport.executeSubscription(new DefaultGraphQlRequest("subscription { greetings }"));
 
 		StepVerifier.create(responseFlux)
-				.expectErrorSatisfies(ex -> {
-					assertThat(ex).isInstanceOf(SubscriptionErrorException.class);
-					List<ResponseError> errors = ((SubscriptionErrorException) ex).getErrors();
-					assertThat(errors).hasSize(1);
-					assertThat(errors.get(0).getMessage()).isEqualTo("boo");
-				})
-				.verify(Duration.ofSeconds(5));
+	.expectErrorSatisfies(ex -> {
+		assertThat(ex).isInstanceOf(SubscriptionErrorException.class);
+		List<ResponseError> errors = ((SubscriptionErrorException) ex).getErrors();
+		assertThat(errors).hasSize(1);
+		assertThat(errors.get(0).getMessage()).isEqualTo("boo");
+	})
+	.verify(Duration.ofSeconds(5));
 	}
 
 	private RSocketGraphQlTransport createTransport(SocketAcceptor acceptor) {
 
 		this.server = RSocketServer.create()
-				.acceptor(acceptor)
-				.bind(LocalServerTransport.create("local"))
-				.block();
+	.acceptor(acceptor)
+	.bind(LocalServerTransport.create("local"))
+	.block();
 
 		RSocketRequester requester = RSocketRequester.builder()
-				.rsocketStrategies(RSocketStrategies.builder().encoder(jsonEncoder).decoder(jsonDecoder).build())
-				.transport(LocalClientTransport.create("local"));
+	.rsocketStrategies(RSocketStrategies.builder().encoder(jsonEncoder).decoder(jsonDecoder).build())
+	.transport(LocalClientTransport.create("local"));
 
 		return new RSocketGraphQlTransport("route", requester, jsonDecoder);
 	}

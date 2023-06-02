@@ -37,8 +37,8 @@ class DefaultExecutionRequestObservationConventionTests {
 	DefaultExecutionRequestObservationConvention convention = new DefaultExecutionRequestObservationConvention();
 
 	ExecutionInput input = ExecutionInput.newExecutionInput().query("{ greeting }")
-			.executionId(ExecutionId.from("42"))
-			.operationName("query").build();
+.executionId(ExecutionId.from("42"))
+.operationName("query").build();
 
 
 	@Test
@@ -56,8 +56,9 @@ class DefaultExecutionRequestObservationConventionTests {
 	@Test
 	void hasContextualName() {
 		ExecutionInput input = ExecutionInput.newExecutionInput().query("{ greeting }")
-				.operationName("mutation").build();
-		ExecutionRequestObservationContext context = createObservationContext(input, builder -> {});
+	.operationName("mutation").build();
+		ExecutionRequestObservationContext context = createObservationContext(input, builder -> {
+		});
 		assertThat(this.convention.getContextualName(context)).isEqualTo("graphql mutation");
 	}
 
@@ -78,7 +79,7 @@ class DefaultExecutionRequestObservationConventionTests {
 	@Test
 	void hasOutcomeKeyValueWhenErrorOutput() {
 		ExecutionRequestObservationContext context = createObservationContext(this.input,
-				builder -> builder.addError(new QueryOperationMissingError()));
+	builder -> builder.addError(new QueryOperationMissingError()));
 		assertThat(this.convention.getLowCardinalityKeyValues(context)).contains(KeyValue.of("graphql.outcome", "REQUEST_ERROR"));
 	}
 

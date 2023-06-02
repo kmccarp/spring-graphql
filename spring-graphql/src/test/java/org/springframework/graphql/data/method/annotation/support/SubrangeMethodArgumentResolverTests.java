@@ -39,10 +39,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SubrangeMethodArgumentResolverTests extends ArgumentResolverTestSupport {
 
 	private final SubrangeMethodArgumentResolver<MyPosition> resolver =
-			new SubrangeMethodArgumentResolver<>(new MyPositionCursorStrategy());
+new SubrangeMethodArgumentResolver<>(new MyPositionCursorStrategy());
 
 	private final MethodParameter param =
-			methodParam(BookController.class, "getBooks", Subrange.class);
+methodParam(BookController.class, "getBooks", Subrange.class);
 
 
 	@Test

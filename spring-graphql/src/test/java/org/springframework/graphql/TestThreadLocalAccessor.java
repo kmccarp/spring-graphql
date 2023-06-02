@@ -59,8 +59,8 @@ public class TestThreadLocalAccessor<T> implements ThreadLocalAccessor<T> {
 	public void setValue(T value) {
 		if (this.threadId != null) {
 			assertThat(Thread.currentThread().getId() != this.threadId)
-					.as("ThreadLocal restored on the same thread. Propagation not tested effectively.")
-					.isTrue();
+		.as("ThreadLocal restored on the same thread. Propagation not tested effectively.")
+		.isTrue();
 		}
 		this.threadLocal.set(value);
 	}

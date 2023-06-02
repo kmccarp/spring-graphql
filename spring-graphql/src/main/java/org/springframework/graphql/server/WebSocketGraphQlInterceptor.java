@@ -47,7 +47,7 @@ public interface WebSocketGraphQlInterceptor extends WebGraphQlInterceptor {
 	 * @return the payload for the {@code "connection_ack"}, or empty
 	 */
 	default Mono<Object> handleConnectionInitialization(
-			WebSocketSessionInfo sessionInfo, Map<String, Object> connectionInitPayload) {
+WebSocketSessionInfo sessionInfo, Map<String, Object> connectionInitPayload) {
 
 		return Mono.empty();
 	}
@@ -75,7 +75,7 @@ public interface WebSocketGraphQlInterceptor extends WebGraphQlInterceptor {
 	 * message received at the start of the connection
 	 */
 	default void handleConnectionClosed(
-			WebSocketSessionInfo sessionInfo, int statusCode, Map<String, Object> connectionInitPayload) {
+WebSocketSessionInfo sessionInfo, int statusCode, Map<String, Object> connectionInitPayload) {
 	}
 
 }

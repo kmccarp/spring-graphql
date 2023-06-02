@@ -48,11 +48,11 @@ public class BatchMappingInvocationTests extends BatchMappingTestSupport {
 
 	private static Stream<Arguments> controllers() {
 		return Stream.of(
-				arguments(named("Returning Mono<Map<K,V>>", new BatchMonoMapController())),
-				arguments(named("Returning Map<K,V>", new BatchMapController())),
-				arguments(named("Returning Flux<V>", new BatchFluxController())),
-				arguments(named("Returning List<V>", new BatchListController())),
-				arguments(named("Returning Callable<Map<K,V>>", new BatchCallableMapController()))
+	arguments(named("Returning Mono<Map<K,V>>", new BatchMonoMapController())),
+	arguments(named("Returning Map<K,V>", new BatchMapController())),
+	arguments(named("Returning Flux<V>", new BatchFluxController())),
+	arguments(named("Returning List<V>", new BatchListController())),
+	arguments(named("Returning Callable<Map<K,V>>", new BatchCallableMapController()))
 		);
 	}
 
@@ -60,16 +60,16 @@ public class BatchMappingInvocationTests extends BatchMappingTestSupport {
 	@MethodSource("controllers")
 	void oneToOne(CourseController controller) {
 		String query = "{ " +
-				"  courses { " +
-				"    id" +
-				"    name" +
-				"    instructor {" +
-				"      id" +
-				"      firstName" +
-				"      lastName" +
-				"    }" +
-				"  }" +
-				"}";
+	"  courses { " +
+	"    id" +
+	"    name" +
+	"    instructor {" +
+	"      id" +
+	"      firstName" +
+	"      lastName" +
+	"    }" +
+	"  }" +
+	"}";
 
 		Mono<ExecutionGraphQlResponse> responseMono = createGraphQlService(controller).execute(query);
 
@@ -92,16 +92,16 @@ public class BatchMappingInvocationTests extends BatchMappingTestSupport {
 	@MethodSource("controllers")
 	void oneToMany(CourseController controller) {
 		String document = "{ " +
-				"  courses { " +
-				"    id" +
-				"    name" +
-				"    students {" +
-				"      id" +
-				"      firstName" +
-				"      lastName" +
-				"    }" +
-				"  }" +
-				"}";
+	"  courses { " +
+	"    id" +
+	"    name" +
+	"    students {" +
+	"      id" +
+	"      firstName" +
+	"      lastName" +
+	"    }" +
+	"  }" +
+	"}";
 
 		Mono<ExecutionGraphQlResponse> responseMono = createGraphQlService(controller).execute(document);
 

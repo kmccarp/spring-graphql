@@ -72,7 +72,7 @@ import static org.mockito.Mockito.when;
 class QuerydslDataFetcherTests {
 
 	private final KeyValueRepositoryFactory repositoryFactory =
-			new KeyValueRepositoryFactory(new KeyValueTemplate(new MapKeyValueAdapter()));
+new KeyValueRepositoryFactory(new KeyValueTemplate(new MapKeyValueAdapter()));
 
 	private final MockRepository mockRepository = repositoryFactory.getRepository(MockRepository.class);
 
@@ -108,7 +108,7 @@ class QuerydslDataFetcherTests {
 			Mono<WebGraphQlResponse> responseMono = graphQlSetup.toWebGraphQlHandler().handleRequest(request);
 
 			List<String> names = ResponseHelper.forResponse(responseMono).toList("books", Book.class)
-					.stream().map(Book::getName).collect(Collectors.toList());
+		.stream().map(Book::getName).collect(Collectors.toList());
 
 			assertThat(names).containsExactlyInAnyOrder(book1.getName(), book2.getName());
 		};
@@ -134,21 +134,21 @@ class QuerydslDataFetcherTests {
 		Consumer<GraphQlSetup> tester = graphQlSetup -> {
 
 			Mono<WebGraphQlResponse> response = graphQlSetup
-					.toWebGraphQlHandler()
-					.handleRequest(request(BookSource.booksConnectionQuery("")));
+		.toWebGraphQlHandler()
+		.handleRequest(request(BookSource.booksConnectionQuery("")));
 
 			ResponseHelper.forResponse(response).assertData(
-					"{\"books\":{" +
-					"\"edges\":[" +
-					"{\"cursor\":\"O_4\",\"node\":{\"id\":\"42\",\"name\":\"Hitchhiker's Guide to the Galaxy\"}}," +
-					"{\"cursor\":\"O_5\",\"node\":{\"id\":\"53\",\"name\":\"Breaking Bad\"}}" +
-					"]," +
-					"\"pageInfo\":{" +
-					"\"startCursor\":\"O_4\"," +
-					"\"endCursor\":\"O_5\"," +
-					"\"hasPreviousPage\":true," +
-					"\"hasNextPage\":false" +
-					"}}}"
+		"{\"books\":{" +
+	"\"edges\":[" +
+	"{\"cursor\":\"O_4\",\"node\":{\"id\":\"42\",\"name\":\"Hitchhiker's Guide to the Galaxy\"}}," +
+	"{\"cursor\":\"O_5\",\"node\":{\"id\":\"53\",\"name\":\"Breaking Bad\"}}" +
+	"]," +
+	"\"pageInfo\":{" +
+	"\"startCursor\":\"O_4\"," +
+	"\"endCursor\":\"O_5\"," +
+	"\"hasPreviousPage\":true," +
+	"\"hasNextPage\":false" +
+	"}}}"
 			);
 		};
 
@@ -157,7 +157,7 @@ class QuerydslDataFetcherTests {
 		ScrollPositionCursorStrategy cursorStrategy = new ScrollPositionCursorStrategy();
 
 		DataFetcher<Iterable<Book>> dataFetcher =
-				QuerydslDataFetcher.builder(mockRepository).cursorStrategy(cursorStrategy).scrollable();
+	QuerydslDataFetcher.builder(mockRepository).cursorStrategy(cursorStrategy).scrollable();
 
 		GraphQlSetup graphQlSetup = paginationSetup(cursorStrategy).queryFetcher("books", dataFetcher);
 		tester.accept(graphQlSetup);
@@ -174,10 +174,10 @@ class QuerydslDataFetcherTests {
 		mockRepository.saveAll(Arrays.asList(book1, book2));
 
 		Mono<WebGraphQlResponse> responseMono = graphQlSetup(mockRepository).toWebGraphQlHandler()
-				.handleRequest(request("{ booksById(id: [42,53]) {name}}"));
+	.handleRequest(request("{ booksById(id: [42,53]) {name}}"));
 
 		List<String> names = ResponseHelper.forResponse(responseMono).toList("booksById", Book.class)
-				.stream().map(Book::getName).collect(Collectors.toList());
+	.stream().map(Book::getName).collect(Collectors.toList());
 
 		assertThat(names).containsExactlyInAnyOrder(book1.getName(), book2.getName());
 	}
@@ -194,7 +194,7 @@ class QuerydslDataFetcherTests {
 			Mono<WebGraphQlResponse> responseMono = graphQlSetup.toWebGraphQlHandler().handleRequest(request);
 
 			List<String> names = ResponseHelper.forResponse(responseMono).toList("books", Book.class)
-					.stream().map(Book::getName).collect(Collectors.toList());
+		.stream().map(Book::getName).collect(Collectors.toList());
 
 			assertThat(names).containsExactlyInAnyOrder(book1.getName(), book2.getName());
 		};
@@ -211,13 +211,13 @@ class QuerydslDataFetcherTests {
 		MockRepository mockRepository = mock(MockRepository.class);
 
 		DataFetcher<Iterable<Book>> fetcher = QuerydslDataFetcher.builder(mockRepository)
-				.customizer((QuerydslBinderCustomizer<QBook>) (bindings, book) ->
-						bindings.bind(book.name).firstOptional((path, value) -> value.map(path::startsWith)))
-				.many();
+	.customizer((QuerydslBinderCustomizer<QBook>) (bindings, book) ->
+bindings.bind(book.name).firstOptional((path, value) -> value.map(path::startsWith)))
+	.many();
 
 		graphQlSetup("books", fetcher).toWebGraphQlHandler()
-				.handleRequest(request("{ books(name: \"H\", author: \"Doug\") {name}}"))
-				.block();
+	.handleRequest(request("{ books(name: \"H\", author: \"Doug\") {name}}"))
+	.block();
 
 		ArgumentCaptor<Predicate> predicateCaptor = ArgumentCaptor.forClass(Predicate.class);
 		verify(mockRepository).findBy(predicateCaptor.capture(), any());
@@ -241,8 +241,8 @@ class QuerydslDataFetcherTests {
 
 		// 2) Automatic registration and explicit wiring
 		handler = graphQlSetup(mockRepository)
-				.queryFetcher("bookById", env -> new Book(53L, "Breaking Bad", new Author(0L, "", "Heisenberg")))
-				.toWebGraphQlHandler();
+	.queryFetcher("bookById", env -> new Book(53L, "Breaking Bad", new Author(0L, "", "Heisenberg")))
+	.toWebGraphQlHandler();
 
 		responseMono = handler.handleRequest(request("{ bookById(id: 1) {name}}"));
 
@@ -316,7 +316,7 @@ class QuerydslDataFetcherTests {
 			Mono<WebGraphQlResponse> responseMono = setup.toWebGraphQlHandler().handleRequest(request);
 
 			List<String> names = ResponseHelper.forResponse(responseMono).toList("books", Book.class)
-					.stream().map(Book::getName).collect(Collectors.toList());
+		.stream().map(Book::getName).collect(Collectors.toList());
 
 			assertThat(names).containsExactlyInAnyOrder("Breaking Bad", "Hitchhiker's Guide to the Galaxy");
 		};
@@ -337,9 +337,9 @@ class QuerydslDataFetcherTests {
 		String queryName = "booksByCriteria";
 
 		Mono<ExecutionGraphQlResponse> responseMono =
-				graphQlSetup(queryName, QuerydslDataFetcher.builder(mockRepository).many())
-						.toGraphQlService()
-						.execute(request("{" + queryName + "(criteria: {id: 42}) {name}}"));
+	graphQlSetup(queryName, QuerydslDataFetcher.builder(mockRepository).many())
+.toGraphQlService()
+.execute(request("{" + queryName + "(criteria: {id: 42}) {name}}"));
 
 		List<Book> books = ResponseHelper.forResponse(responseMono).toList(queryName, Book.class);
 
@@ -353,32 +353,32 @@ class QuerydslDataFetcherTests {
 
 	private static GraphQlSetup graphQlSetup(@Nullable QuerydslPredicateExecutor<?> executor) {
 		return GraphQlSetup.schemaResource(BookSource.schema)
-				.runtimeWiring(createRuntimeWiringConfigurer(executor, null));
+	.runtimeWiring(createRuntimeWiringConfigurer(executor, null));
 	}
 
 	private static GraphQlSetup graphQlSetup(@Nullable ReactiveQuerydslPredicateExecutor<?> executor) {
 		return GraphQlSetup.schemaResource(BookSource.schema)
-				.runtimeWiring(createRuntimeWiringConfigurer(null, executor));
+	.runtimeWiring(createRuntimeWiringConfigurer(null, executor));
 	}
 
 	private static GraphQlSetup paginationSetup(ScrollPositionCursorStrategy cursorStrategy) {
 		return GraphQlSetup.schemaResource(BookSource.paginationSchema)
-				.connectionSupport(new WindowConnectionAdapter(cursorStrategy));
+	.connectionSupport(new WindowConnectionAdapter(cursorStrategy));
 	}
 
 	private static RuntimeWiringConfigurer createRuntimeWiringConfigurer(
-			@Nullable QuerydslPredicateExecutor<?> executor,
-			@Nullable ReactiveQuerydslPredicateExecutor<?> reactiveExecutor) {
+@Nullable QuerydslPredicateExecutor<?> executor,
+@Nullable ReactiveQuerydslPredicateExecutor<?> reactiveExecutor) {
 
 		return QuerydslDataFetcher.autoRegistrationConfigurer(
-				(executor != null ? Collections.singletonList(executor) : Collections.emptyList()),
-				(reactiveExecutor != null ? Collections.singletonList(reactiveExecutor) : Collections.emptyList()));
+	(executor != null ? Collections.singletonList(executor) : Collections.emptyList()),
+	(reactiveExecutor != null ? Collections.singletonList(reactiveExecutor) : Collections.emptyList()));
 	}
 
 	private WebGraphQlRequest request(String query) {
 		return new WebGraphQlRequest(
-				URI.create("/"), new HttpHeaders(), null, Collections.emptyMap(),
-				Collections.singletonMap("query", query), "1", Locale.ENGLISH);
+	URI.create("/"), new HttpHeaders(), null, Collections.emptyMap(),
+	Collections.singletonMap("query", query), "1", Locale.ENGLISH);
 	}
 
 
@@ -398,10 +398,10 @@ class QuerydslDataFetcherTests {
 
 	@GraphQlRepository
 	interface MockWithCustomizerRepository extends CrudRepository<Book, Long>, QuerydslPredicateExecutor<Book>,
-			QuerydslBinderCustomizer<QBook> {
+QuerydslBinderCustomizer<QBook> {
 
 		@Override
-		default void customize(QuerydslBindings bindings, QBook book){
+		default void customize(QuerydslBindings bindings, QBook book) {
 			bindings.bind(book.name).firstOptional((path, value) -> value.map(path::startsWith));
 		}
 

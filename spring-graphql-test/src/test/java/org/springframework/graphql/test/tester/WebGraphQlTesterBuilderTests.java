@@ -86,8 +86,8 @@ public class WebGraphQlTesterBuilderTests {
 
 		// Original
 		WebGraphQlTester.Builder<?> builder = builderSetup.initBuilder()
-				.url(url)
-				.headers(headers -> headers.add("h", "one"));
+	.url(url)
+	.headers(headers -> headers.add("h", "one"));
 
 		WebGraphQlTester tester = builder.build();
 		tester.document(DOCUMENT).execute();
@@ -118,7 +118,7 @@ public class WebGraphQlTesterBuilderTests {
 
 		// Original header value
 		HttpGraphQlTester.Builder<?> builder = testerSetup.initBuilder()
-				.webTestClient(testClientBuilder -> testClientBuilder.defaultHeaders(h -> h.add("h", "one")));
+	.webTestClient(testClientBuilder -> testClientBuilder.defaultHeaders(h -> h.add("h", "one")));
 
 		HttpGraphQlTester tester = builder.build();
 		tester.document(DOCUMENT).execute();
@@ -126,7 +126,7 @@ public class WebGraphQlTesterBuilderTests {
 
 		// Mutate to add header value
 		HttpGraphQlTester.Builder<?> builder2 = tester.mutate()
-				.webTestClient(testClientBuilder -> testClientBuilder.defaultHeaders(h -> h.add("h", "two")));
+	.webTestClient(testClientBuilder -> testClientBuilder.defaultHeaders(h -> h.add("h", "two")));
 
 		tester = builder2.build();
 		tester.document(DOCUMENT).execute();
@@ -134,7 +134,7 @@ public class WebGraphQlTesterBuilderTests {
 
 		// Mutate to replace header
 		HttpGraphQlTester.Builder<?> builder3 = tester.mutate()
-				.webTestClient(testClientBuilder -> testClientBuilder.defaultHeader("h", "three"));
+	.webTestClient(testClientBuilder -> testClientBuilder.defaultHeader("h", "three"));
 
 		tester = builder3.build();
 		tester.document(DOCUMENT).execute();
@@ -146,7 +146,7 @@ public class WebGraphQlTesterBuilderTests {
 	void mutateDocumentSource(TesterBuilderSetup builderSetup) {
 
 		DocumentSource documentSource = name -> name.equals("name") ?
-				Mono.just(DOCUMENT) : Mono.error(new IllegalArgumentException());
+	Mono.just(DOCUMENT) : Mono.error(new IllegalArgumentException());
 
 		// Original
 		WebGraphQlTester.Builder<?> builder = builderSetup.initBuilder().documentSource(documentSource);
@@ -171,14 +171,14 @@ public class WebGraphQlTesterBuilderTests {
 		TestJackson2JsonDecoder testDecoder = new TestJackson2JsonDecoder();
 
 		WebGraphQlTester.Builder<?> builder = builderSetup.initBuilder()
-				.codecConfigurer(codecConfigurer -> codecConfigurer.customCodecs().register(testDecoder));
+	.codecConfigurer(codecConfigurer -> codecConfigurer.customCodecs().register(testDecoder));
 
 		String document = "{me {name}}";
 		MovieCharacter character = MovieCharacter.create("Luke Skywalker");
 		builderSetup.setMockResponse(document,
-				ExecutionResultImpl.newExecutionResult()
-						.data(Collections.singletonMap("me", character))
-						.build());
+	ExecutionResultImpl.newExecutionResult()
+.data(Collections.singletonMap("me", character))
+.build());
 
 		WebGraphQlTester client = builder.build();
 		GraphQlTester.Response response = client.document(document).execute();
@@ -222,11 +222,11 @@ public class WebGraphQlTesterBuilderTests {
 
 		protected WebGraphQlHandler webGraphQlHandler() {
 			return WebGraphQlHandler.builder(this.graphQlService)
-					.interceptor((input, chain) -> {
-						this.request = input;
-						return chain.next(request);
-					})
-					.build();
+		.interceptor((input, chain) -> {
+			this.request = input;
+			return chain.next(request);
+		})
+		.build();
 		}
 
 		@Override
@@ -279,7 +279,7 @@ public class WebGraphQlTesterBuilderTests {
 
 		@Override
 		public Object decode(DataBuffer dataBuffer, ResolvableType targetType,
-				@Nullable MimeType mimeType, @Nullable Map<String, Object> hints) throws DecodingException {
+	@Nullable MimeType mimeType, @Nullable Map<String, Object> hints) throws DecodingException {
 
 			this.lastValue = super.decode(dataBuffer, targetType, mimeType, hints);
 			return this.lastValue;

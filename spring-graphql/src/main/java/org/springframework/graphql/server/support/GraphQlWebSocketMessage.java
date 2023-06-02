@@ -135,16 +135,16 @@ public class GraphQlWebSocketMessage {
 		}
 		GraphQlWebSocketMessage other = (GraphQlWebSocketMessage) o;
 		return (ObjectUtils.nullSafeEquals(this.type, other.type) &&
-				(ObjectUtils.nullSafeEquals(this.id, other.id) || (this.id == null && other.id == null)) &&
-				(ObjectUtils.nullSafeEquals(getPayload(), other.getPayload())));
+	(ObjectUtils.nullSafeEquals(this.id, other.id) || (this.id == null && other.id == null)) &&
+	(ObjectUtils.nullSafeEquals(getPayload(), other.getPayload())));
 	}
 
 	@Override
 	public String toString() {
 		return "GraphQlWebSocketMessage[" +
-				(this.id != null ? "id=\"" + this.id + "\"" + ", " : "") +
-				"type=\"" + this.type + "\"" +
-				(this.payload != null ? ", payload=" + this.payload : "") + "]";
+	(this.id != null ? "id=\"" + this.id + "\"" + ", " : "") +
+	"type=\"" + this.type + "\"" +
+	(this.payload != null ? ", payload=" + this.payload : "") + "]";
 	}
 
 
@@ -192,7 +192,7 @@ public class GraphQlWebSocketMessage {
 	public static GraphQlWebSocketMessage error(String id, List<GraphQLError> errors) {
 		Assert.notNull(errors, "GraphQlError's are required");
 		return new GraphQlWebSocketMessage(id, GraphQlWebSocketMessageType.ERROR,
-				errors.stream().map(GraphQLError::toSpecification).collect(Collectors.toList()));
+	errors.stream().map(GraphQLError::toSpecification).collect(Collectors.toList()));
 	}
 
 	/**

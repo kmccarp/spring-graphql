@@ -59,8 +59,8 @@ public class BookSource {
 		booksMap.put(53L, new Book(53L, "Breaking Bad", authorsMap.get(106L)));
 
 		booksWithoutAuthorsMap = booksMap.values().stream()
-				.map(book -> new Book(book.getId(), book.getName(), book.getAuthorId()))
-				.collect(Collectors.toMap(Book::getId, Function.identity()));
+	.map(book -> new Book(book.getId(), book.getName(), book.getAuthorId()))
+	.collect(Collectors.toMap(Book::getId, Function.identity()));
 	}
 
 
@@ -83,9 +83,9 @@ public class BookSource {
 	@SuppressWarnings("ConstantConditions")
 	public static List<Book> findBooksByAuthor(String author) {
 		return Flux.fromIterable(books())
-				.filter((book) -> book.getAuthor().getFullName().contains(author))
-				.collectList()
-				.block();
+	.filter((book) -> book.getAuthor().getFullName().contains(author))
+	.collectList()
+	.block();
 	}
 
 	public static Author getAuthor(Long id) {
@@ -95,22 +95,22 @@ public class BookSource {
 	public static String booksConnectionQuery(@Nullable String arguments) {
 		arguments = StringUtils.hasText(arguments) ? "(" + arguments + ")" : "";
 		return "{" +
-			   "	books" + arguments + " {" +
-			   "		edges {" +
-			   "			cursor," +
-			   "			node {" +
-			   "				id" +
-			   "				name" +
-			   "			}" +
-			   "		}" +
-			   "		pageInfo {" +
-			   "			startCursor," +
-			   "			endCursor," +
-			   "			hasPreviousPage," +
-			   "			hasNextPage" +
-			   "		}" +
-			   "	}" +
-			   "}";
+	"	books" + arguments + " {" +
+	"		edges {" +
+	"			cursor," +
+	"			node {" +
+	"				id" +
+	"				name" +
+	"			}" +
+	"		}" +
+	"		pageInfo {" +
+	"			startCursor," +
+	"			endCursor," +
+	"			hasPreviousPage," +
+	"			hasNextPage" +
+	"		}" +
+	"	}" +
+	"}";
 	}
 
 }

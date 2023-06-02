@@ -215,8 +215,8 @@ final class SchemaMappingInspector {
 
 	private boolean isPaginatedType(GraphQLType type) {
 		return (type instanceof GraphQLObjectType objectType &&
-				objectType.getName().endsWith("Connection") &&
-				objectType.getField("edges") != null && objectType.getField("pageInfo") != null);
+	objectType.getName().endsWith("Connection") &&
+	objectType.getField("edges") != null && objectType.getField("pageInfo") != null);
 	}
 
 	private GraphQLType getPaginatedType(GraphQLObjectType type) {
@@ -288,7 +288,7 @@ final class SchemaMappingInspector {
 		}
 		catch (BeansException ex) {
 			throw new IllegalStateException(
-					"Failed to introspect " + resolvableType + " for field '" + fieldName + "'", ex);
+		"Failed to introspect " + resolvableType + " for field '" + fieldName + "'", ex);
 		}
 	}
 
@@ -303,12 +303,12 @@ final class SchemaMappingInspector {
 	@SuppressWarnings("rawtypes")
 	private void checkDataFetcherRegistrations() {
 		this.runtimeWiring.getDataFetchers().forEach((typeName, registrations) ->
-				registrations.forEach((fieldName, dataFetcher) -> {
-					FieldCoordinates coordinates = FieldCoordinates.coordinates(typeName, fieldName);
-					if (this.schema.getFieldDefinition(coordinates) == null) {
-						this.reportBuilder.unmappedRegistration(coordinates, dataFetcher);
-					}
-				}));
+	registrations.forEach((fieldName, dataFetcher) -> {
+		FieldCoordinates coordinates = FieldCoordinates.coordinates(typeName, fieldName);
+		if (this.schema.getFieldDefinition(coordinates) == null) {
+			this.reportBuilder.unmappedRegistration(coordinates, dataFetcher);
+		}
+	}));
 	}
 
 
@@ -365,8 +365,8 @@ final class SchemaMappingInspector {
 		private final List<SchemaReport.SkippedType> skippedTypes;
 
 		public DefaultSchemaReport(
-				List<FieldCoordinates> unmappedFields, Map<FieldCoordinates, DataFetcher<?>> unmappedRegistrations,
-				List<SkippedType> skippedTypes) {
+	List<FieldCoordinates> unmappedFields, Map<FieldCoordinates, DataFetcher<?>> unmappedRegistrations,
+	List<SkippedType> skippedTypes) {
 
 			this.unmappedFields = Collections.unmodifiableList(unmappedFields);
 			this.unmappedRegistrations = Collections.unmodifiableMap(unmappedRegistrations);
@@ -397,16 +397,16 @@ final class SchemaMappingInspector {
 		@Nullable
 		public DataFetcher<?> dataFetcher(FieldCoordinates coordinates) {
 			return SchemaMappingInspector.this.runtimeWiring
-					.getDataFetcherForType(coordinates.getTypeName())
-					.get(coordinates.getFieldName());
+		.getDataFetcherForType(coordinates.getTypeName())
+		.get(coordinates.getFieldName());
 		}
 
 		@Override
 		public String toString() {
 			return "GraphQL schema inspection:\n" +
-					"\tUnmapped fields: " + formatUnmappedFields() + "\n" +
-					"\tUnmapped registrations: " + this.unmappedRegistrations + "\n" +
-					"\tSkipped types: " + this.skippedTypes;
+		"\tUnmapped fields: " + formatUnmappedFields() + "\n" +
+		"\tUnmapped registrations: " + this.unmappedRegistrations + "\n" +
+		"\tSkipped types: " + this.skippedTypes;
 		}
 
 		private String formatUnmappedFields() {
@@ -425,7 +425,7 @@ final class SchemaMappingInspector {
 	 * Default implementation of a {@link SchemaReport.SkippedType}.
 	 */
 	private record DefaultSkippedType(
-			GraphQLType type, FieldCoordinates fieldCoordinates) implements SchemaReport.SkippedType {
+	GraphQLType type, FieldCoordinates fieldCoordinates) implements SchemaReport.SkippedType {
 
 		@Override
 		public String toString() {

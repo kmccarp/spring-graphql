@@ -110,9 +110,9 @@ class QueryByExampleDataFetcherJpaTests {
 			Mono<WebGraphQlResponse> responseMono = graphQlSetup.toWebGraphQlHandler().handleRequest(request);
 
 			List<String> names = ResponseHelper.forResponse(responseMono).toList("books", Book.class)
-					.stream()
-					.map(Book::getName)
-					.collect(Collectors.toList());
+		.stream()
+		.map(Book::getName)
+		.collect(Collectors.toList());
 
 			assertThat(names).containsExactlyInAnyOrder(book1.getName(), book2.getName());
 		};
@@ -128,17 +128,17 @@ class QueryByExampleDataFetcherJpaTests {
 	void shouldFetchWindow() {
 
 		repository.saveAll(List.of(
-				new Book(1L, "Nineteen Eighty-Four", new Author(101L, "George", "Orwell")),
-				new Book(2L, "The Great Gatsby", new Author(102L, "F. Scott", "Fitzgerald")),
-				new Book(3L, "Catch-22", new Author(103L, "Joseph", "Heller")),
-				new Book(42L, "Hitchhiker's Guide to the Galaxy", new Author(105L, "Douglas", "Adams")),
-				new Book(53L, "Breaking Bad", new Author(106L, "Vince", "Gilligan"))));
+	new Book(1L, "Nineteen Eighty-Four", new Author(101L, "George", "Orwell")),
+	new Book(2L, "The Great Gatsby", new Author(102L, "F. Scott", "Fitzgerald")),
+	new Book(3L, "Catch-22", new Author(103L, "Joseph", "Heller")),
+	new Book(42L, "Hitchhiker's Guide to the Galaxy", new Author(105L, "Douglas", "Adams")),
+	new Book(53L, "Breaking Bad", new Author(106L, "Vince", "Gilligan"))));
 
 		Consumer<GraphQlSetup> tester = graphQlSetup -> {
 
 			Mono<WebGraphQlResponse> response = graphQlSetup
-					.toWebGraphQlHandler()
-					.handleRequest(request(BookSource.booksConnectionQuery("first:2, after:\"O_3\"")));
+		.toWebGraphQlHandler()
+		.handleRequest(request(BookSource.booksConnectionQuery("first:2, after:\"O_3\"")));
 
 			List<Map<String, Object>> edges = ResponseHelper.forResponse(response).toEntity("books.edges", List.class);
 			assertThat(edges.size()).isEqualTo(2);
@@ -158,7 +158,7 @@ class QueryByExampleDataFetcherJpaTests {
 		ScrollPositionCursorStrategy cursorStrategy = new ScrollPositionCursorStrategy();
 
 		DataFetcher<Iterable<Book>> dataFetcher =
-				QueryByExampleDataFetcher.builder(repository).cursorStrategy(cursorStrategy).scrollable();
+	QueryByExampleDataFetcher.builder(repository).cursorStrategy(cursorStrategy).scrollable();
 
 		GraphQlSetup graphQlSetup = paginationSetup(cursorStrategy).queryFetcher("books", dataFetcher);
 		tester.accept(graphQlSetup);
@@ -183,8 +183,8 @@ class QueryByExampleDataFetcherJpaTests {
 
 		// 2) Automatic registration and explicit wiring
 		handler = graphQlSetup(mockRepository)
-				.queryFetcher("bookById", env -> new Book(53L, "Breaking Bad", new Author(0L, "", "Heisenberg")))
-				.toWebGraphQlHandler();
+	.queryFetcher("bookById", env -> new Book(53L, "Breaking Bad", new Author(0L, "", "Heisenberg")))
+	.toWebGraphQlHandler();
 
 		responseMono = handler.handleRequest(request("{ bookById(id: 1) {name}}"));
 
@@ -229,9 +229,9 @@ class QueryByExampleDataFetcherJpaTests {
 		String queryName = "booksByCriteria";
 
 		Mono<ExecutionGraphQlResponse> responseMono =
-				graphQlSetup(queryName, QueryByExampleDataFetcher.builder(repository).many())
-						.toGraphQlService()
-						.execute(request("{" + queryName + "(criteria: {id: 42}) {name}}"));
+	graphQlSetup(queryName, QueryByExampleDataFetcher.builder(repository).many())
+.toGraphQlService()
+.execute(request("{" + queryName + "(criteria: {id: 42}) {name}}"));
 
 		List<Book> books = ResponseHelper.forResponse(responseMono).toList(queryName, Book.class);
 
@@ -245,26 +245,26 @@ class QueryByExampleDataFetcherJpaTests {
 
 	private static GraphQlSetup graphQlSetup(QueryByExampleExecutor<?> executor) {
 		return GraphQlSetup.schemaResource(BookSource.schema)
-				.runtimeWiring(createRuntimeWiringConfigurer(executor));
+	.runtimeWiring(createRuntimeWiringConfigurer(executor));
 	}
 
 	private static GraphQlSetup paginationSetup(ScrollPositionCursorStrategy cursorStrategy) {
 		return GraphQlSetup.schemaResource(BookSource.paginationSchema)
-				.connectionSupport(new WindowConnectionAdapter(cursorStrategy));
+	.connectionSupport(new WindowConnectionAdapter(cursorStrategy));
 	}
 
 	private static RuntimeWiringConfigurer createRuntimeWiringConfigurer(QueryByExampleExecutor<?> executor) {
 		return QueryByExampleDataFetcher.autoRegistrationConfigurer(
-				executor != null ? Collections.singletonList(executor) : Collections.emptyList(),
-				Collections.emptyList(),
-				new ScrollPositionCursorStrategy(),
-				new ScrollSubrange(ScrollPosition.offset(), 10, true));
+	executor != null ? Collections.singletonList(executor) : Collections.emptyList(),
+	Collections.emptyList(),
+	new ScrollPositionCursorStrategy(),
+	new ScrollSubrange(ScrollPosition.offset(), 10, true));
 	}
 
 	private WebGraphQlRequest request(String query) {
 		return new WebGraphQlRequest(
-				URI.create("/"), new HttpHeaders(), null, Collections.emptyMap(),
-				Collections.singletonMap("query", query), "1", null);
+	URI.create("/"), new HttpHeaders(), null, Collections.emptyMap(),
+	Collections.singletonMap("query", query), "1", null);
 	}
 
 

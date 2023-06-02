@@ -73,14 +73,14 @@ class ExceptionResolversExceptionHandler implements DataFetcherExceptionHandler 
 		ContextSnapshot snapshot = ContextSnapshot.captureFrom(env.getGraphQlContext());
 		try {
 			return Flux.fromIterable(this.resolvers)
-					.flatMap(resolver -> resolver.resolveException(exception, env))
-					.map(errors -> DataFetcherExceptionHandlerResult.newResult().errors(errors).build())
-					.next()
-					.doOnNext(result -> logResolvedException(exception, result))
-					.onErrorResume(resolverEx -> Mono.just(handleResolverError(resolverEx, exception, env)))
-					.switchIfEmpty(Mono.fromCallable(() -> createInternalError(exception, env)))
-					.contextWrite(snapshot::updateContext)
-					.toFuture();
+		.flatMap(resolver -> resolver.resolveException(exception, env))
+		.map(errors -> DataFetcherExceptionHandlerResult.newResult().errors(errors).build())
+		.next()
+		.doOnNext(result -> logResolvedException(exception, result))
+		.onErrorResume(resolverEx -> Mono.just(handleResolverError(resolverEx, exception, env)))
+		.switchIfEmpty(Mono.fromCallable(() -> createInternalError(exception, env)))
+		.contextWrite(snapshot::updateContext)
+		.toFuture();
 		}
 		catch (Exception resolverEx) {
 			return CompletableFuture.completedFuture(handleResolverError(resolverEx, exception, env));
@@ -88,7 +88,7 @@ class ExceptionResolversExceptionHandler implements DataFetcherExceptionHandler 
 	}
 
 	private DataFetcherExceptionHandlerResult handleResolverError(
-			Throwable resolverException, Throwable originalException, DataFetchingEnvironment environment) {
+Throwable resolverException, Throwable originalException, DataFetchingEnvironment environment) {
 
 		if (logger.isWarnEnabled()) {
 			logger.warn("Failure while resolving " + originalException.getMessage(), resolverException);
@@ -104,7 +104,7 @@ class ExceptionResolversExceptionHandler implements DataFetcherExceptionHandler 
 	private void logResolvedException(Throwable ex, DataFetcherExceptionHandlerResult result) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Resolved " + ex.getClass().getSimpleName() +
-					" to GraphQL error(s): " + result.getErrors(), ex);
+		" to GraphQL error(s): " + result.getErrors(), ex);
 		}
 	}
 
@@ -114,11 +114,11 @@ class ExceptionResolversExceptionHandler implements DataFetcherExceptionHandler 
 			logger.error("Unresolved " + ex.getClass().getSimpleName() + " for executionId " + executionId, ex);
 		}
 		return DataFetcherExceptionHandlerResult
-				.newResult(GraphqlErrorBuilder.newError(environment)
-						.errorType(ErrorType.INTERNAL_ERROR)
-						.message(ErrorType.INTERNAL_ERROR + " for " + executionId)
-						.build())
-				.build();
+	.newResult(GraphqlErrorBuilder.newError(environment)
+.errorType(ErrorType.INTERNAL_ERROR)
+.message(ErrorType.INTERNAL_ERROR + " for " + executionId)
+.build())
+	.build();
 	}
 
 }

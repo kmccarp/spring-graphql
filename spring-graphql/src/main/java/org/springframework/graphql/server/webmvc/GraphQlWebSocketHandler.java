@@ -113,7 +113,7 @@ public class GraphQlWebSocketHandler extends TextWebSocketHandler implements Sub
 	 * the WebSocket for the {@code "connection_ini"} message from the client.
 	 */
 	public GraphQlWebSocketHandler(
-			WebGraphQlHandler graphQlHandler, HttpMessageConverter<?> converter, Duration connectionInitTimeout) {
+WebGraphQlHandler graphQlHandler, HttpMessageConverter<?> converter, Duration connectionInitTimeout) {
 
 		Assert.notNull(graphQlHandler, "WebGraphQlHandler is required");
 		Assert.notNull(converter, "HttpMessageConverter for JSON is required");
@@ -158,7 +158,7 @@ public class GraphQlWebSocketHandler extends TextWebSocketHandler implements Sub
 		if ("graphql-ws".equalsIgnoreCase(session.getAcceptedProtocol())) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("apollographql/subscriptions-transport-ws is not supported, nor maintained. "
-						+ "Please, use https://github.com/enisdenjo/graphql-ws.");
+			+ "Please, use https://github.com/enisdenjo/graphql-ws.");
 			}
 			GraphQlStatus.closeSession(session, GraphQlStatus.INVALID_MESSAGE_STATUS);
 			return;
@@ -168,12 +168,12 @@ public class GraphQlWebSocketHandler extends TextWebSocketHandler implements Sub
 		this.sessionInfoMap.put(session.getId(), sessionState);
 
 		Mono.delay(this.initTimeoutDuration)
-				.then(Mono.fromRunnable(() -> {
-						if (sessionState.setConnectionInitPayload(Collections.emptyMap())) {
-							GraphQlStatus.closeSession(session, GraphQlStatus.INIT_TIMEOUT_STATUS);
-						}
-				}))
-				.subscribe();
+	.then(Mono.fromRunnable(() -> {
+		if (sessionState.setConnectionInitPayload(Collections.emptyMap())) {
+			GraphQlStatus.closeSession(session, GraphQlStatus.INIT_TIMEOUT_STATUS);
+		}
+	}))
+	.subscribe();
 
 	}
 
@@ -204,14 +204,14 @@ public class GraphQlWebSocketHandler extends TextWebSocketHandler implements Sub
 				Assert.notNull(uri, "Expected handshake url");
 				HttpHeaders headers = session.getHandshakeHeaders();
 				WebSocketGraphQlRequest request = new WebSocketGraphQlRequest(
-						uri, headers, null, session.getAttributes(), payload, id, null, state.getSessionInfo());
+			uri, headers, null, session.getAttributes(), payload, id, null, state.getSessionInfo());
 				if (logger.isDebugEnabled()) {
 					logger.debug("Executing: " + request);
 				}
 				this.graphQlHandler.handleRequest(request)
-						.flatMapMany((response) -> handleResponse(session, request.getId(), response))
-						.publishOn(state.getScheduler()) // Serial blocking send via single thread
-						.subscribe(new SendMessageSubscriber(id, session, state));
+			.flatMapMany((response) -> handleResponse(session, request.getId(), response))
+			.publishOn(state.getScheduler()) // Serial blocking send via single thread
+			.subscribe(new SendMessageSubscriber(id, session, state));
 			}
 			case PING -> session.sendMessage(encode(GraphQlWebSocketMessage.pong(null)));
 			case COMPLETE -> {
@@ -221,7 +221,7 @@ public class GraphQlWebSocketHandler extends TextWebSocketHandler implements Sub
 						subscription.cancel();
 					}
 					this.webSocketGraphQlInterceptor.handleCancelledSubscription(state.getSessionInfo(), id)
-							.block(Duration.ofSeconds(10));
+				.block(Duration.ofSeconds(10));
 				}
 			}
 			case CONNECTION_INIT -> {
@@ -230,22 +230,22 @@ public class GraphQlWebSocketHandler extends TextWebSocketHandler implements Sub
 					return;
 				}
 				this.webSocketGraphQlInterceptor.handleConnectionInitialization(state.getSessionInfo(), payload)
-						.defaultIfEmpty(Collections.emptyMap())
-						.publishOn(state.getScheduler()) // Serial blocking send via single thread
-						.doOnNext(ackPayload -> {
-							TextMessage outputMessage = encode(GraphQlWebSocketMessage.connectionAck(ackPayload));
-							try {
-								session.sendMessage(outputMessage);
-							}
-							catch (IOException ex) {
-								throw new IllegalStateException(ex);
-							}
-						})
-						.onErrorResume(ex -> {
-							GraphQlStatus.closeSession(session, GraphQlStatus.UNAUTHORIZED_STATUS);
-							return Mono.empty();
-						})
-						.block(Duration.ofSeconds(10));
+			.defaultIfEmpty(Collections.emptyMap())
+			.publishOn(state.getScheduler()) // Serial blocking send via single thread
+			.doOnNext(ackPayload -> {
+				TextMessage outputMessage = encode(GraphQlWebSocketMessage.connectionAck(ackPayload));
+				try {
+					session.sendMessage(outputMessage);
+				}
+				catch (IOException ex) {
+					throw new IllegalStateException(ex);
+				}
+			})
+			.onErrorResume(ex -> {
+				GraphQlStatus.closeSession(session, GraphQlStatus.UNAUTHORIZED_STATUS);
+				return Mono.empty();
+			})
+			.block(Duration.ofSeconds(10));
 			}
 			default -> GraphQlStatus.closeSession(session, GraphQlStatus.INVALID_MESSAGE_STATUS);
 		}
@@ -254,7 +254,7 @@ public class GraphQlWebSocketHandler extends TextWebSocketHandler implements Sub
 	@SuppressWarnings("unchecked")
 	private GraphQlWebSocketMessage decode(TextMessage message) throws IOException {
 		return ((GenericHttpMessageConverter<GraphQlWebSocketMessage>) this.converter)
-				.read(GraphQlWebSocketMessage.class, null, new HttpInputMessageAdapter(message));
+	.read(GraphQlWebSocketMessage.class, null, new HttpInputMessageAdapter(message));
 	}
 
 	private SessionState getSessionInfo(WebSocketSession session) {
@@ -267,20 +267,20 @@ public class GraphQlWebSocketHandler extends TextWebSocketHandler implements Sub
 	private Flux<TextMessage> handleResponse(WebSocketSession session, String id, WebGraphQlResponse response) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Execution result ready"
-					+ (!CollectionUtils.isEmpty(response.getErrors()) ? " with errors: " + response.getErrors() : "")
-					+ ".");
+		+ (!CollectionUtils.isEmpty(response.getErrors()) ? " with errors: " + response.getErrors() : "")
+		+ ".");
 		}
 		Flux<Map<String, Object>> responseFlux;
 		if (response.getData() instanceof Publisher) {
 			// Subscription
 			responseFlux = Flux.from((Publisher<ExecutionResult>) response.getData())
-					.map(ExecutionResult::toSpecification)
-					.doOnSubscribe((subscription) -> {
-							Subscription prev = getSessionInfo(session).getSubscriptions().putIfAbsent(id, subscription);
-							if (prev != null) {
-								throw new SubscriptionExistsException();
-							}
-					});
+		.map(ExecutionResult::toSpecification)
+		.doOnSubscribe((subscription) -> {
+			Subscription prev = getSessionInfo(session).getSubscriptions().putIfAbsent(id, subscription);
+			if (prev != null) {
+				throw new SubscriptionExistsException();
+			}
+		});
 		}
 		else {
 			// Single response (query or mutation) that may contain errors
@@ -288,22 +288,22 @@ public class GraphQlWebSocketHandler extends TextWebSocketHandler implements Sub
 		}
 
 		return responseFlux
-				.map(responseMap -> encode(GraphQlWebSocketMessage.next(id, responseMap)))
-				.concatWith(Mono.fromCallable(() -> encode(GraphQlWebSocketMessage.complete(id))))
-				.onErrorResume((ex) -> {
-					if (ex instanceof SubscriptionExistsException) {
-						CloseStatus status = new CloseStatus(4409, "Subscriber for " + id + " already exists");
-						GraphQlStatus.closeSession(session, status);
-						return Flux.empty();
-					}
-					List<GraphQLError> errors = ((ex instanceof SubscriptionPublisherException) ?
-							((SubscriptionPublisherException) ex).getErrors() :
-							Collections.singletonList(GraphqlErrorBuilder.newError()
-									.message("Subscription error")
-									.errorType(ErrorType.INTERNAL_ERROR)
-									.build()));
-					return Mono.just(encode(GraphQlWebSocketMessage.error(id, errors)));
-				});
+	.map(responseMap -> encode(GraphQlWebSocketMessage.next(id, responseMap)))
+	.concatWith(Mono.fromCallable(() -> encode(GraphQlWebSocketMessage.complete(id))))
+	.onErrorResume((ex) -> {
+		if (ex instanceof SubscriptionExistsException) {
+			CloseStatus status = new CloseStatus(4409, "Subscriber for " + id + " already exists");
+			GraphQlStatus.closeSession(session, status);
+			return Flux.empty();
+		}
+		List<GraphQLError> errors = ((ex instanceof SubscriptionPublisherException) ?
+	((SubscriptionPublisherException) ex).getErrors() :
+	Collections.singletonList(GraphqlErrorBuilder.newError()
+.message("Subscription error")
+.errorType(ErrorType.INTERNAL_ERROR)
+.build()));
+		return Mono.just(encode(GraphQlWebSocketMessage.error(id, errors)));
+	});
 	}
 
 	@SuppressWarnings("unchecked")
@@ -335,7 +335,7 @@ public class GraphQlWebSocketHandler extends TextWebSocketHandler implements Sub
 			Map<String, Object> connectionInitPayload = state.getConnectionInitPayload();
 			if (connectionInitPayload != null) {
 				this.webSocketGraphQlInterceptor.handleConnectionClosed(
-						state.getSessionInfo(), closeStatus.getCode(), connectionInitPayload);
+			state.getSessionInfo(), closeStatus.getCode(), connectionInitPayload);
 			}
 		}
 	}
@@ -351,8 +351,8 @@ public class GraphQlWebSocketHandler extends TextWebSocketHandler implements Sub
 
 		@Override
 		public boolean beforeHandshake(
-				ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
-				Map<String, Object> attributes) {
+	ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
+	Map<String, Object> attributes) {
 
 			attributes.put(KEY, ContextSnapshot.captureAll());
 			return true;
@@ -360,8 +360,8 @@ public class GraphQlWebSocketHandler extends TextWebSocketHandler implements Sub
 
 		@Override
 		public void afterHandshake(
-				ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
-				@Nullable Exception exception) {
+	ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
+	@Nullable Exception exception) {
 		}
 
 		public static AutoCloseable setThreadLocals(WebSocketSession session) {

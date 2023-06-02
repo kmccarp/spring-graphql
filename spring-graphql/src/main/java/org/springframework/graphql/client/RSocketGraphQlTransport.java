@@ -50,7 +50,8 @@ import org.springframework.util.Assert;
 final class RSocketGraphQlTransport implements GraphQlTransport {
 
 	private static final ParameterizedTypeReference<Map<String, Object>> MAP_TYPE =
-			new ParameterizedTypeReference<Map<String, Object>>() {};
+new ParameterizedTypeReference<Map<String, Object>>() {
+};
 
 	private static final ResolvableType LIST_TYPE = ResolvableType.forClass(List.class);
 
@@ -75,16 +76,16 @@ final class RSocketGraphQlTransport implements GraphQlTransport {
 	@Override
 	public Mono<GraphQlResponse> execute(GraphQlRequest request) {
 		return this.rsocketRequester.route(this.route).data(request.toMap())
-				.retrieveMono(MAP_TYPE)
-				.map(ResponseMapGraphQlResponse::new);
+	.retrieveMono(MAP_TYPE)
+	.map(ResponseMapGraphQlResponse::new);
 	}
 
 	@Override
 	public Flux<GraphQlResponse> executeSubscription(GraphQlRequest request) {
 		return this.rsocketRequester.route(this.route).data(request.toMap())
-				.retrieveFlux(MAP_TYPE)
-				.onErrorResume(RejectedException.class, ex -> Flux.error(decodeErrors(request, ex)))
-				.map(ResponseMapGraphQlResponse::new);
+	.retrieveFlux(MAP_TYPE)
+	.onErrorResume(RejectedException.class, ex -> Flux.error(decodeErrors(request, ex)))
+	.map(ResponseMapGraphQlResponse::new);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -92,7 +93,7 @@ final class RSocketGraphQlTransport implements GraphQlTransport {
 		try {
 			byte[] errorData = ex.getMessage().getBytes(StandardCharsets.UTF_8);
 			List<GraphQLError> errors = (List<GraphQLError>) this.jsonDecoder.decode(
-					DefaultDataBufferFactory.sharedInstance.wrap(errorData), LIST_TYPE, null, null);
+		DefaultDataBufferFactory.sharedInstance.wrap(errorData), LIST_TYPE, null, null);
 			GraphQlResponse response = new ResponseMapGraphQlResponse(Collections.singletonMap("errors", errors));
 			return new SubscriptionErrorException(request, response.getErrors());
 		}

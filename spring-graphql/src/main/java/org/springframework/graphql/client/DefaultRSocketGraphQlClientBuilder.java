@@ -43,9 +43,7 @@ import org.springframework.util.MimeTypeUtils;
  * @author Rossen Stoyanchev
  * @since 1.0.0
  */
-final class DefaultRSocketGraphQlClientBuilder
-		extends AbstractGraphQlClientBuilder<DefaultRSocketGraphQlClientBuilder>
-		implements RSocketGraphQlClient.Builder<DefaultRSocketGraphQlClientBuilder> {
+final class DefaultRSocketGraphQlClientBuilderextends AbstractGraphQlClientBuilder<DefaultRSocketGraphQlClientBuilder>implements RSocketGraphQlClient.Builder<DefaultRSocketGraphQlClientBuilder> {
 
 	private final RSocketRequester.Builder requesterBuilder;
 
@@ -75,10 +73,10 @@ final class DefaultRSocketGraphQlClientBuilder
 		RSocketRequester.Builder requesterBuilder = RSocketRequester.builder().dataMimeType(MimeTypeUtils.APPLICATION_JSON);
 		if (jackson2Present) {
 			requesterBuilder.rsocketStrategies(
-					RSocketStrategies.builder()
-							.encoder(DefaultJackson2Codecs.encoder())
-							.decoder(DefaultJackson2Codecs.decoder())
-							.build());
+		RSocketStrategies.builder()
+	.encoder(DefaultJackson2Codecs.encoder())
+	.decoder(DefaultJackson2Codecs.decoder())
+	.build());
 		}
 		return requesterBuilder;
 	}
@@ -104,7 +102,7 @@ final class DefaultRSocketGraphQlClientBuilder
 
 	@Override
 	public DefaultRSocketGraphQlClientBuilder clientTransports(
-			Publisher<List<LoadbalanceTarget>> publisher, LoadbalanceStrategy strategy) {
+Publisher<List<LoadbalanceTarget>> publisher, LoadbalanceStrategy strategy) {
 
 		this.targetPublisher = publisher;
 		this.loadbalanceStrategy = strategy;
@@ -152,12 +150,12 @@ final class DefaultRSocketGraphQlClientBuilder
 		}
 
 		RSocketGraphQlTransport graphQlTransport =
-				new RSocketGraphQlTransport(this.route, requester, getJsonDecoder());
+	new RSocketGraphQlTransport(this.route, requester, getJsonDecoder());
 
 		return new DefaultRSocketGraphQlClient(
-				super.buildGraphQlClient(graphQlTransport), requester,
-				this.requesterBuilder, this.clientTransport, this.targetPublisher, this.loadbalanceStrategy,
-				this.route, getBuilderInitializer());
+	super.buildGraphQlClient(graphQlTransport), requester,
+	this.requesterBuilder, this.clientTransport, this.targetPublisher, this.loadbalanceStrategy,
+	this.route, getBuilderInitializer());
 	}
 
 
@@ -184,11 +182,11 @@ final class DefaultRSocketGraphQlClientBuilder
 		private final Consumer<AbstractGraphQlClientBuilder<?>> builderInitializer;
 
 		DefaultRSocketGraphQlClient(
-				GraphQlClient graphQlClient,
-				RSocketRequester requester, RSocketRequester.Builder requesterBuilder,
-				@Nullable ClientTransport clientTransport,
-				@Nullable Publisher<List<LoadbalanceTarget>> targetPublisher, @Nullable LoadbalanceStrategy strategy,
-				String route, Consumer<AbstractGraphQlClientBuilder<?>> builderInitializer) {
+	GraphQlClient graphQlClient,
+	RSocketRequester requester, RSocketRequester.Builder requesterBuilder,
+	@Nullable ClientTransport clientTransport,
+	@Nullable Publisher<List<LoadbalanceTarget>> targetPublisher, @Nullable LoadbalanceStrategy strategy,
+	String route, Consumer<AbstractGraphQlClientBuilder<?>> builderInitializer) {
 
 			super(graphQlClient);
 

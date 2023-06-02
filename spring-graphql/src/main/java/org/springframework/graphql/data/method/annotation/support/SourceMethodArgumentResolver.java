@@ -53,14 +53,14 @@ public class SourceMethodArgumentResolver implements HandlerMethodArgumentResolv
 	private static boolean isExcludedSimpleValueType(Class<?> type) {
 		// Same as BeanUtils.isSimpleValueType except for CharSequence and Number
 		return (Void.class != type && void.class != type &&
-				(ClassUtils.isPrimitiveOrWrapper(type) ||
-						Enum.class.isAssignableFrom(type) ||
-						Date.class.isAssignableFrom(type) ||
-						Temporal.class.isAssignableFrom(type) ||
-						URI.class == type ||
-						URL.class == type ||
-						Locale.class == type ||
-						Class.class == type));
+	(ClassUtils.isPrimitiveOrWrapper(type) ||
+Enum.class.isAssignableFrom(type) ||
+Date.class.isAssignableFrom(type) ||
+Temporal.class.isAssignableFrom(type) ||
+URI.class == type ||
+URL.class == type ||
+Locale.class == type ||
+Class.class == type));
 	}
 
 	@Override
@@ -68,19 +68,19 @@ public class SourceMethodArgumentResolver implements HandlerMethodArgumentResolv
 		Object source = environment.getSource();
 		if (source == null) {
 			throw new IllegalStateException(formatArgumentError(parameter,
-					" was not recognized by any resolver and there is no source/parent either. " +
-							"Please, refer to the documentation for the full list of supported parameters."));
+		" was not recognized by any resolver and there is no source/parent either. " +
+	"Please, refer to the documentation for the full list of supported parameters."));
 		}
 		if (!parameter.getParameterType().isInstance(source)) {
 			throw new IllegalStateException(formatArgumentError(parameter,
-					" does not match the source Object type '" + source.getClass() + "'."));
+		" does not match the source Object type '" + source.getClass() + "'."));
 		}
 		return source;
 	}
 
 	private static String formatArgumentError(MethodParameter param, String message) {
 		return "Parameter [" + param.getParameterIndex() + "] in " +
-				param.getExecutable().toGenericString() + (StringUtils.hasText(message) ? ": " + message : "");
+	param.getExecutable().toGenericString() + (StringUtils.hasText(message) ? ": " + message : "");
 	}
 
 }

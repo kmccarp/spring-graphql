@@ -57,18 +57,18 @@ public class BatchMappingPrincipalMethodArgumentResolverTests extends BatchMappi
 	private final Authentication authentication = new TestingAuthenticationToken(new Object(), new Object());
 
 	private final Function<Context, Context> reactiveContextWriter = context ->
-			ReactiveSecurityContextHolder.withAuthentication(this.authentication);
+ReactiveSecurityContextHolder.withAuthentication(this.authentication);
 
 	private final Function<Context, Context> threadLocalContextWriter = context ->
-			ContextSnapshot.captureAll().updateContext(context);
+ContextSnapshot.captureAll().updateContext(context);
 
 
 	private static Stream<Arguments> controllers() {
 		return Stream.of(
-				arguments(named("Returning Mono<Map<K,V>>", new BatchMonoMapController())),
-				arguments(named("Returning Map<K,V>", new BatchMapController())),
-				arguments(named("Returning Flux<V>", new BatchFluxController())),
-				arguments(named("Returning List<V>", new BatchListController()))
+	arguments(named("Returning Mono<Map<K,V>>", new BatchMonoMapController())),
+	arguments(named("Returning Map<K,V>", new BatchMapController())),
+	arguments(named("Returning Flux<V>", new BatchFluxController())),
+	arguments(named("Returning List<V>", new BatchListController()))
 		);
 	}
 
@@ -92,11 +92,11 @@ public class BatchMappingPrincipalMethodArgumentResolverTests extends BatchMappi
 
 	private void testBatchLoading(PrincipalCourseController controller, Function<Context, Context> contextWriter) {
 		Mono<ExecutionGraphQlResponse> responseMono = Mono.delay(Duration.ofMillis(10))
-				.flatMap(aLong -> {
-					String document = "{ courses { id instructor { id } } }";
-					return createGraphQlService(controller).execute(document);
-				})
-				.contextWrite(contextWriter);
+	.flatMap(aLong -> {
+		String document = "{ courses { id instructor { id } } }";
+		return createGraphQlService(controller).execute(document);
+	})
+	.contextWrite(contextWriter);
 
 		List<Course> actualCourses = ResponseHelper.forResponse(responseMono).toList("courses", Course.class);
 		List<Course> courses = Course.allCourses();

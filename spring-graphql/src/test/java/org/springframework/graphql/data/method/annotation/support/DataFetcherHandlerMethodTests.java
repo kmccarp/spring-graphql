@@ -56,12 +56,12 @@ public class DataFetcherHandlerMethodTests {
 		resolvers.addResolver(new ArgumentMethodArgumentResolver(new GraphQlArgumentBinder()));
 
 		DataFetcherHandlerMethod handlerMethod = new DataFetcherHandlerMethod(
-				handlerMethodFor(new TestController(), "hello"), resolvers, null, null, false);
+	handlerMethodFor(new TestController(), "hello"), resolvers, null, null, false);
 
 		Object result = handlerMethod.invoke(
-				DataFetchingEnvironmentImpl.newDataFetchingEnvironment()
-						.arguments(Collections.singletonMap("name", "Neil"))
-						.build());
+	DataFetchingEnvironmentImpl.newDataFetchingEnvironment()
+.arguments(Collections.singletonMap("name", "Neil"))
+.build());
 
 		assertThat(result).isEqualTo("Hello, Neil");
 	}
@@ -73,13 +73,13 @@ public class DataFetcherHandlerMethodTests {
 		resolvers.addResolver(Mockito.mock(HandlerMethodArgumentResolver.class));
 
 		DataFetcherHandlerMethod handlerMethod = new DataFetcherHandlerMethod(
-				handlerMethodFor(new TestController(), "handleAndReturnCallable"), resolvers, null,
-				new SimpleAsyncTaskExecutor(), false);
+	handlerMethodFor(new TestController(), "handleAndReturnCallable"), resolvers, null,
+	new SimpleAsyncTaskExecutor(), false);
 
 		DataFetchingEnvironment environment = DataFetchingEnvironmentImpl
-				.newDataFetchingEnvironment()
-				.graphQLContext(GraphQLContext.newContext().build())
-				.build();
+	.newDataFetchingEnvironment()
+	.graphQLContext(GraphQLContext.newContext().build())
+	.build();
 
 		Object result = handlerMethod.invoke(environment);
 
@@ -96,8 +96,8 @@ public class DataFetcherHandlerMethodTests {
 		resolvers.addResolver(new ArgumentMethodArgumentResolver(new GraphQlArgumentBinder()));
 
 		DataFetcherHandlerMethod handlerMethod = new DataFetcherHandlerMethod(
-				handlerMethodFor(new TestController(), "handleAndReturnFuture"), resolvers,
-				null, null, false);
+	handlerMethodFor(new TestController(), "handleAndReturnFuture"), resolvers,
+	null, null, false);
 
 		Object result = handlerMethod.invoke(DataFetchingEnvironmentImpl.newDataFetchingEnvironment().build());
 

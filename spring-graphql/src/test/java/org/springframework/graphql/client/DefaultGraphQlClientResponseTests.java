@@ -114,7 +114,7 @@ public class DefaultGraphQlClientResponseTests {
 
 	private void testFieldValueInvalidPath(String path, String json) {
 		assertThatIllegalArgumentException().isThrownBy(() -> getFieldOnDataResponse(path, json))
-				.withMessageStartingWith("Invalid path");
+	.withMessageStartingWith("Invalid path");
 	}
 
 	@Test
@@ -158,9 +158,9 @@ public class DefaultGraphQlClientResponseTests {
 
 	private ClientGraphQlResponse creatResponse(Map<String, Object> responseMap) {
 		return new DefaultClientGraphQlResponse(
-				new DefaultClientGraphQlRequest("{test}", null, Collections.emptyMap(), Collections.emptyMap(), Collections.emptyMap()),
-				new ResponseMapGraphQlResponse(responseMap),
-				new Jackson2JsonEncoder(), new Jackson2JsonDecoder());
+	new DefaultClientGraphQlRequest("{test}", null, Collections.emptyMap(), Collections.emptyMap(), Collections.emptyMap()),
+	new ResponseMapGraphQlResponse(responseMap),
+	new Jackson2JsonEncoder(), new Jackson2JsonDecoder());
 	}
 
 }

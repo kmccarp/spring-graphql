@@ -118,8 +118,8 @@ class AutoRegistrationRuntimeWiringConfigurer implements RuntimeWiringConfigurer
 			String outputTypeName = getOutputTypeName(environment);
 
 			boolean result = (outputTypeName != null &&
-					dataFetcherFactories.containsKey(outputTypeName) &&
-					!hasDataFetcherFor(environment.getFieldDefinition()));
+		dataFetcherFactories.containsKey(outputTypeName) &&
+		!hasDataFetcherFor(environment.getFieldDefinition()));
 
 			if (!result) {
 				// This may be called multiples times on success, so log only rejections from here
@@ -155,8 +155,8 @@ class AutoRegistrationRuntimeWiringConfigurer implements RuntimeWiringConfigurer
 
 		private boolean isConnectionType(GraphQLType type) {
 			return (type instanceof GraphQLObjectType objectType &&
-					objectType.getName().endsWith("Connection") &&
-					objectType.getField("edges") != null && objectType.getField("pageInfo") != null);
+		objectType.getName().endsWith("Connection") &&
+		objectType.getField("edges") != null && objectType.getField("pageInfo") != null);
 		}
 
 		private boolean hasDataFetcherFor(FieldDefinition fieldDefinition) {
@@ -171,8 +171,8 @@ class AutoRegistrationRuntimeWiringConfigurer implements RuntimeWiringConfigurer
 			if (logger.isTraceEnabled()) {
 				String query = environment.getFieldDefinition().getName();
 				logger.trace((match ? "Matched" : "Skipped") +
-						" output typeName " + (typeName != null ? "'" + typeName + "'" : "null") +
-						" for query '" + query + "'");
+			" output typeName " + (typeName != null ? "'" + typeName + "'" : "null") +
+			" for query '" + query + "'");
 			}
 		}
 
@@ -187,7 +187,7 @@ class AutoRegistrationRuntimeWiringConfigurer implements RuntimeWiringConfigurer
 
 			GraphQLType type = removeNonNullWrapper(environment.getFieldType());
 			return (isConnectionType(type) ? factory.scrollable() :
-					(type instanceof GraphQLList ? factory.many() : factory.single()));
+		(type instanceof GraphQLList ? factory.many() : factory.single()));
 		}
 
 	}

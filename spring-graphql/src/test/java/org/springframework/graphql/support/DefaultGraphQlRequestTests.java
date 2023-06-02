@@ -32,18 +32,18 @@ class DefaultGraphQlRequestTests {
 	@Test
 	void requestAsMapShouldContainAllEntries() {
 		String document = "query HeroNameAndFriends($episode: Episode) {" +
-				"  hero(episode: $episode) {" +
-				"    name"
-				+ "  }" +
-				"}";
+	"  hero(episode: $episode) {" +
+	"    name"
+	+ "  }" +
+	"}";
 		Map<String, Object> variables = Collections.singletonMap("episode", "JEDI");
 		Map<String, Object> extensions = Collections.singletonMap("myExtension", "value");
 
 		DefaultExecutionGraphQlRequest request = new DefaultExecutionGraphQlRequest(document, "HeroNameAndFriends",
-				variables, extensions, "1", null);
+	variables, extensions, "1", null);
 
 		assertThat(request.toMap()).containsEntry("query", document).containsEntry("operationName", "HeroNameAndFriends")
-				.containsEntry("variables", variables).containsEntry("extensions", extensions);
+	.containsEntry("variables", variables).containsEntry("extensions", extensions);
 	}
 
 }

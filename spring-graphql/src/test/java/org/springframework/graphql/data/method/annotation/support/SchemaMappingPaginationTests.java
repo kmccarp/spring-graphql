@@ -53,17 +53,17 @@ public class SchemaMappingPaginationTests {
 		Mono<ExecutionGraphQlResponse> response = graphQlService().execute(document);
 
 		ResponseHelper.forResponse(response).assertData(
-						"{\"books\":{" +
-								"\"edges\":[" +
-								"{\"cursor\":\"O_0\",\"node\":{\"id\":\"4\",\"name\":\"To The Lighthouse\"}}," +
-								"{\"cursor\":\"O_1\",\"node\":{\"id\":\"5\",\"name\":\"Animal Farm\"}}" +
-								"]," +
-								"\"pageInfo\":{" +
-								"\"startCursor\":\"O_0\"," +
-								"\"endCursor\":\"O_1\"," +
-								"\"hasPreviousPage\":false," +
-								"\"hasNextPage\":false" +
-								"}}}");
+	"{\"books\":{" +
+"\"edges\":[" +
+"{\"cursor\":\"O_0\",\"node\":{\"id\":\"4\",\"name\":\"To The Lighthouse\"}}," +
+"{\"cursor\":\"O_1\",\"node\":{\"id\":\"5\",\"name\":\"Animal Farm\"}}" +
+"]," +
+"\"pageInfo\":{" +
+"\"startCursor\":\"O_0\"," +
+"\"endCursor\":\"O_1\"," +
+"\"hasPreviousPage\":false," +
+"\"hasNextPage\":false" +
+"}}}");
 	}
 
 	private TestExecutionGraphQlService graphQlService() {
@@ -80,8 +80,8 @@ public class SchemaMappingPaginationTests {
 		configurer.afterPropertiesSet();
 
 		GraphQlSetup setup = GraphQlSetup.schemaResource(BookSource.paginationSchema)
-				.runtimeWiring(configurer)
-				.connectionSupport(new WindowConnectionAdapter(cursorStrategy));
+	.runtimeWiring(configurer)
+	.connectionSupport(new WindowConnectionAdapter(cursorStrategy));
 
 		return setup.toGraphQlService();
 	}

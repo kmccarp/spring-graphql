@@ -49,32 +49,32 @@ public class BatchLoadingTests {
 	@Test
 	void batchLoader() {
 		String document = "{ " +
-				"  booksByCriteria(criteria: {author:\"Orwell\"}) { " +
-				"    author {" +
-				"      firstName, " +
-				"      lastName " +
-				"    }" +
-				"  }" +
-				"}";
+	"  booksByCriteria(criteria: {author:\"Orwell\"}) { " +
+	"    author {" +
+	"      firstName, " +
+	"      lastName " +
+	"    }" +
+	"  }" +
+	"}";
 
 		this.registry.forTypePair(Long.class, Author.class)
-				.registerBatchLoader((ids, env) -> Flux.fromIterable(ids).map(BookSource::getAuthor));
+	.registerBatchLoader((ids, env) -> Flux.fromIterable(ids).map(BookSource::getAuthor));
 
 		TestExecutionGraphQlService service = GraphQlSetup.schemaResource(BookSource.schema)
-				.queryFetcher("booksByCriteria", env -> {
-					Map<String, Object> criteria = env.getArgument("criteria");
-					String authorName = (String) criteria.get("author");
-					return BookSource.findBooksByAuthor(authorName).stream()
-							.map(book -> new Book(book.getId(), book.getName(), book.getAuthorId()))
-							.collect(Collectors.toList());
-				})
-				.dataFetcher("Book", "author", env -> {
-					Book book = env.getSource();
-					DataLoader<Long, Author> dataLoader = env.getDataLoader(Author.class.getName());
-					return dataLoader.load(book.getAuthorId());
-				})
-				.dataLoaders(this.registry)
-				.toGraphQlService();
+	.queryFetcher("booksByCriteria", env -> {
+		Map<String, Object> criteria = env.getArgument("criteria");
+		String authorName = (String) criteria.get("author");
+		return BookSource.findBooksByAuthor(authorName).stream()
+	.map(book -> new Book(book.getId(), book.getName(), book.getAuthorId()))
+	.collect(Collectors.toList());
+	})
+	.dataFetcher("Book", "author", env -> {
+		Book book = env.getSource();
+		DataLoader<Long, Author> dataLoader = env.getDataLoader(Author.class.getName());
+		return dataLoader.load(book.getAuthorId());
+	})
+	.dataLoaders(this.registry)
+	.toGraphQlService();
 
 		Mono<ExecutionGraphQlResponse> responseMono = service.execute(document);
 

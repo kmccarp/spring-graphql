@@ -63,20 +63,20 @@ class RepositoryUtils {
 		}
 
 		throw new IllegalArgumentException(
-				String.format("Cannot resolve repository interface from %s", executor));
+	String.format("Cannot resolve repository interface from %s", executor));
 	}
 
 	@Nullable
 	public static String getGraphQlTypeName(Object repository) {
 		GraphQlRepository annotation =
-				AnnotatedElementUtils.findMergedAnnotation(repository.getClass(), GraphQlRepository.class);
+	AnnotatedElementUtils.findMergedAnnotation(repository.getClass(), GraphQlRepository.class);
 
 		if (annotation == null) {
 			return null;
 		}
 
 		return (StringUtils.hasText(annotation.typeName()) ?
-				annotation.typeName() : RepositoryUtils.getDomainType(repository).getSimpleName());
+	annotation.typeName() : RepositoryUtils.getDomainType(repository).getSimpleName());
 	}
 
 
@@ -89,7 +89,7 @@ class RepositoryUtils {
 	}
 
 	public static ScrollSubrange buildScrollSubrange(
-			DataFetchingEnvironment environment, CursorStrategy<ScrollPosition> cursorStrategy) {
+DataFetchingEnvironment environment, CursorStrategy<ScrollPosition> cursorStrategy) {
 
 		Assert.notNull(cursorStrategy, "CursorStrategy is required to build a ScrollSubrange");
 		boolean forward = !environment.getArguments().containsKey("last");

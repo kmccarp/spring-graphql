@@ -53,25 +53,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ContextDataFetcherDecoratorTests {
 
 	private static final String SCHEMA_CONTENT = "" +
-			"directive @UpperCase on FIELD_DEFINITION " +
-			"type Query { " +
-			"  greeting: String @UpperCase, " +
-			"  greetings: [String] " +
-			"} " +
-			"type Subscription { " +
-			"  greetings: String " +
-			"}";
+"directive @UpperCase on FIELD_DEFINITION " +
+"type Query { " +
+"  greeting: String @UpperCase, " +
+"  greetings: [String] " +
+"} " +
+"type Subscription { " +
+"  greetings: String " +
+"}";
 
 
 	@Test
 	void monoDataFetcher() throws Exception {
 		GraphQL graphQl = GraphQlSetup.schemaContent(SCHEMA_CONTENT)
-				.queryFetcher("greeting", (env) ->
-						Mono.deferContextual((context) -> {
-							Object name = context.get("name");
-							return Mono.delay(Duration.ofMillis(50)).map((aLong) -> "Hello " + name);
-						}))
-				.toGraphQl();
+	.queryFetcher("greeting", (env) ->
+Mono.deferContextual((context) -> {
+	Object name = context.get("name");
+	return Mono.delay(Duration.ofMillis(50)).map((aLong) -> "Hello " + name);
+}))
+	.toGraphQl();
 
 		ExecutionInput input = ExecutionInput.newExecutionInput().query("{ greeting }").build();
 		input.getGraphQLContext().put("name", "007");
@@ -85,13 +85,11 @@ public class ContextDataFetcherDecoratorTests {
 	@Test
 	void fluxDataFetcher() throws Exception {
 		GraphQL graphQl = GraphQlSetup.schemaContent(SCHEMA_CONTENT)
-				.queryFetcher("greetings", (env) ->
-						Mono.delay(Duration.ofMillis(50))
-								.flatMapMany((aLong) -> Flux.deferContextual((context) -> {
-									String name = context.get("name");
-									return Flux.just("Hi", "Bonjour", "Hola").map((s) -> s + " " + name);
-								})))
-				.toGraphQl();
+	.queryFetcher("greetings", (env) ->
+Mono.delay(Duration.ofMillis(50)).flatMapMany((aLong) -> Flux.deferContextual((context) -> {
+String name = context.get("name");
+return Flux.just("Hi", "Bonjour", "Hola").map((s) -> s + " " + name);})))
+	.toGraphQl();
 
 		ExecutionInput input = ExecutionInput.newExecutionInput().query("{ greetings }").build();
 		input.getGraphQLContext().put("name", "007");
@@ -105,13 +103,11 @@ public class ContextDataFetcherDecoratorTests {
 	@Test
 	void fluxDataFetcherSubscription() throws Exception {
 		GraphQL graphQl = GraphQlSetup.schemaContent(SCHEMA_CONTENT)
-				.subscriptionFetcher("greetings", (env) ->
-						Mono.delay(Duration.ofMillis(50))
-								.flatMapMany((aLong) -> Flux.deferContextual((context) -> {
-									String name = context.get("name");
-									return Flux.just("Hi", "Bonjour", "Hola").map((s) -> s + " " + name);
-								})))
-				.toGraphQl();
+	.subscriptionFetcher("greetings", (env) ->
+Mono.delay(Duration.ofMillis(50)).flatMapMany((aLong) -> Flux.deferContextual((context) -> {
+String name = context.get("name");
+return Flux.just("Hi", "Bonjour", "Hola").map((s) -> s + " " + name);})))
+	.toGraphQl();
 
 		ExecutionInput input = ExecutionInput.newExecutionInput().query("subscription { greetings }").build();
 		input.getGraphQLContext().put("name", "007");
@@ -119,52 +115,46 @@ public class ContextDataFetcherDecoratorTests {
 		ExecutionResult executionResult = graphQl.executeAsync(input).get();
 
 		Flux<String> greetingsFlux = ResponseHelper.forSubscription(executionResult)
-				.map(response -> response.toEntity("greetings", String.class));
+	.map(response -> response.toEntity("greetings", String.class));
 
 		StepVerifier.create(greetingsFlux)
-				.expectNext("Hi 007", "Bonjour 007", "Hola 007")
-				.verifyComplete();
+	.expectNext("Hi 007", "Bonjour 007", "Hola 007")
+	.verifyComplete();
 	}
 
 	@Test
 	void fluxDataFetcherSubscriptionThrowingException() throws Exception {
 
 		SubscriptionExceptionResolver resolver =
-				SubscriptionExceptionResolver.forSingleError(exception ->
-						GraphqlErrorBuilder.newError()
-								.message("Error: " + exception.getMessage())
-								.errorType(ErrorType.BAD_REQUEST)
-								.extensions(Collections.singletonMap("a", "b"))
-								.build());
+	SubscriptionExceptionResolver.forSingleError(exception ->
+GraphqlErrorBuilder.newError().message("Error: " + exception.getMessage()).errorType(ErrorType.BAD_REQUEST).extensions(Collections.singletonMap("a", "b")).build());
 
 		GraphQL graphQl = GraphQlSetup.schemaContent(SCHEMA_CONTENT)
-				.subscriptionExceptionResolvers(resolver)
-				.subscriptionFetcher("greetings",
-						(env) -> Mono.delay(Duration.ofMillis(50))
-								.handle((aLong, sink) -> {
-									sink.next("Hi!");
-									sink.error(new RuntimeException("Example Error"));
-								}))
-				.toGraphQl();
+	.subscriptionExceptionResolvers(resolver)
+	.subscriptionFetcher("greetings",
+(env) -> Mono.delay(Duration.ofMillis(50)).handle((aLong, sink) -> {
+sink.next("Hi!");
+sink.error(new RuntimeException("Example Error"));}))
+	.toGraphQl();
 
 		String query = "subscription { greetings }";
 		ExecutionInput input = ExecutionInput.newExecutionInput().query(query).build();
 		ExecutionResult result = graphQl.executeAsync(input).get();
 
 		Flux<String> flux = ResponseHelper.forSubscription(result)
-				.map(message -> message.toEntity("greetings", String.class));
+	.map(message -> message.toEntity("greetings", String.class));
 
 		StepVerifier.create(flux)
-				.expectNext("Hi!")
-				.expectErrorSatisfies(ex -> {
-					List<GraphQLError> errors = ((SubscriptionPublisherException) ex).getErrors();
-					assertThat(errors).hasSize(1);
-					assertThat(errors.get(0).getMessage()).isEqualTo("Error: Example Error");
-					assertThat(errors.get(0).getErrorType()).isEqualTo(ErrorType.BAD_REQUEST);
-					assertThat(errors.get(0).getExtensions()).isEqualTo(Collections.singletonMap("a", "b"));
+	.expectNext("Hi!")
+	.expectErrorSatisfies(ex -> {
+		List<GraphQLError> errors = ((SubscriptionPublisherException) ex).getErrors();
+		assertThat(errors).hasSize(1);
+		assertThat(errors.get(0).getMessage()).isEqualTo("Error: Example Error");
+		assertThat(errors.get(0).getErrorType()).isEqualTo(ErrorType.BAD_REQUEST);
+		assertThat(errors.get(0).getExtensions()).isEqualTo(Collections.singletonMap("a", "b"));
 
-				})
-				.verify();
+	})
+	.verify();
 	}
 
 	@Test
@@ -174,14 +164,14 @@ public class ContextDataFetcherDecoratorTests {
 		ContextRegistry.getInstance().registerThreadLocalAccessor(new TestThreadLocalAccessor<>(threadLocal));
 		try {
 			GraphQL graphQl = GraphQlSetup.schemaContent(SCHEMA_CONTENT)
-					.queryFetcher("greeting", (env) -> "Hello " + threadLocal.get())
-					.toGraphQl();
+		.queryFetcher("greeting", (env) -> "Hello " + threadLocal.get())
+		.toGraphQl();
 
 			ExecutionInput input = ExecutionInput.newExecutionInput().query("{ greeting }").build();
 			ContextSnapshot.captureAll().updateContext(input.getGraphQLContext());
 
 			Mono<ExecutionResult> resultMono = Mono.delay(Duration.ofMillis(10))
-					.flatMap((aLong) -> Mono.fromFuture(graphQl.executeAsync(input)));
+		.flatMap((aLong) -> Mono.fromFuture(graphQl.executeAsync(input)));
 
 			String greeting = ResponseHelper.forResult(resultMono).toEntity("greeting", String.class);
 			assertThat(greeting).isEqualTo("Hello 007");
@@ -201,18 +191,18 @@ public class ContextDataFetcherDecoratorTests {
 			public GraphQLFieldDefinition onField(SchemaDirectiveWiringEnvironment<GraphQLFieldDefinition> env) {
 				if (env.getDirective("UpperCase") != null) {
 					return env.setFieldDataFetcher(DataFetcherFactories.wrapDataFetcher(
-							env.getFieldDataFetcher(),
-							((dataFetchingEnv, value) -> {
-								if (value instanceof String) {
-									return ((String) value).toUpperCase();
-								}
-								else if (value instanceof Mono) {
-									return ((Mono<String>) value).map(String::toUpperCase);
-								}
-								else {
-									throw new IllegalArgumentException();
-								}
-							})));
+				env.getFieldDataFetcher(),
+				((dataFetchingEnv, value) -> {
+					if (value instanceof String) {
+						return ((String) value).toUpperCase();
+					}
+					else if (value instanceof Mono) {
+						return ((Mono<String>) value).map(String::toUpperCase);
+					}
+					else {
+						throw new IllegalArgumentException();
+					}
+				})));
 				}
 				else {
 					return env.getElement();
@@ -223,9 +213,9 @@ public class ContextDataFetcherDecoratorTests {
 		BiConsumer<SchemaDirectiveWiring, DataFetcher<?>> tester = (schemaDirectiveWiring, dataFetcher) -> {
 
 			GraphQL graphQl = GraphQlSetup.schemaContent(SCHEMA_CONTENT)
-					.queryFetcher("greeting", dataFetcher)
-					.runtimeWiring(builder -> builder.directiveWiring(directiveWiring))
-					.toGraphQl();
+		.queryFetcher("greeting", dataFetcher)
+		.runtimeWiring(builder -> builder.directiveWiring(directiveWiring))
+		.toGraphQl();
 
 			ExecutionInput input = ExecutionInput.newExecutionInput().query("{ greeting }").build();
 			Mono<ExecutionResult> resultMono = Mono.fromFuture(graphQl.executeAsync(input));

@@ -55,10 +55,10 @@ import org.springframework.util.MimeTypeUtils;
 public final class JsonKeysetCursorStrategy implements CursorStrategy<Map<String, Object>> {
 
 	private static final ResolvableType MAP_TYPE =
-			ResolvableType.forClassWithGenerics(Map.class, String.class, Object.class);
+ResolvableType.forClassWithGenerics(Map.class, String.class, Object.class);
 
 	private static final boolean jackson2Present = ClassUtils.isPresent(
-			"com.fasterxml.jackson.databind.ObjectMapper", JsonKeysetCursorStrategy.class.getClassLoader());
+"com.fasterxml.jackson.databind.ObjectMapper", JsonKeysetCursorStrategy.class.getClassLoader());
 
 
 	private final Encoder<?> encoder;
@@ -95,18 +95,18 @@ public final class JsonKeysetCursorStrategy implements CursorStrategy<Map<String
 
 	private static Decoder<?> findJsonDecoder(CodecConfigurer configurer) {
 		return configurer.getReaders().stream()
-				.filter((reader) -> reader.canRead(MAP_TYPE, MediaType.APPLICATION_JSON))
-				.map((reader) -> ((DecoderHttpMessageReader<?>) reader).getDecoder())
-				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException("No JSON Decoder"));
+	.filter((reader) -> reader.canRead(MAP_TYPE, MediaType.APPLICATION_JSON))
+	.map((reader) -> ((DecoderHttpMessageReader<?>) reader).getDecoder())
+	.findFirst()
+	.orElseThrow(() -> new IllegalArgumentException("No JSON Decoder"));
 	}
 
 	private static Encoder<?> findJsonEncoder(CodecConfigurer configurer) {
 		return configurer.getWriters().stream()
-				.filter((writer) -> writer.canWrite(MAP_TYPE, MediaType.APPLICATION_JSON))
-				.map((writer) -> ((EncoderHttpMessageWriter<?>) writer).getEncoder())
-				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException("No JSON Encoder"));
+	.filter((writer) -> writer.canWrite(MAP_TYPE, MediaType.APPLICATION_JSON))
+	.map((writer) -> ((EncoderHttpMessageWriter<?>) writer).getEncoder())
+	.findFirst()
+	.orElseThrow(() -> new IllegalArgumentException("No JSON Encoder"));
 	}
 
 
@@ -119,8 +119,8 @@ public final class JsonKeysetCursorStrategy implements CursorStrategy<Map<String
 	@Override
 	public String toCursor(Map<String, Object> keys) {
 		return ((Encoder<Map<String, Object>>) this.encoder).encodeValue(
-				keys, DefaultDataBufferFactory.sharedInstance, MAP_TYPE,
-				MimeTypeUtils.APPLICATION_JSON, null).toString(StandardCharsets.UTF_8);
+	keys, DefaultDataBufferFactory.sharedInstance, MAP_TYPE,
+	MimeTypeUtils.APPLICATION_JSON, null).toString(StandardCharsets.UTF_8);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -141,11 +141,11 @@ public final class JsonKeysetCursorStrategy implements CursorStrategy<Map<String
 		public static void customize(CodecConfigurer configurer) {
 
 			PolymorphicTypeValidator validator = BasicPolymorphicTypeValidator.builder()
-					.allowIfBaseType(Map.class)
-					.allowIfSubType("java.time.")
-					.allowIfSubType(Calendar.class)
-					.allowIfSubType(Date.class)
-					.build();
+		.allowIfBaseType(Map.class)
+		.allowIfSubType("java.time.")
+		.allowIfSubType(Calendar.class)
+		.allowIfSubType(Date.class)
+		.build();
 
 			ObjectMapper mapper = Jackson2ObjectMapperBuilder.json().build();
 			mapper.activateDefaultTyping(validator, ObjectMapper.DefaultTyping.NON_FINAL);

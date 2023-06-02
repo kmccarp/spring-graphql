@@ -39,9 +39,7 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
  * @author Rossen Stoyanchev
  * @since 1.0.0
  */
-final class DefaultWebSocketGraphQlClientBuilder
-		extends AbstractGraphQlClientBuilder<DefaultWebSocketGraphQlClientBuilder>
-		implements WebSocketGraphQlClient.Builder<DefaultWebSocketGraphQlClientBuilder> {
+final class DefaultWebSocketGraphQlClientBuilderextends AbstractGraphQlClientBuilder<DefaultWebSocketGraphQlClientBuilder>implements WebSocketGraphQlClient.Builder<DefaultWebSocketGraphQlClientBuilder> {
 
 	private URI url;
 
@@ -117,11 +115,11 @@ final class DefaultWebSocketGraphQlClientBuilder
 	public WebSocketGraphQlClient build() {
 
 		setJsonCodecs(
-				CodecDelegate.findJsonEncoder(this.codecConfigurer),
-				CodecDelegate.findJsonDecoder(this.codecConfigurer));
+	CodecDelegate.findJsonEncoder(this.codecConfigurer),
+	CodecDelegate.findJsonDecoder(this.codecConfigurer));
 
 		WebSocketGraphQlTransport transport = new WebSocketGraphQlTransport(
-				this.url, this.headers, this.webSocketClient, this.codecConfigurer, getInterceptor());
+	this.url, this.headers, this.webSocketClient, this.codecConfigurer, getInterceptor());
 
 		GraphQlClient graphQlClient = super.buildGraphQlClient(transport);
 		return new DefaultWebSocketGraphQlClient(graphQlClient, transport, getBuilderInitializer());
@@ -130,14 +128,15 @@ final class DefaultWebSocketGraphQlClientBuilder
 	private WebSocketGraphQlClientInterceptor getInterceptor() {
 
 		List<WebSocketGraphQlClientInterceptor> interceptors = getInterceptors().stream()
-				.filter(interceptor -> interceptor instanceof WebSocketGraphQlClientInterceptor)
-				.map(interceptor -> (WebSocketGraphQlClientInterceptor) interceptor)
-				.toList();
+	.filter(interceptor -> interceptor instanceof WebSocketGraphQlClientInterceptor)
+	.map(interceptor -> (WebSocketGraphQlClientInterceptor) interceptor)
+	.toList();
 
 		Assert.state(interceptors.size() <= 1,
-				"Only a single interceptor of type WebSocketGraphQlClientInterceptor may be configured");
+	"Only a single interceptor of type WebSocketGraphQlClientInterceptor may be configured");
 
-		return (!interceptors.isEmpty() ? interceptors.get(0) : new WebSocketGraphQlClientInterceptor() {});
+		return (!interceptors.isEmpty() ? interceptors.get(0) : new WebSocketGraphQlClientInterceptor() {
+		});
 	}
 
 
@@ -151,7 +150,7 @@ final class DefaultWebSocketGraphQlClientBuilder
 		private final Consumer<AbstractGraphQlClientBuilder<?>> builderInitializer;
 
 		DefaultWebSocketGraphQlClient(GraphQlClient delegate, WebSocketGraphQlTransport transport,
-				Consumer<AbstractGraphQlClientBuilder<?>> builderInitializer) {
+	Consumer<AbstractGraphQlClientBuilder<?>> builderInitializer) {
 
 			super(delegate);
 

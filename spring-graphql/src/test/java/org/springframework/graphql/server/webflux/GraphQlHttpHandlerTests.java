@@ -47,16 +47,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GraphQlHttpHandlerTests {
 
 	private final GraphQlHttpHandler greetingHandler = GraphQlSetup.schemaContent("type Query { greeting: String }")
-			.queryFetcher("greeting", (env) -> "Hello").toHttpHandlerWebFlux();
+.queryFetcher("greeting", (env) -> "Hello").toHttpHandlerWebFlux();
 
 
 	@Test
 	void shouldProduceApplicationJsonByDefault() {
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.post("/")
-				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL).build();
+	.contentType(MediaType.APPLICATION_JSON).accept(MediaType.ALL).build();
 
 		MockServerHttpResponse httpResponse = handleRequest(
-				httpRequest, this.greetingHandler, Collections.singletonMap("query", "{greeting}"));
+	httpRequest, this.greetingHandler, Collections.singletonMap("query", "{greeting}"));
 
 		assertThat(httpResponse.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 	}
@@ -64,10 +64,10 @@ public class GraphQlHttpHandlerTests {
 	@Test
 	void shouldProduceApplicationGraphQl() {
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.post("/")
-				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_GRAPHQL_RESPONSE).build();
+	.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_GRAPHQL_RESPONSE).build();
 
 		MockServerHttpResponse httpResponse = handleRequest(
-				httpRequest, this.greetingHandler, Collections.singletonMap("query", "{greeting}"));
+	httpRequest, this.greetingHandler, Collections.singletonMap("query", "{greeting}"));
 
 		assertThat(httpResponse.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_GRAPHQL_RESPONSE);
 	}
@@ -75,10 +75,10 @@ public class GraphQlHttpHandlerTests {
 	@Test
 	void shouldProduceApplicationJson() {
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.post("/")
-				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).build();
+	.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).build();
 
 		MockServerHttpResponse httpResponse = handleRequest(
-				httpRequest, this.greetingHandler, Collections.singletonMap("query", "{greeting}"));
+	httpRequest, this.greetingHandler, Collections.singletonMap("query", "{greeting}"));
 
 		assertThat(httpResponse.getHeaders().getContentType()).isEqualTo(MediaType.APPLICATION_JSON);
 	}
@@ -86,31 +86,31 @@ public class GraphQlHttpHandlerTests {
 	@Test
 	void locale() {
 		GraphQlHttpHandler handler = GraphQlSetup.schemaContent("type Query { greeting: String }")
-				.queryFetcher("greeting", (env) -> "Hello in " + env.getLocale())
-				.toHttpHandlerWebFlux();
+	.queryFetcher("greeting", (env) -> "Hello in " + env.getLocale())
+	.toHttpHandlerWebFlux();
 
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.post("/")
-				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_GRAPHQL_RESPONSE)
-				.acceptLanguageAsLocales(Locale.FRENCH).build();
+	.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_GRAPHQL_RESPONSE)
+	.acceptLanguageAsLocales(Locale.FRENCH).build();
 
 		MockServerHttpResponse httpResponse = handleRequest(
-				httpRequest, handler, Collections.singletonMap("query", "{greeting}"));
+	httpRequest, handler, Collections.singletonMap("query", "{greeting}"));
 
 		assertThat(httpResponse.getBodyAsString().block())
-				.isEqualTo("{\"data\":{\"greeting\":\"Hello in fr\"}}");
+	.isEqualTo("{\"data\":{\"greeting\":\"Hello in fr\"}}");
 	}
 
 	@Test
 	void shouldSetExecutionId() {
 		GraphQlHttpHandler handler = GraphQlSetup.schemaContent("type Query { showId: String }")
-				.queryFetcher("showId", (env) -> env.getExecutionId().toString())
-				.toHttpHandlerWebFlux();
+	.queryFetcher("showId", (env) -> env.getExecutionId().toString())
+	.toHttpHandlerWebFlux();
 
 		MockServerHttpRequest httpRequest = MockServerHttpRequest.post("/")
-				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_GRAPHQL_RESPONSE).build();
+	.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_GRAPHQL_RESPONSE).build();
 
 		MockServerHttpResponse httpResponse = handleRequest(
-				httpRequest, handler, Collections.singletonMap("query", "{showId}"));
+	httpRequest, handler, Collections.singletonMap("query", "{showId}"));
 
 		DocumentContext document = JsonPath.parse(httpResponse.getBodyAsString().block());
 		String id = document.read("data.showId", String.class);
@@ -118,20 +118,20 @@ public class GraphQlHttpHandlerTests {
 	}
 
 	private MockServerHttpResponse handleRequest(
-			MockServerHttpRequest httpRequest, GraphQlHttpHandler handler, Map<String, String> body) {
+MockServerHttpRequest httpRequest, GraphQlHttpHandler handler, Map<String, String> body) {
 
 		MockServerWebExchange exchange = MockServerWebExchange.from(httpRequest);
 
 		MockServerRequest serverRequest = MockServerRequest.builder()
-				.exchange(exchange)
-				.uri(((ServerWebExchange) exchange).getRequest().getURI())
-				.method(((ServerWebExchange) exchange).getRequest().getMethod())
-				.headers(((ServerWebExchange) exchange).getRequest().getHeaders())
-				.body(Mono.just((Object) body));
+	.exchange(exchange)
+	.uri(((ServerWebExchange) exchange).getRequest().getURI())
+	.method(((ServerWebExchange) exchange).getRequest().getMethod())
+	.headers(((ServerWebExchange) exchange).getRequest().getHeaders())
+	.body(Mono.just((Object) body));
 
 		handler.handleRequest(serverRequest)
-				.flatMap(response -> response.writeTo(exchange, new DefaultContext()))
-				.block();
+	.flatMap(response -> response.writeTo(exchange, new DefaultContext()))
+	.block();
 
 		return exchange.getResponse();
 	}

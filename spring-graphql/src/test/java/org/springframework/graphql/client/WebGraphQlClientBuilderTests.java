@@ -93,8 +93,8 @@ public class WebGraphQlClientBuilderTests {
 
 		// Original
 		WebGraphQlClient.Builder<?> builder = builderSetup.initBuilder()
-				.url(url)
-				.headers(headers -> headers.add("h", "one"));
+	.url(url)
+	.headers(headers -> headers.add("h", "one"));
 
 		WebGraphQlClient client = builder.build();
 		client.document(DOCUMENT).execute().block(TIMEOUT);
@@ -125,7 +125,7 @@ public class WebGraphQlClientBuilderTests {
 
 		// Original header value
 		HttpGraphQlClient.Builder<?> builder = clientSetup.initBuilder()
-				.webClient(testClientBuilder -> testClientBuilder.defaultHeaders(h -> h.add("h", "one")));
+	.webClient(testClientBuilder -> testClientBuilder.defaultHeaders(h -> h.add("h", "one")));
 
 		HttpGraphQlClient client = builder.build();
 		client.document(DOCUMENT).execute().block(TIMEOUT);
@@ -133,7 +133,7 @@ public class WebGraphQlClientBuilderTests {
 
 		// Mutate to add header value
 		HttpGraphQlClient.Builder<?> builder2 = client.mutate()
-				.webClient(testClientBuilder -> testClientBuilder.defaultHeaders(h -> h.add("h", "two")));
+	.webClient(testClientBuilder -> testClientBuilder.defaultHeaders(h -> h.add("h", "two")));
 
 		client = builder2.build();
 		client.document(DOCUMENT).execute().block(TIMEOUT);
@@ -141,7 +141,7 @@ public class WebGraphQlClientBuilderTests {
 
 		// Mutate to replace header
 		HttpGraphQlClient.Builder<?> builder3 = client.mutate()
-				.webClient(testClientBuilder -> testClientBuilder.defaultHeader("h", "three"));
+	.webClient(testClientBuilder -> testClientBuilder.defaultHeader("h", "three"));
 
 		client = builder3.build();
 		client.document(DOCUMENT).execute().block(TIMEOUT);
@@ -153,7 +153,7 @@ public class WebGraphQlClientBuilderTests {
 	void mutateDocumentSource(ClientBuilderSetup builderSetup) {
 
 		DocumentSource documentSource = name -> name.equals("name") ?
-				Mono.just(DOCUMENT) : Mono.error(new IllegalArgumentException());
+	Mono.just(DOCUMENT) : Mono.error(new IllegalArgumentException());
 
 		// Original
 		WebGraphQlClient.Builder<?> builder = builderSetup.initBuilder().documentSource(documentSource);
@@ -197,7 +197,7 @@ public class WebGraphQlClientBuilderTests {
 
 		HttpBuilderSetup setup = new HttpBuilderSetup();
 		setup.initBuilder().header(HttpHeaders.CONTENT_TYPE, "application/graphql-request+json").build()
-				.document(DOCUMENT).execute().block(TIMEOUT);
+	.document(DOCUMENT).execute().block(TIMEOUT);
 
 		WebGraphQlRequest request = setup.getActualRequest();
 		assertThat(request.getHeaders().getContentType()).isEqualTo(testMediaType);
@@ -211,14 +211,14 @@ public class WebGraphQlClientBuilderTests {
 		TestJackson2JsonDecoder testDecoder = new TestJackson2JsonDecoder();
 
 		WebGraphQlClient.Builder<?> builder = builderSetup.initBuilder()
-				.codecConfigurer(codecConfigurer -> codecConfigurer.customCodecs().register(testDecoder));
+	.codecConfigurer(codecConfigurer -> codecConfigurer.customCodecs().register(testDecoder));
 
 		String document = "{me {name}}";
 		MovieCharacter character = MovieCharacter.create("Luke Skywalker");
 		builderSetup.getGraphQlService().setResponse(document,
-				ExecutionResultImpl.newExecutionResult()
-						.data(Collections.singletonMap("me", character))
-						.build());
+	ExecutionResultImpl.newExecutionResult()
+.data(Collections.singletonMap("me", character))
+.build());
 
 		WebGraphQlClient client = builder.build();
 		ClientGraphQlResponse response = client.document(document).execute().block(TIMEOUT);
@@ -237,10 +237,10 @@ public class WebGraphQlClientBuilderTests {
 		HttpBuilderSetup builderSetup = new HttpBuilderSetup();
 
 		builderSetup.initBuilder().url("/graphql-one").headers(headers -> headers.add("h", "one")).build()
-				.document(DOCUMENT)
-				.attribute("id", 123)
-				.execute()
-				.block(TIMEOUT);
+	.document(DOCUMENT)
+	.attribute("id", 123)
+	.execute()
+	.block(TIMEOUT);
 
 		assertThat(builderSetup.getClientAttributes()).containsEntry("id", 123);
 	}
@@ -281,11 +281,11 @@ public class WebGraphQlClientBuilderTests {
 
 		protected WebGraphQlHandler webGraphQlHandler() {
 			return WebGraphQlHandler.builder(this.graphQlService)
-					.interceptor((request, chain) -> {
-						this.graphQlRequest = request;
-						return chain.next(graphQlRequest);
-					})
-					.build();
+		.interceptor((request, chain) -> {
+			this.graphQlRequest = request;
+			return chain.next(graphQlRequest);
+		})
+		.build();
 		}
 
 	}
@@ -306,7 +306,7 @@ public class WebGraphQlClientBuilderTests {
 			HttpHandler httpHandler = RouterFunctions.toHttpHandler(routerFunction, HandlerStrategies.withDefaults());
 			HttpHandlerConnector connector = new HttpHandlerConnector(httpHandler);
 			return HttpGraphQlClient.builder(WebClient.builder()
-					.clientConnector(connector).filter(this::updateAttributes));
+		.clientConnector(connector).filter(this::updateAttributes));
 		}
 
 		private Mono<ClientResponse> updateAttributes(ClientRequest request, ExchangeFunction next) {
@@ -342,7 +342,7 @@ public class WebGraphQlClientBuilderTests {
 
 		@Override
 		public Object decode(DataBuffer dataBuffer, ResolvableType targetType,
-				@Nullable MimeType mimeType, @Nullable Map<String, Object> hints) throws DecodingException {
+	@Nullable MimeType mimeType, @Nullable Map<String, Object> hints) throws DecodingException {
 
 			this.lastValue = super.decode(dataBuffer, targetType, mimeType, hints);
 			return this.lastValue;

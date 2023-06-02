@@ -38,9 +38,7 @@ import org.springframework.util.MimeType;
  * @author Rossen Stoyanchev
  * @since 1.0.0
  */
-public class DefaultRSocketGraphQlTesterBuilder
-		extends AbstractGraphQlTesterBuilder<DefaultRSocketGraphQlTesterBuilder>
-		implements RSocketGraphQlTester.Builder<DefaultRSocketGraphQlTesterBuilder> {
+public class DefaultRSocketGraphQlTesterBuilderextends AbstractGraphQlTesterBuilder<DefaultRSocketGraphQlTesterBuilder>implements RSocketGraphQlTester.Builder<DefaultRSocketGraphQlTesterBuilder> {
 
 	private final RSocketGraphQlClient.Builder<?> rsocketGraphQlClientBuilder;
 
@@ -114,13 +112,13 @@ public class DefaultRSocketGraphQlTesterBuilder
 
 	private void registerJsonPathMappingProvider() {
 		this.rsocketGraphQlClientBuilder.rsocketRequester(builder ->
-				builder.rsocketStrategies(strategiesBuilder ->
-						configureJsonPathConfig(config -> {
-							RSocketStrategies strategies = strategiesBuilder.build();
-							List<Encoder<?>> encoders = strategies.encoders();
-							List<Decoder<?>> decoders = strategies.decoders();
-							return config.mappingProvider(new EncoderDecoderMappingProvider(encoders, decoders));
-						})));
+	builder.rsocketStrategies(strategiesBuilder ->
+configureJsonPathConfig(config -> {
+	RSocketStrategies strategies = strategiesBuilder.build();
+	List<Encoder<?>> encoders = strategies.encoders();
+	List<Decoder<?>> decoders = strategies.decoders();
+	return config.mappingProvider(new EncoderDecoderMappingProvider(encoders, decoders));
+})));
 	}
 
 
@@ -134,8 +132,8 @@ public class DefaultRSocketGraphQlTesterBuilder
 		private final Consumer<AbstractGraphQlTesterBuilder<?>> builderInitializer;
 
 		DefaultRSocketGraphQlTester(
-				GraphQlTester delegate, RSocketGraphQlClient rsocketGraphQlClient,
-				Consumer<AbstractGraphQlTesterBuilder<?>> builderInitializer) {
+	GraphQlTester delegate, RSocketGraphQlClient rsocketGraphQlClient,
+	Consumer<AbstractGraphQlTesterBuilder<?>> builderInitializer) {
 
 			super(delegate);
 			this.rsocketGraphQlClient = rsocketGraphQlClient;

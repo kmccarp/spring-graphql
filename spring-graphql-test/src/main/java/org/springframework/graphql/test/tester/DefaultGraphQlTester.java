@@ -75,8 +75,8 @@ final class DefaultGraphQlTester implements GraphQlTester {
 	 * Package private constructor for use from {@link AbstractGraphQlTesterBuilder}.
 	 */
 	DefaultGraphQlTester(
-			GraphQlTransport transport, @Nullable Predicate<ResponseError> errorFilter,
-			Configuration jsonPathConfig, DocumentSource documentSource, Duration timeout) {
+GraphQlTransport transport, @Nullable Predicate<ResponseError> errorFilter,
+Configuration jsonPathConfig, DocumentSource documentSource, Duration timeout) {
 
 		Assert.notNull(transport, "GraphQlTransport is required");
 		Assert.notNull(jsonPathConfig, "JSONPath Configuration is required");
@@ -205,8 +205,8 @@ final class DefaultGraphQlTester implements GraphQlTester {
 
 
 		private ResponseDelegate(
-				GraphQlResponse response, @Nullable Predicate<ResponseError> errorFilter,
-				Consumer<Runnable> assertDecorator, Configuration jsonPathConfig) {
+	GraphQlResponse response, @Nullable Predicate<ResponseError> errorFilter,
+	Consumer<Runnable> assertDecorator, Configuration jsonPathConfig) {
 
 			this.jsonDoc = JsonPath.parse(response.toMap(), jsonPathConfig);
 			this.jsonContent = this.jsonDoc::jsonString;
@@ -264,11 +264,11 @@ final class DefaultGraphQlTester implements GraphQlTester {
 
 		void verifyErrors() {
 			this.assertDecorator.accept(() ->
-					AssertionErrors.assertTrue(
-							"Response has " + this.unexpectedErrors.size() + " unexpected error(s) " +
-									"of " + this.errors.size() + " total. " +
-									"If expected, please filter them out: " + this.unexpectedErrors,
-							CollectionUtils.isEmpty(this.unexpectedErrors)));
+		AssertionErrors.assertTrue(
+	"Response has " + this.unexpectedErrors.size() + " unexpected error(s) " +
+"of " + this.errors.size() + " total. " +
+"If expected, please filter them out: " + this.unexpectedErrors,
+	CollectionUtils.isEmpty(this.unexpectedErrors)));
 		}
 
 	}
@@ -282,8 +282,8 @@ final class DefaultGraphQlTester implements GraphQlTester {
 		private final ResponseDelegate delegate;
 
 		private DefaultResponse(
-				GraphQlResponse response, @Nullable Predicate<ResponseError> errorFilter,
-				Consumer<Runnable> assertDecorator, Configuration jsonPathConfig) {
+	GraphQlResponse response, @Nullable Predicate<ResponseError> errorFilter,
+	Consumer<Runnable> assertDecorator, Configuration jsonPathConfig) {
 
 			this.delegate = new ResponseDelegate(response, errorFilter, assertDecorator, jsonPathConfig);
 		}
@@ -391,7 +391,7 @@ final class DefaultGraphQlTester implements GraphQlTester {
 			this.delegate.doAssert(() -> {
 				Object value = this.pathHelper.evaluateJsonPath(this.delegate.jsonContent());
 				AssertionErrors.assertNull(
-						"Expected null value at JSON path \"" + path + "\" but found " + value, value);
+			"Expected null value at JSON path \"" + path + "\" but found " + value, value);
 			});
 			return this;
 		}
@@ -442,8 +442,8 @@ final class DefaultGraphQlTester implements GraphQlTester {
 				}
 				catch (AssertionError ex) {
 					throw new AssertionError(ex.getMessage() + "\n\n" + "Expected JSON content:\n'" + expected + "'\n\n"
-							+ "Actual JSON content:\n'" + actual + "'\n\n" + "Input path: '" + this.path + "'\n",
-							ex);
+				+ "Actual JSON content:\n'" + actual + "'\n\n" + "Input path: '" + this.path + "'\n",
+				ex);
 				}
 				catch (Exception ex) {
 					throw new AssertionError("JSON parsing error", ex);
@@ -527,7 +527,7 @@ final class DefaultGraphQlTester implements GraphQlTester {
 			@Override
 			public <T extends S> T matches(Predicate<D> predicate) {
 				delegate
-						.doAssert(() -> AssertionErrors.assertTrue(path, predicate.test(this.entity)));
+			.doAssert(() -> AssertionErrors.assertTrue(path, predicate.test(this.entity)));
 				return self();
 			}
 
@@ -554,7 +554,7 @@ final class DefaultGraphQlTester implements GraphQlTester {
 		 */
 		@SuppressWarnings("SlowListContainsAll")
 		private final class DefaultEntityList<E>
-				extends DefaultEntity<List<E>, EntityList<E>> implements EntityList<E> {
+	extends DefaultEntity<List<E>, EntityList<E>> implements EntityList<E> {
 
 			public DefaultEntityList(TypeRefAdapter<List<E>> typeAdapter) {
 				super(typeAdapter);
@@ -566,8 +566,8 @@ final class DefaultGraphQlTester implements GraphQlTester {
 				doAssert(() -> {
 					List<E> expected = Arrays.asList(values);
 					AssertionErrors.assertTrue(
-							"Expecting list " + getEntity() + " at path '" + getPath() + "' to contain " + expected,
-							getEntity().containsAll(expected));
+				"Expecting list " + getEntity() + " at path '" + getPath() + "' to contain " + expected,
+				getEntity().containsAll(expected));
 				});
 				return this;
 			}
@@ -578,8 +578,8 @@ final class DefaultGraphQlTester implements GraphQlTester {
 				doAssert(() -> {
 					List<E> expected = Arrays.asList(values);
 					AssertionErrors.assertTrue(
-							"Expecting list " + getEntity() + " at path '" + getPath() + "' to not contain " + expected,
-							!getEntity().containsAll(expected));
+				"Expecting list " + getEntity() + " at path '" + getPath() + "' to not contain " + expected,
+				!getEntity().containsAll(expected));
 				});
 				return this;
 			}
@@ -590,8 +590,8 @@ final class DefaultGraphQlTester implements GraphQlTester {
 				doAssert(() -> {
 					List<E> expected = Arrays.asList(values);
 					AssertionErrors.assertTrue(
-							"Expecting list " + getEntity() + " at path '" + getPath() + "' to contain exactly " + expected,
-							getEntity().equals(expected));
+				"Expecting list " + getEntity() + " at path '" + getPath() + "' to contain exactly " + expected,
+				getEntity().equals(expected));
 				});
 				return this;
 			}
@@ -599,24 +599,24 @@ final class DefaultGraphQlTester implements GraphQlTester {
 			@Override
 			public EntityList<E> hasSize(int size) {
 				doAssert(() -> AssertionErrors.assertTrue(
-						"Expecting list " + getEntity() + " at path '" + getPath() + "' to have size == " + size,
-						getEntity().size() == size));
+			"Expecting list " + getEntity() + " at path '" + getPath() + "' to have size == " + size,
+			getEntity().size() == size));
 				return this;
 			}
 
 			@Override
 			public EntityList<E> hasSizeLessThan(int size) {
 				doAssert(() -> AssertionErrors.assertTrue(
-						"Expecting list " + getEntity() + " at path '" + getPath() + "' to have size < " + size,
-						getEntity().size() < size));
+			"Expecting list " + getEntity() + " at path '" + getPath() + "' to have size < " + size,
+			getEntity().size() < size));
 				return this;
 			}
 
 			@Override
 			public EntityList<E> hasSizeGreaterThan(int size) {
 				doAssert(() -> AssertionErrors.assertTrue(
-						"Expecting list " + getEntity() + " at path '" + getPath() + "' to have size > " + size,
-						getEntity().size() > size));
+			"Expecting list " + getEntity() + " at path '" + getPath() + "' to have size > " + size,
+			getEntity().size() > size));
 				return this;
 			}
 		}

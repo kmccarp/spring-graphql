@@ -96,8 +96,8 @@ public class GraphQlRSocketHandler {
 	 * {@link graphql.GraphQLError} list for a failed subscription
 	 */
 	public GraphQlRSocketHandler(
-			ExecutionGraphQlService graphQlService, List<RSocketGraphQlInterceptor> interceptors,
-			Encoder<?> jsonEncoder) {
+ExecutionGraphQlService graphQlService, List<RSocketGraphQlInterceptor> interceptors,
+Encoder<?> jsonEncoder) {
 
 		Assert.notNull(graphQlService, "ExecutionGraphQlService is required");
 		Assert.notNull(jsonEncoder, "JSON Encoder is required");
@@ -109,10 +109,10 @@ public class GraphQlRSocketHandler {
 	private static Chain initChain(ExecutionGraphQlService service, List<RSocketGraphQlInterceptor> interceptors) {
 		Chain endOfChain = request -> service.execute(request).map(RSocketGraphQlResponse::new);
 		return interceptors.isEmpty() ? endOfChain :
-				interceptors.stream()
-						.reduce(RSocketGraphQlInterceptor::andThen)
-						.map(interceptor -> interceptor.apply(endOfChain))
-						.orElse(endOfChain);
+	interceptors.stream()
+.reduce(RSocketGraphQlInterceptor::andThen)
+.map(interceptor -> interceptor.apply(endOfChain))
+.orElse(endOfChain);
 	}
 
 
@@ -128,19 +128,19 @@ public class GraphQlRSocketHandler {
 	 */
 	public Flux<Map<String, Object>> handleSubscription(Map<String, Object> payload) {
 		return handleInternal(payload)
-				.flatMapMany(response -> {
-					if (response.getData() instanceof Publisher) {
-						Publisher<ExecutionResult> publisher = response.getData();
-						return Flux.from(publisher).map(ExecutionResult::toSpecification);
-					}
-					else if (response.isValid()) {
-						return Flux.error(new InvalidException(
-								"Expected a Publisher for a subscription operation. " +
-										"This is either a server error or the operation is not a subscription"));
-					}
-					String errorData = encodeErrors(response).toString(StandardCharsets.UTF_8);
-					return Flux.error(new RejectedException(errorData));
-				});
+	.flatMapMany(response -> {
+		if (response.getData() instanceof Publisher) {
+			Publisher<ExecutionResult> publisher = response.getData();
+			return Flux.from(publisher).map(ExecutionResult::toSpecification);
+		}
+		else if (response.isValid()) {
+			return Flux.error(new InvalidException(
+		"Expected a Publisher for a subscription operation. " +
+	"This is either a server error or the operation is not a subscription"));
+		}
+		String errorData = encodeErrors(response).toString(StandardCharsets.UTF_8);
+		return Flux.error(new RejectedException(errorData));
+	});
 	}
 
 	private Mono<RSocketGraphQlResponse> handleInternal(Map<String, Object> payload) {
@@ -151,8 +151,8 @@ public class GraphQlRSocketHandler {
 	@SuppressWarnings("unchecked")
 	private DataBuffer encodeErrors(RSocketGraphQlResponse response) {
 		return ((Encoder<List<GraphQLError>>) this.jsonEncoder).encodeValue(
-				response.getExecutionResult().getErrors(),
-				DefaultDataBufferFactory.sharedInstance, LIST_TYPE, MimeTypeUtils.APPLICATION_JSON, null);
+	response.getExecutionResult().getErrors(),
+	DefaultDataBufferFactory.sharedInstance, LIST_TYPE, MimeTypeUtils.APPLICATION_JSON, null);
 	}
 
 }

@@ -29,7 +29,7 @@ public class GraphQlTesterTestSupport {
 	private final MockExecutionGraphQlService graphQlService = new MockExecutionGraphQlService();
 
 	private final ExecutionGraphQlServiceTester.Builder<?> graphQlTesterBuilder =
-			ExecutionGraphQlServiceTester.builder(this.graphQlService);
+ExecutionGraphQlServiceTester.builder(this.graphQlService);
 
 	private final GraphQlTester graphQlTester = this.graphQlTesterBuilder.build();
 

@@ -109,7 +109,7 @@ class QueryByExampleDataFetcherMongoDbTests {
 			Mono<WebGraphQlResponse> responseMono = graphQlSetup.toWebGraphQlHandler().handleRequest(request);
 
 			List<String> names = ResponseHelper.forResponse(responseMono).toList("books", Book.class)
-					.stream().map(Book::getName).collect(Collectors.toList());
+		.stream().map(Book::getName).collect(Collectors.toList());
 
 			assertThat(names).containsExactlyInAnyOrder(book1.getName(), book2.getName());
 		};
@@ -125,17 +125,17 @@ class QueryByExampleDataFetcherMongoDbTests {
 	void shouldFetchWindow() {
 
 		repository.saveAll(List.of(
-				new Book("1", "Nineteen Eighty-Four", new Author("0", "George", "Orwell")),
-				new Book("2", "The Great Gatsby", new Author("0", "F. Scott", "Fitzgerald")),
-				new Book("3", "Catch-22", new Author("0", "Joseph", "Heller")),
-				new Book("42", "Hitchhiker's Guide to the Galaxy", new Author("0", "Douglas", "Adams")),
-				new Book("53", "Breaking Bad", new Author("0", "", "Heisenberg"))));
+	new Book("1", "Nineteen Eighty-Four", new Author("0", "George", "Orwell")),
+	new Book("2", "The Great Gatsby", new Author("0", "F. Scott", "Fitzgerald")),
+	new Book("3", "Catch-22", new Author("0", "Joseph", "Heller")),
+	new Book("42", "Hitchhiker's Guide to the Galaxy", new Author("0", "Douglas", "Adams")),
+	new Book("53", "Breaking Bad", new Author("0", "", "Heisenberg"))));
 
 		Consumer<GraphQlSetup> tester = graphQlSetup -> {
 
 			Mono<WebGraphQlResponse> response = graphQlSetup
-					.toWebGraphQlHandler()
-					.handleRequest(request(BookSource.booksConnectionQuery("first:2, after:\"O_3\"")));
+		.toWebGraphQlHandler()
+		.handleRequest(request(BookSource.booksConnectionQuery("first:2, after:\"O_3\"")));
 
 			List<Map<String, Object>> edges = ResponseHelper.forResponse(response).toEntity("books.edges", List.class);
 			assertThat(edges.size()).isEqualTo(2);
@@ -155,7 +155,7 @@ class QueryByExampleDataFetcherMongoDbTests {
 		ScrollPositionCursorStrategy cursorStrategy = new ScrollPositionCursorStrategy();
 
 		DataFetcher<Iterable<Book>> dataFetcher =
-				QueryByExampleDataFetcher.builder(repository).cursorStrategy(cursorStrategy).scrollable();
+	QueryByExampleDataFetcher.builder(repository).cursorStrategy(cursorStrategy).scrollable();
 
 		GraphQlSetup graphQlSetup = paginationSetup(cursorStrategy).queryFetcher("books", dataFetcher);
 		tester.accept(graphQlSetup);
@@ -180,8 +180,8 @@ class QueryByExampleDataFetcherMongoDbTests {
 
 		// 2) Automatic registration and explicit wiring
 		handler = graphQlSetup(mockRepository)
-				.queryFetcher("bookById", env -> new Book("53", "Breaking Bad", new Author("0", "", "Heisenberg")))
-				.toWebGraphQlHandler();
+	.queryFetcher("bookById", env -> new Book("53", "Breaking Bad", new Author("0", "", "Heisenberg")))
+	.toWebGraphQlHandler();
 
 		responseMono = handler.handleRequest(request("{ bookById(id: 1) {name}}"));
 
@@ -223,26 +223,26 @@ class QueryByExampleDataFetcherMongoDbTests {
 
 	private static GraphQlSetup graphQlSetup(@Nullable QueryByExampleExecutor<?> executor) {
 		return GraphQlSetup.schemaResource(BookSource.schema)
-				.runtimeWiring(createRuntimeWiringConfigurer(executor));
+	.runtimeWiring(createRuntimeWiringConfigurer(executor));
 	}
 
 	private static GraphQlSetup paginationSetup(ScrollPositionCursorStrategy cursorStrategy) {
 		return GraphQlSetup.schemaResource(BookSource.paginationSchema)
-				.connectionSupport(new WindowConnectionAdapter(cursorStrategy));
+	.connectionSupport(new WindowConnectionAdapter(cursorStrategy));
 	}
 
 	private static RuntimeWiringConfigurer createRuntimeWiringConfigurer(QueryByExampleExecutor<?> executor) {
 		return QueryByExampleDataFetcher.autoRegistrationConfigurer(
-				(executor != null ? Collections.singletonList(executor) : Collections.emptyList()),
-				Collections.emptyList(),
-				new ScrollPositionCursorStrategy(),
-				new ScrollSubrange(ScrollPosition.offset(), 10, true));
+	(executor != null ? Collections.singletonList(executor) : Collections.emptyList()),
+	Collections.emptyList(),
+	new ScrollPositionCursorStrategy(),
+	new ScrollSubrange(ScrollPosition.offset(), 10, true));
 	}
 
 	private WebGraphQlRequest request(String query) {
 		return new WebGraphQlRequest(
-				URI.create("/"), new HttpHeaders(), null, Collections.emptyMap(),
-				Collections.singletonMap("query", query), "1", null);
+	URI.create("/"), new HttpHeaders(), null, Collections.emptyMap(),
+	Collections.singletonMap("query", query), "1", null);
 	}
 
 
@@ -274,8 +274,8 @@ class QueryByExampleDataFetcherMongoDbTests {
 		@Bean
 		MongoTemplate mongoTemplate() {
 			return new MongoTemplate(MongoClients.create(String.format("mongodb://%s:%d",
-					mongoDBContainer.getContainerIpAddress(),
-					mongoDBContainer.getFirstMappedPort())), "test");
+		mongoDBContainer.getContainerIpAddress(),
+		mongoDBContainer.getFirstMappedPort())), "test");
 		}
 	}
 

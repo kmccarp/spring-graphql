@@ -40,28 +40,28 @@ public class ClassNameTypeResolverTests {
 	private static final List<?> animalAndPlantList = Arrays.asList(new GrayWolf(), new GiantRedwood());
 
 	private static final String schema = "" +
-			"type Query {" +
-			"    animals: [Animal!]!," +
-			"    sightings: [Sighting!]!" +
-			"}" +
-			"interface Animal {" +
-			"    name: String!" +
-			"}" +
-			"type Bird implements Animal {" +
-			"    name: String!" +
-			"    flightless: Boolean!" +
-			"}" +
-			"type Mammal implements Animal {" +
-			"    name: String!" +
-			"    herbivore: Boolean!" +
-			"}" +
-			"type Plant {" +
-			"    family: String!" +
-			"}" +
-			"type Vegetable {" +
-			"    family: String!" +
-			"}" +
-			"union Sighting = Bird | Mammal | Plant | Vegetable ";
+"type Query {" +
+"    animals: [Animal!]!," +
+"    sightings: [Sighting!]!" +
+"}" +
+"interface Animal {" +
+"    name: String!" +
+"}" +
+"type Bird implements Animal {" +
+"    name: String!" +
+"    flightless: Boolean!" +
+"}" +
+"type Mammal implements Animal {" +
+"    name: String!" +
+"    herbivore: Boolean!" +
+"}" +
+"type Plant {" +
+"    family: String!" +
+"}" +
+"type Vegetable {" +
+"    family: String!" +
+"}" +
+"union Sighting = Bird | Mammal | Plant | Vegetable ";
 
 	private final GraphQlSetup graphQlSetup = GraphQlSetup.schemaContent(schema);
 
@@ -69,22 +69,22 @@ public class ClassNameTypeResolverTests {
 	@Test
 	void typeResolutionViaSuperHierarchy() {
 		String document = "" +
-				"query Animals {" +
-				"  animals {" +
-				"    __typename" +
-				"    name" +
-				"    ... on Bird {" +
-				"      flightless" +
-				"    }" +
-				"    ... on Mammal {" +
-				"      herbivore" +
-				"    }" +
-				"  }" +
-				"}";
+	"query Animals {" +
+	"  animals {" +
+	"    __typename" +
+	"    name" +
+	"    ... on Bird {" +
+	"      flightless" +
+	"    }" +
+	"    ... on Mammal {" +
+	"      herbivore" +
+	"    }" +
+	"  }" +
+	"}";
 
 		Mono<ExecutionGraphQlResponse> responseMono = graphQlSetup.queryFetcher("animals", env -> animalList)
-				.toGraphQlService()
-				.execute(document);
+	.toGraphQlService()
+	.execute(document);
 
 		ResponseHelper response = ResponseHelper.forResponse(responseMono);
 		for (int i = 0; i < animalList.size(); i++) {
@@ -106,28 +106,28 @@ public class ClassNameTypeResolverTests {
 	@Test
 	void typeResolutionViaMapping() {
 		String document = "" +
-				"query Sightings {" +
-				"  sightings {" +
-				"    __typename" +
-				"    ... on Bird {" +
-				"      name" +
-				"    }" +
-				"    ... on Mammal {" +
-				"      name" +
-				"    }" +
-				"    ... on Plant {" +
-				"      family" +
-				"    }" +
-				"  }" +
-				"}";
+	"query Sightings {" +
+	"  sightings {" +
+	"    __typename" +
+	"    ... on Bird {" +
+	"      name" +
+	"    }" +
+	"    ... on Mammal {" +
+	"      name" +
+	"    }" +
+	"    ... on Plant {" +
+	"      family" +
+	"    }" +
+	"  }" +
+	"}";
 
 		ClassNameTypeResolver typeResolver = new ClassNameTypeResolver();
 		typeResolver.addMapping(Tree.class, "Plant");
 
 		Mono<ExecutionGraphQlResponse> responseMono = graphQlSetup.queryFetcher("sightings", env -> animalAndPlantList)
-				.typeResolver(typeResolver)
-				.toGraphQlService()
-				.execute(document);
+	.typeResolver(typeResolver)
+	.toGraphQlService()
+	.execute(document);
 
 		ResponseHelper response = ResponseHelper.forResponse(responseMono);
 		for (int i = 0; i < animalAndPlantList.size(); i++) {

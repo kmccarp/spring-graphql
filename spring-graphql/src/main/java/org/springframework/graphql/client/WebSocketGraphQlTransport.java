@@ -69,8 +69,8 @@ final class WebSocketGraphQlTransport implements GraphQlTransport {
 
 
 	WebSocketGraphQlTransport(
-			URI url, @Nullable HttpHeaders headers, WebSocketClient client, CodecConfigurer codecConfigurer,
-			WebSocketGraphQlClientInterceptor interceptor) {
+URI url, @Nullable HttpHeaders headers, WebSocketClient client, CodecConfigurer codecConfigurer,
+WebSocketGraphQlClientInterceptor interceptor) {
 
 		Assert.notNull(url, "URI is required");
 		Assert.notNull(client, "WebSocketClient is required");
@@ -84,12 +84,12 @@ final class WebSocketGraphQlTransport implements GraphQlTransport {
 		this.graphQlSessionHandler = new GraphQlSessionHandler(codecConfigurer, interceptor);
 
 		this.graphQlSessionMono = initGraphQlSession(this.url, this.headers, client, this.graphQlSessionHandler)
-				.cacheInvalidateWhen(GraphQlSession::notifyWhenClosed);
+	.cacheInvalidateWhen(GraphQlSession::notifyWhenClosed);
 	}
 
 	@SuppressWarnings({"CallingSubscribeInNonBlockingScope", "ReactorTransformationOnMonoVoid"})
 	private static Mono<GraphQlSession> initGraphQlSession(
-			URI uri, HttpHeaders headers, WebSocketClient client, GraphQlSessionHandler handler) {
+URI uri, HttpHeaders headers, WebSocketClient client, GraphQlSessionHandler handler) {
 
 		return Mono.defer(() -> {
 			if (handler.isStopped()) {
@@ -97,7 +97,9 @@ final class WebSocketGraphQlTransport implements GraphQlTransport {
 			}
 
 			client.execute(uri, headers, handler)
-					.subscribe(aVoid -> {}, handler::handleWebSocketSessionError, () -> {});
+		.subscribe(aVoid -> {
+		}, handler::handleWebSocketSessionError, () -> {
+		});
 
 			return handler.getGraphQlSession();
 		});
@@ -225,66 +227,66 @@ final class WebSocketGraphQlTransport implements GraphQlTransport {
 		public Mono<Void> handle(WebSocketSession session) {
 
 			Assert.state(sessionNotInitialized(),
-					"This handler supports only one session at a time, for shared use.");
+		"This handler supports only one session at a time, for shared use.");
 
 			GraphQlSession graphQlSession = new GraphQlSession(session);
 			registerCloseStatusHandling(graphQlSession, session);
 
 			Mono<GraphQlWebSocketMessage> connectionInitMono = this.interceptor.connectionInitPayload()
-					.defaultIfEmpty(Collections.emptyMap())
-					.map(GraphQlWebSocketMessage::connectionInit);
+		.defaultIfEmpty(Collections.emptyMap())
+		.map(GraphQlWebSocketMessage::connectionInit);
 
 			Mono<Void> sendCompletion =
-					session.send(connectionInitMono.concatWith(graphQlSession.getRequestFlux())
-							.map(message -> this.codecDelegate.encode(session, message)));
+		session.send(connectionInitMono.concatWith(graphQlSession.getRequestFlux())
+	.map(message -> this.codecDelegate.encode(session, message)));
 
 			Mono<Void> receiveCompletion = session.receive()
-					.flatMap(webSocketMessage -> {
-						if (sessionNotInitialized()) {
-							try {
-								GraphQlWebSocketMessage message = this.codecDelegate.decode(webSocketMessage);
-								Assert.state(message.resolvedType() == GraphQlWebSocketMessageType.CONNECTION_ACK,
-										() -> "Unexpected message before connection_ack: " + message);
-								return this.interceptor.handleConnectionAck(message.getPayload())
-										.then(Mono.defer(() -> {
-											if (logger.isDebugEnabled()) {
-												logger.debug(graphQlSession + " initialized");
-											}
-											Sinks.EmitResult result = this.graphQlSessionSink.tryEmitValue(graphQlSession);
-											if (result.isFailure()) {
-												return Mono.error(new IllegalStateException(
-														"GraphQlSession initialized but could not be emitted: " + result));
-											}
-											return Mono.empty();
-										}));
-							}
-							catch (Throwable ex) {
-								this.graphQlSessionSink.tryEmitError(ex);
-								return Mono.error(ex);
-							}
-						}
-						else {
-							try {
-								GraphQlWebSocketMessage message = this.codecDelegate.decode(webSocketMessage);
-								switch (message.resolvedType()) {
-									case NEXT -> graphQlSession.handleNext(message);
-									case PING -> graphQlSession.sendPong(null);
-									case ERROR -> graphQlSession.handleError(message);
-									case COMPLETE -> graphQlSession.handleComplete(message);
-									default -> throw new IllegalStateException(
-											"Unexpected message type: '" + message.getType() + "'");
-								}
-							}
-							catch (Exception ex) {
-								if (logger.isErrorEnabled()) {
-									logger.error("Closing " + session + ": " + ex);
-								}
-								return session.close(new CloseStatus(4400, "Invalid message"));
-							}
-						}
-						return Mono.empty();
-					})
-					.then();
+		.flatMap(webSocketMessage -> {
+			if (sessionNotInitialized()) {
+				try {
+					GraphQlWebSocketMessage message = this.codecDelegate.decode(webSocketMessage);
+					Assert.state(message.resolvedType() == GraphQlWebSocketMessageType.CONNECTION_ACK,
+				() -> "Unexpected message before connection_ack: " + message);
+					return this.interceptor.handleConnectionAck(message.getPayload())
+				.then(Mono.defer(() -> {
+					if (logger.isDebugEnabled()) {
+						logger.debug(graphQlSession + " initialized");
+					}
+					Sinks.EmitResult result = this.graphQlSessionSink.tryEmitValue(graphQlSession);
+					if (result.isFailure()) {
+						return Mono.error(new IllegalStateException(
+					"GraphQlSession initialized but could not be emitted: " + result));
+					}
+					return Mono.empty();
+				}));
+				}
+				catch (Throwable ex) {
+					this.graphQlSessionSink.tryEmitError(ex);
+					return Mono.error(ex);
+				}
+			}
+			else {
+				try {
+					GraphQlWebSocketMessage message = this.codecDelegate.decode(webSocketMessage);
+					switch (message.resolvedType()) {
+						case NEXT -> graphQlSession.handleNext(message);
+						case PING -> graphQlSession.sendPong(null);
+						case ERROR -> graphQlSession.handleError(message);
+						case COMPLETE -> graphQlSession.handleComplete(message);
+						default -> throw new IllegalStateException(
+					"Unexpected message type: '" + message.getType() + "'");
+					}
+				}
+				catch (Exception ex) {
+					if (logger.isErrorEnabled()) {
+						logger.error("Closing " + session + ": " + ex);
+					}
+					return session.close(new CloseStatus(4400, "Invalid message"));
+				}
+			}
+			return Mono.empty();
+		})
+		.then();
 
 			return Mono.zip(sendCompletion, receiveCompletion).then();
 		}
@@ -295,27 +297,27 @@ final class WebSocketGraphQlTransport implements GraphQlTransport {
 
 		private void registerCloseStatusHandling(GraphQlSession graphQlSession, WebSocketSession session) {
 			session.closeStatus()
-					.defaultIfEmpty(CloseStatus.NO_STATUS_CODE)
-					.doOnNext(closeStatus -> {
-						String closeStatusMessage = initCloseStatusMessage(closeStatus, null, graphQlSession);
-						if (logger.isDebugEnabled()) {
-							logger.debug(closeStatusMessage);
-						}
-						graphQlSession.terminateRequests(closeStatusMessage, closeStatus);
-					})
-					.doOnError(cause -> {
-						CloseStatus closeStatus = CloseStatus.NO_STATUS_CODE;
-						String closeStatusMessage = initCloseStatusMessage(closeStatus, cause, graphQlSession);
-						if (logger.isErrorEnabled()) {
-							logger.error(closeStatusMessage);
-						}
-						graphQlSession.terminateRequests(closeStatusMessage, closeStatus);
-					})
-					.doOnTerminate(() -> {
-						// Reset GraphQlSession sink to be ready to connect again
-						this.graphQlSessionSink = Sinks.unsafe().one();
-					})
-					.subscribe();
+		.defaultIfEmpty(CloseStatus.NO_STATUS_CODE)
+		.doOnNext(closeStatus -> {
+			String closeStatusMessage = initCloseStatusMessage(closeStatus, null, graphQlSession);
+			if (logger.isDebugEnabled()) {
+				logger.debug(closeStatusMessage);
+			}
+			graphQlSession.terminateRequests(closeStatusMessage, closeStatus);
+		})
+		.doOnError(cause -> {
+			CloseStatus closeStatus = CloseStatus.NO_STATUS_CODE;
+			String closeStatusMessage = initCloseStatusMessage(closeStatus, cause, graphQlSession);
+			if (logger.isErrorEnabled()) {
+				logger.error(closeStatusMessage);
+			}
+			graphQlSession.terminateRequests(closeStatusMessage, closeStatus);
+		})
+		.doOnTerminate(() -> {
+			// Reset GraphQlSession sink to be ready to connect again
+			this.graphQlSessionSink = Sinks.unsafe().one();
+		})
+		.subscribe();
 		}
 
 		private String initCloseStatusMessage(CloseStatus status, @Nullable Throwable ex, GraphQlSession session) {
@@ -434,7 +436,7 @@ final class WebSocketGraphQlTransport implements GraphQlTransport {
 				catch (Exception ex) {
 					if (logger.isErrorEnabled()) {
 						logger.error("Closing " + this.connection.getDescription() +
-								" after failure to send 'complete' for subscription id='" + id + "'.");
+					" after failure to send 'complete' for subscription id='" + id + "'.");
 					}
 					// No other suitable status (like server error but there is none for client)
 					this.connection.close(CloseStatus.PROTOCOL_ERROR).subscribe();
@@ -633,7 +635,7 @@ final class WebSocketGraphQlTransport implements GraphQlTransport {
 	 * State container for a request that emits a single response.
 	 */
 	private record SingleResponseRequestState(
-			GraphQlRequest request, MonoSink<GraphQlResponse> responseSink) implements RequestState {
+	GraphQlRequest request, MonoSink<GraphQlResponse> responseSink) implements RequestState {
 
 		@Override
 		public void handleResponse(GraphQlResponse response) {
@@ -662,7 +664,7 @@ final class WebSocketGraphQlTransport implements GraphQlTransport {
 	 * State container for a subscription request that emits a stream of responses.
 	 */
 	private record SubscriptionRequestState(
-			GraphQlRequest request, FluxSink<GraphQlResponse> responseSink) implements RequestState {
+	GraphQlRequest request, FluxSink<GraphQlResponse> responseSink) implements RequestState {
 
 		@Override
 		public void handleResponse(GraphQlResponse response) {

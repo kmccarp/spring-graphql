@@ -69,20 +69,20 @@ class GraphiQlHandlerTests {
 		assertThat(response.statusCode()).isEqualTo(HttpStatus.TEMPORARY_REDIRECT);
 		assertThat(response.headers().getLocation()).isNotNull();
 		assertThat(response.headers().getLocation().toASCIIString())
-				.isEqualTo("http://localhost/graphiql?path=/graphql");
+	.isEqualTo("http://localhost/graphiql?path=/graphql");
 	}
 
 	@Test
 	void shouldRedirectWithPathAndWsPathQueryParameter() {
 		GraphiQlHandler wsHandler = new GraphiQlHandler("/graphql", "/graphql",
-				new ByteArrayResource("GRAPHIQL".getBytes(StandardCharsets.UTF_8)));
+	new ByteArrayResource("GRAPHIQL".getBytes(StandardCharsets.UTF_8)));
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest("GET", "/graphiql");
 		ServerRequest request = ServerRequest.create(servletRequest, MESSAGE_READERS);
 		ServerResponse response = wsHandler.handleRequest(request);
 		assertThat(response.statusCode()).isEqualTo(HttpStatus.TEMPORARY_REDIRECT);
 		assertThat(response.headers().getLocation()).isNotNull();
 		assertThat(response.headers().getLocation().toASCIIString())
-				.isEqualTo("http://localhost/graphiql?path=/graphql&wsPath=/graphql");
+	.isEqualTo("http://localhost/graphiql?path=/graphql&wsPath=/graphql");
 	}
 
 	@Test // gh-478
@@ -101,7 +101,7 @@ class GraphiQlHandlerTests {
 		assertThat(response.statusCode()).isEqualTo(HttpStatus.TEMPORARY_REDIRECT);
 		assertThat(response.headers().getLocation()).isNotNull();
 		assertThat(response.headers().getLocation().toASCIIString())
-				.isEqualTo("http://localhost" + path + "?path=" + path);
+	.isEqualTo("http://localhost" + path + "?path=" + path);
 	}
 
 	@Test
@@ -118,7 +118,7 @@ class GraphiQlHandlerTests {
 	@Test
 	void shouldConsiderContextPathWhenRedirecting() {
 		GraphiQlHandler wsHandler = new GraphiQlHandler("/graphql", "/graphql",
-				new ByteArrayResource("GRAPHIQL".getBytes(StandardCharsets.UTF_8)));
+	new ByteArrayResource("GRAPHIQL".getBytes(StandardCharsets.UTF_8)));
 		MockHttpServletRequest servletRequest = new MockHttpServletRequest("GET", "/context/graphiql");
 		servletRequest.setContextPath("/context");
 		ServerRequest request = ServerRequest.create(servletRequest, MESSAGE_READERS);
@@ -134,7 +134,7 @@ class GraphiQlHandlerTests {
 		servletRequest.setContextPath("/context");
 		servletRequest.setServletPath("/servlet");
 		servletRequest.setHttpServletMapping(new MockHttpServletMapping(
-				"/graphiql", "/context", "myServlet", MappingMatch.PATH));
+	"/graphiql", "/context", "myServlet", MappingMatch.PATH));
 		ServletRequestPathUtils.parseAndCache(servletRequest);
 		ServerRequest request = ServerRequest.create(servletRequest, MESSAGE_READERS);
 		ServerResponse response = this.handler.handleRequest(request);

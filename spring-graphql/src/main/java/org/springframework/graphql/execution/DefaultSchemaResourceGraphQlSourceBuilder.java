@@ -53,9 +53,7 @@ import org.springframework.util.Assert;
  * @author Brian Clozel
  * @since 1.0.0
  */
-final class DefaultSchemaResourceGraphQlSourceBuilder
-		extends AbstractGraphQlSourceBuilder<GraphQlSource.SchemaResourceBuilder>
-		implements GraphQlSource.SchemaResourceBuilder {
+final class DefaultSchemaResourceGraphQlSourceBuilderextends AbstractGraphQlSourceBuilder<GraphQlSource.SchemaResourceBuilder>implements GraphQlSource.SchemaResourceBuilder {
 
 	private static final Log logger = LogFactory.getLog(DefaultSchemaResourceGraphQlSourceBuilder.class);
 
@@ -108,7 +106,7 @@ final class DefaultSchemaResourceGraphQlSourceBuilder
 
 	@Override
 	public DefaultSchemaResourceGraphQlSourceBuilder schemaFactory(
-			BiFunction<TypeDefinitionRegistry, RuntimeWiring, GraphQLSchema> schemaFactory) {
+BiFunction<TypeDefinitionRegistry, RuntimeWiring, GraphQLSchema> schemaFactory) {
 
 		this.schemaFactory = schemaFactory;
 		return this;
@@ -118,9 +116,9 @@ final class DefaultSchemaResourceGraphQlSourceBuilder
 	protected GraphQLSchema initGraphQlSchema() {
 
 		TypeDefinitionRegistry registry = this.schemaResources.stream()
-				.map(this::parse)
-				.reduce(TypeDefinitionRegistry::merge)
-				.orElseThrow(MissingSchemaException::new);
+	.map(this::parse)
+	.reduce(TypeDefinitionRegistry::merge)
+	.orElseThrow(MissingSchemaException::new);
 
 		for (TypeDefinitionConfigurer configurer : this.typeDefinitionConfigurers) {
 			configurer.configure(registry);
@@ -129,8 +127,8 @@ final class DefaultSchemaResourceGraphQlSourceBuilder
 		logger.info("Loaded " + this.schemaResources.size() + " resource(s) in the GraphQL schema.");
 		if (logger.isDebugEnabled()) {
 			String resources = this.schemaResources.stream()
-					.map(Resource::getDescription)
-					.collect(Collectors.joining(","));
+		.map(Resource::getDescription)
+		.collect(Collectors.joining(","));
 			logger.debug("Loaded GraphQL schema resources: (" + resources + ")");
 		}
 
@@ -155,8 +153,8 @@ final class DefaultSchemaResourceGraphQlSourceBuilder
 		}
 
 		return (this.schemaFactory != null ?
-				this.schemaFactory.apply(registry, runtimeWiring) :
-				new SchemaGenerator().makeExecutableSchema(registry, runtimeWiring));
+	this.schemaFactory.apply(registry, runtimeWiring) :
+	new SchemaGenerator().makeExecutableSchema(registry, runtimeWiring));
 	}
 
 	private TypeDefinitionRegistry parse(Resource schemaResource) {

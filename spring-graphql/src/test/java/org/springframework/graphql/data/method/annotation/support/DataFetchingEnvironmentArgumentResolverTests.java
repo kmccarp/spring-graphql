@@ -38,11 +38,11 @@ import static org.mockito.Mockito.mock;
 public class DataFetchingEnvironmentArgumentResolverTests {
 
 	private static final Method handleMethod = ClassUtils.getMethod(
-			DataFetchingEnvironmentArgumentResolverTests.class, "handle", (Class<?>[]) null);
+DataFetchingEnvironmentArgumentResolverTests.class, "handle", (Class<?>[]) null);
 
 
 	private final DataFetchingEnvironmentMethodArgumentResolver resolver =
-			new DataFetchingEnvironmentMethodArgumentResolver();
+new DataFetchingEnvironmentMethodArgumentResolver();
 
 	@Test
 	void supportsParameter() {
@@ -104,11 +104,11 @@ public class DataFetchingEnvironmentArgumentResolverTests {
 
 	@SuppressWarnings({"OptionalUsedAsFieldOrParameterType", "unused"})
 	public void handle(
-			GraphQLContext graphQLContext,
-			DataFetchingFieldSelectionSet selectionSet,
-			Locale locale,
-			Optional<Locale> optionalLocale,
-			String s) {
+GraphQLContext graphQLContext,
+DataFetchingFieldSelectionSet selectionSet,
+Locale locale,
+Optional<Locale> optionalLocale,
+String s) {
 	}
 
 }

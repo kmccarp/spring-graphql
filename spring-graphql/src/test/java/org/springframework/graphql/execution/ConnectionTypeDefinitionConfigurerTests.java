@@ -49,49 +49,49 @@ public class ConnectionTypeDefinitionConfigurerTests {
 		List<Book> books = BookSource.books();
 
 		DataFetcher<?> dataFetcher = environment ->
-				createConnection(books, book -> new DefaultConnectionCursor("book:" + book.getId()));
+	createConnection(books, book -> new DefaultConnectionCursor("book:" + book.getId()));
 
 		String document = BookSource.booksConnectionQuery("");
 
 		Mono<ExecutionGraphQlResponse> response = initGraphQlSetup()
-				.dataFetcher("Query", "books", dataFetcher)
-				.toGraphQlService()
-				.execute(document);
+	.dataFetcher("Query", "books", dataFetcher)
+	.toGraphQlService()
+	.execute(document);
 
 		ResponseHelper.forResponse(response).assertData(
-				"{\"books\":{" +
-						"\"edges\":[" +
-						"{\"cursor\":\"book:1\",\"node\":{\"id\":\"1\",\"name\":\"Nineteen Eighty-Four\"}}," +
-						"{\"cursor\":\"book:2\",\"node\":{\"id\":\"2\",\"name\":\"The Great Gatsby\"}}," +
-						"{\"cursor\":\"book:3\",\"node\":{\"id\":\"3\",\"name\":\"Catch-22\"}}," +
-						"{\"cursor\":\"book:4\",\"node\":{\"id\":\"4\",\"name\":\"To The Lighthouse\"}}," +
-						"{\"cursor\":\"book:5\",\"node\":{\"id\":\"5\",\"name\":\"Animal Farm\"}}," +
-						"{\"cursor\":\"book:53\",\"node\":{\"id\":\"53\",\"name\":\"Breaking Bad\"}}," +
-						"{\"cursor\":\"book:42\",\"node\":{\"id\":\"42\",\"name\":\"Hitchhiker's Guide to the Galaxy\"}}" +
-						"]," +
-						"\"pageInfo\":{" +
-						"\"startCursor\":\"book:1\"," +
-						"\"endCursor\":\"book:42\"," +
-						"\"hasPreviousPage\":false," +
-						"\"hasNextPage\":false}" +
-						"}}"
+	"{\"books\":{" +
+"\"edges\":[" +
+"{\"cursor\":\"book:1\",\"node\":{\"id\":\"1\",\"name\":\"Nineteen Eighty-Four\"}}," +
+"{\"cursor\":\"book:2\",\"node\":{\"id\":\"2\",\"name\":\"The Great Gatsby\"}}," +
+"{\"cursor\":\"book:3\",\"node\":{\"id\":\"3\",\"name\":\"Catch-22\"}}," +
+"{\"cursor\":\"book:4\",\"node\":{\"id\":\"4\",\"name\":\"To The Lighthouse\"}}," +
+"{\"cursor\":\"book:5\",\"node\":{\"id\":\"5\",\"name\":\"Animal Farm\"}}," +
+"{\"cursor\":\"book:53\",\"node\":{\"id\":\"53\",\"name\":\"Breaking Bad\"}}," +
+"{\"cursor\":\"book:42\",\"node\":{\"id\":\"42\",\"name\":\"Hitchhiker's Guide to the Galaxy\"}}" +
+"]," +
+"\"pageInfo\":{" +
+"\"startCursor\":\"book:1\"," +
+"\"endCursor\":\"book:42\"," +
+"\"hasPreviousPage\":false," +
+"\"hasNextPage\":false}" +
+"}}"
 		);
 	}
 
 	private GraphQlSetup initGraphQlSetup() {
 		return GraphQlSetup.schemaResource(BookSource.paginationSchema)
-				.typeDefinitionConfigurer(new ConnectionTypeDefinitionConfigurer());
+	.typeDefinitionConfigurer(new ConnectionTypeDefinitionConfigurer());
 	}
 
 	private static <N> Connection<N> createConnection(
-			List<N> nodes, Function<N, ConnectionCursor> cursorFunction) {
+List<N> nodes, Function<N, ConnectionCursor> cursorFunction) {
 
 		List<Edge<N>> edges = nodes.stream()
-				.map(node -> (Edge<N>) new DefaultEdge<>(node, cursorFunction.apply(node)))
-				.toList();
+	.map(node -> (Edge<N>) new DefaultEdge<>(node, cursorFunction.apply(node)))
+	.toList();
 
 		DefaultPageInfo pageInfo = new DefaultPageInfo(
-				edges.get(0).getCursor(), edges.get(edges.size() - 1).getCursor(), false, false);
+	edges.get(0).getCursor(), edges.get(edges.size() - 1).getCursor(), false, false);
 
 		return new DefaultConnection<>(edges, pageInfo);
 	}

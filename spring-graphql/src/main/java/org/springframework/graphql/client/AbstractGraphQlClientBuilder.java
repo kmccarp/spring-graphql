@@ -53,7 +53,7 @@ import org.springframework.util.ClassUtils;
 public abstract class AbstractGraphQlClientBuilder<B extends AbstractGraphQlClientBuilder<B>> implements GraphQlClient.Builder<B> {
 
 	protected static final boolean jackson2Present = ClassUtils.isPresent(
-			"com.fasterxml.jackson.databind.ObjectMapper", AbstractGraphQlClientBuilder.class.getClassLoader());
+"com.fasterxml.jackson.databind.ObjectMapper", AbstractGraphQlClientBuilder.class.getClassLoader());
 
 
 	private final List<GraphQlClientInterceptor> interceptors = new ArrayList<>();
@@ -78,8 +78,8 @@ public abstract class AbstractGraphQlClientBuilder<B extends AbstractGraphQlClie
 
 	private static DocumentSource initDocumentSource() {
 		return new CachingDocumentSource(new ResourceDocumentSource(
-				Collections.singletonList(new ClassPathResource("graphql-documents/")),
-				ResourceDocumentSource.FILE_EXTENSIONS));
+	Collections.singletonList(new ClassPathResource("graphql-documents/")),
+	ResourceDocumentSource.FILE_EXTENSIONS));
 	}
 
 
@@ -170,7 +170,7 @@ public abstract class AbstractGraphQlClientBuilder<B extends AbstractGraphQlClie
 		}
 
 		return new DefaultGraphQlClient(
-				this.documentSource, createExecuteChain(transport), createExecuteSubscriptionChain(transport));
+	this.documentSource, createExecuteChain(transport), createExecuteSubscriptionChain(transport));
 	}
 
 	/**
@@ -187,23 +187,23 @@ public abstract class AbstractGraphQlClientBuilder<B extends AbstractGraphQlClie
 	private Chain createExecuteChain(GraphQlTransport transport) {
 
 		Chain chain = request -> transport.execute(request).map(response ->
-				new DefaultClientGraphQlResponse(request, response, getEncoder(), getDecoder()));
+	new DefaultClientGraphQlResponse(request, response, getEncoder(), getDecoder()));
 
 		return this.interceptors.stream()
-				.reduce(GraphQlClientInterceptor::andThen)
-				.map(interceptor -> (Chain) (request) -> interceptor.intercept(request, chain))
-				.orElse(chain);
+	.reduce(GraphQlClientInterceptor::andThen)
+	.map(interceptor -> (Chain) (request) -> interceptor.intercept(request, chain))
+	.orElse(chain);
 	}
 
 	private SubscriptionChain createExecuteSubscriptionChain(GraphQlTransport transport) {
 
 		SubscriptionChain chain = request -> transport.executeSubscription(request)
-				.map(response -> new DefaultClientGraphQlResponse(request, response, getEncoder(), getDecoder()));
+	.map(response -> new DefaultClientGraphQlResponse(request, response, getEncoder(), getDecoder()));
 
 		return this.interceptors.stream()
-				.reduce(GraphQlClientInterceptor::andThen)
-				.map(interceptor -> (SubscriptionChain) (request) -> interceptor.interceptSubscription(request, chain))
-				.orElse(chain);
+	.reduce(GraphQlClientInterceptor::andThen)
+	.map(interceptor -> (SubscriptionChain) (request) -> interceptor.interceptSubscription(request, chain))
+	.orElse(chain);
 	}
 
 	private Encoder<?> getEncoder() {

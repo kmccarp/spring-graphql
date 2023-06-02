@@ -42,8 +42,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WebGraphQlHandlerTests {
 
 	private static final WebGraphQlRequest webInput = new WebGraphQlRequest(
-			URI.create("https://abc.org"), new HttpHeaders(), null, Collections.emptyMap(),
-			Collections.singletonMap("query", "{ greeting }"), "1", null);
+URI.create("https://abc.org"), new HttpHeaders(), null, Collections.emptyMap(),
+Collections.singletonMap("query", "{ greeting }"), "1", null);
 
 
 	private final GraphQlSetup graphQlSetup = GraphQlSetup.schemaContent("type Query { greeting: String }");
@@ -61,9 +61,9 @@ public class WebGraphQlHandlerTests {
 		});
 
 		Mono<WebGraphQlResponse> responseMono =
-				this.graphQlSetup.queryFetcher("greeting", dataFetcher).toWebGraphQlHandler()
-						.handleRequest(webInput)
-						.contextWrite((context) -> context.put("name", "007"));
+	this.graphQlSetup.queryFetcher("greeting", dataFetcher).toWebGraphQlHandler()
+.handleRequest(webInput)
+.contextWrite((context) -> context.put("name", "007"));
 
 		String greeting = ResponseHelper.forResponse(responseMono).toEntity("greeting", String.class);
 		assertThat(greeting).isEqualTo("Hello 007");
@@ -72,17 +72,14 @@ public class WebGraphQlHandlerTests {
 	@Test
 	void reactorContextPropagationToExceptionResolver() {
 		DataFetcherExceptionResolver exceptionResolver =
-				(ex, env) -> Mono.deferContextual((view) -> Mono.just(Collections.singletonList(
-						GraphqlErrorBuilder.newError(env)
-								.message("Resolved error: " + ex.getMessage() + ", name=" + view.get("name"))
-								.errorType(ErrorType.BAD_REQUEST)
-								.build())));
+	(ex, env) -> Mono.deferContextual((view) -> Mono.just(Collections.singletonList(
+GraphqlErrorBuilder.newError(env).message("Resolved error: " + ex.getMessage() + ", name=" + view.get("name")).errorType(ErrorType.BAD_REQUEST).build())));
 
 		Mono<WebGraphQlResponse> responseMono = this.graphQlSetup.queryFetcher("greeting", this.errorDataFetcher)
-				.exceptionResolver(exceptionResolver)
-				.toWebGraphQlHandler()
-				.handleRequest(webInput)
-				.contextWrite((cxt) -> cxt.put("name", "007"));
+	.exceptionResolver(exceptionResolver)
+	.toWebGraphQlHandler()
+	.handleRequest(webInput)
+	.contextWrite((cxt) -> cxt.put("name", "007"));
 
 		ResponseHelper response = ResponseHelper.forResponse(responseMono);
 		assertThat(response.errorCount()).isEqualTo(1);
@@ -99,10 +96,10 @@ public class WebGraphQlHandlerTests {
 		ContextRegistry.getInstance().registerThreadLocalAccessor(new TestThreadLocalAccessor<>(threadLocal));
 		try {
 			Mono<WebGraphQlResponse> responseMono = this.graphQlSetup
-					.queryFetcher("greeting", env -> "Hello " + threadLocal.get())
-					.interceptor((input, next) -> Mono.delay(Duration.ofMillis(10)).flatMap((aLong) -> next.next(input)))
-					.toWebGraphQlHandler()
-					.handleRequest(webInput);
+		.queryFetcher("greeting", env -> "Hello " + threadLocal.get())
+		.interceptor((input, next) -> Mono.delay(Duration.ofMillis(10)).flatMap((aLong) -> next.next(input)))
+		.toWebGraphQlHandler()
+		.handleRequest(webInput);
 
 			String greeting = ResponseHelper.forResponse(responseMono).toEntity("greeting", String.class);
 			assertThat(greeting).isEqualTo("Hello 007");
@@ -119,17 +116,17 @@ public class WebGraphQlHandlerTests {
 		ContextRegistry.getInstance().registerThreadLocalAccessor(new TestThreadLocalAccessor<>(threadLocal));
 		try {
 			DataFetcherExceptionResolverAdapter exceptionResolver =
-					DataFetcherExceptionResolver.forSingleError((ex, env) ->
-							GraphqlErrorBuilder.newError(env)
-									.message("Resolved error: " + ex.getMessage() + ", name=" + threadLocal.get())
-									.errorType(ErrorType.BAD_REQUEST).build());
+		DataFetcherExceptionResolver.forSingleError((ex, env) ->
+	GraphqlErrorBuilder.newError(env)
+.message("Resolved error: " + ex.getMessage() + ", name=" + threadLocal.get())
+.errorType(ErrorType.BAD_REQUEST).build());
 			exceptionResolver.setThreadLocalContextAware(true);
 
 			Mono<WebGraphQlResponse> responseMono = this.graphQlSetup.queryFetcher("greeting", this.errorDataFetcher)
-					.exceptionResolver(exceptionResolver)
-					.interceptor((input, next) -> Mono.delay(Duration.ofMillis(10)).flatMap((aLong) -> next.next(input)))
-					.toWebGraphQlHandler()
-					.handleRequest(webInput);
+		.exceptionResolver(exceptionResolver)
+		.interceptor((input, next) -> Mono.delay(Duration.ofMillis(10)).flatMap((aLong) -> next.next(input)))
+		.toWebGraphQlHandler()
+		.handleRequest(webInput);
 
 			ResponseHelper response = ResponseHelper.forResponse(responseMono);
 			assertThat(response.errorCount()).isEqualTo(1);

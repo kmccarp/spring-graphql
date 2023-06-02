@@ -39,7 +39,8 @@ import org.springframework.util.Assert;
 final class WebTestClientTransport implements GraphQlTransport {
 
 	private static final ParameterizedTypeReference<Map<String, Object>> MAP_TYPE =
-			new ParameterizedTypeReference<Map<String, Object>>() {};
+new ParameterizedTypeReference<Map<String, Object>>() {
+};
 
 
 	private final WebTestClient webTestClient;
@@ -55,15 +56,15 @@ final class WebTestClientTransport implements GraphQlTransport {
 	public Mono<GraphQlResponse> execute(GraphQlRequest request) {
 
 		Map<String, Object> responseMap = this.webTestClient.post()
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON)
-				.bodyValue(request.toMap())
-				.exchange()
-				.expectStatus().isOk()
-				.expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
-				.expectBody(MAP_TYPE)
-				.returnResult()
-				.getResponseBody();
+	.contentType(MediaType.APPLICATION_JSON)
+	.accept(MediaType.APPLICATION_JSON)
+	.bodyValue(request.toMap())
+	.exchange()
+	.expectStatus().isOk()
+	.expectHeader().contentTypeCompatibleWith(MediaType.APPLICATION_JSON)
+	.expectBody(MAP_TYPE)
+	.returnResult()
+	.getResponseBody();
 
 		responseMap = (responseMap != null ? responseMap : Collections.emptyMap());
 		GraphQlResponse response = GraphQlTransport.createResponse(responseMap);

@@ -61,16 +61,16 @@ public class GraphQlRSocketHandlerTests {
 		Flux<Map<String, Object>> responseFlux = handleSubscription(document, result);
 
 		StepVerifier.create(responseFlux)
-				.expectErrorSatisfies(ex -> {
-					assertThat(ex).isInstanceOf(RejectedException.class);
-					assertThat(ex.getMessage()).isEqualTo(
-							"[{\"message\":\"boo\"," +
-									"\"locations\":[]," +
-									"\"errorType\":\"DataFetchingException\"," +
-									"\"path\":null," +
-									"\"extensions\":null}]");
-				})
-				.verify(TIMEOUT);
+	.expectErrorSatisfies(ex -> {
+		assertThat(ex).isInstanceOf(RejectedException.class);
+		assertThat(ex.getMessage()).isEqualTo(
+	"[{\"message\":\"boo\"," +
+"\"locations\":[]," +
+"\"errorType\":\"DataFetchingException\"," +
+"\"path\":null," +
+"\"extensions\":null}]");
+	})
+	.verify(TIMEOUT);
 	}
 
 	@Test
@@ -82,11 +82,11 @@ public class GraphQlRSocketHandlerTests {
 		Flux<Map<String, Object>> responseFlux = handleSubscription(document, result);
 
 		StepVerifier.create(responseFlux)
-				.expectErrorSatisfies(ex -> {
-					assertThat(ex).isInstanceOf(InvalidException.class);
-					assertThat(ex.getMessage()).startsWith("Expected a Publisher for a subscription operation.");
-				})
-				.verify(TIMEOUT);
+	.expectErrorSatisfies(ex -> {
+		assertThat(ex).isInstanceOf(InvalidException.class);
+		assertThat(ex.getMessage()).startsWith("Expected a Publisher for a subscription operation.");
+	})
+	.verify(TIMEOUT);
 	}
 
 	private Flux<Map<String, Object>> handleSubscription(String document, ExecutionResult executionResult) {

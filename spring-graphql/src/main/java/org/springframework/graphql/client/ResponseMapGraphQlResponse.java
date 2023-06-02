@@ -54,7 +54,7 @@ class ResponseMapGraphQlResponse extends AbstractGraphQlResponse {
 	protected ResponseMapGraphQlResponse(GraphQlResponse response) {
 		Assert.notNull(response, "'GraphQlResponse' is required");
 		this.responseMap = response.toMap();
-		this.errors =  response.getErrors();
+		this.errors = response.getErrors();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -95,7 +95,7 @@ class ResponseMapGraphQlResponse extends AbstractGraphQlResponse {
 	@Override
 	public boolean equals(Object other) {
 		return (other instanceof ResponseMapGraphQlResponse &&
-				this.responseMap.equals(((ResponseMapGraphQlResponse) other).responseMap));
+	this.responseMap.equals(((ResponseMapGraphQlResponse) other).responseMap));
 	}
 
 	@Override
@@ -130,8 +130,8 @@ class ResponseMapGraphQlResponse extends AbstractGraphQlResponse {
 		@SuppressWarnings("unchecked")
 		private static List<SourceLocation> initLocations(Map<String, Object> errorMap) {
 			return ((List<Map<String, Object>>) errorMap.getOrDefault("locations", Collections.emptyList())).stream()
-					.map(map -> new SourceLocation((int) map.get("line"), (int) map.get("column"), (String) map.get("sourceName")))
-					.collect(Collectors.toList());
+		.map(map -> new SourceLocation((int) map.get("line"), (int) map.get("column"), (String) map.get("sourceName")))
+		.collect(Collectors.toList());
 		}
 
 		@SuppressWarnings("unchecked")
@@ -141,8 +141,8 @@ class ResponseMapGraphQlResponse extends AbstractGraphQlResponse {
 				return "";
 			}
 			return path.stream().reduce("",
-					(s, o) -> s + (o instanceof Integer ? "[" + o + "]" : (s.isEmpty() ? o : "." + o)),
-					(s, s2) -> null);
+		(s, o) -> s + (o instanceof Integer ? "[" + o + "]" : (s.isEmpty() ? o : "." + o)),
+		(s, s2) -> null);
 		}
 
 		@Override
@@ -194,9 +194,9 @@ class ResponseMapGraphQlResponse extends AbstractGraphQlResponse {
 			}
 			ResponseError other = (ResponseError) o;
 			return (ObjectUtils.nullSafeEquals(getMessage(), other.getMessage()) &&
-					ObjectUtils.nullSafeEquals(getLocations(), other.getLocations()) &&
-					ObjectUtils.nullSafeEquals(getParsedPath(), other.getParsedPath()) &&
-					getErrorType() == other.getErrorType());
+		ObjectUtils.nullSafeEquals(getLocations(), other.getLocations()) &&
+		ObjectUtils.nullSafeEquals(getParsedPath(), other.getParsedPath()) &&
+		getErrorType() == other.getErrorType());
 		}
 
 		@Override

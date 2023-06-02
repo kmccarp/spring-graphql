@@ -49,8 +49,8 @@ public class ScrollPositionCursorStrategyTests {
 		keys.put("id", 103);
 
 		toAndFromCursor(ScrollPosition.forward(keys),
-				"K_[\"java.util.Collections$UnmodifiableMap\"," +
-						"{\"firstName\":\"Joseph\",\"lastName\":\"Heller\",\"id\":103}]");
+	"K_[\"java.util.Collections$UnmodifiableMap\"," +
+"{\"firstName\":\"Joseph\",\"lastName\":\"Heller\",\"id\":103}]");
 	}
 
 	private void toAndFromCursor(ScrollPosition position, String cursor) {

@@ -60,14 +60,14 @@ final class CodecDelegate {
 
 	static Encoder<?> findJsonEncoder(CodecConfigurer configurer) {
 		return findJsonEncoder(configurer.getWriters().stream()
-				.filter(writer -> writer instanceof EncoderHttpMessageWriter)
-				.map(writer -> ((EncoderHttpMessageWriter<?>) writer).getEncoder()));
+	.filter(writer -> writer instanceof EncoderHttpMessageWriter)
+	.map(writer -> ((EncoderHttpMessageWriter<?>) writer).getEncoder()));
 	}
 
 	static Decoder<?> findJsonDecoder(CodecConfigurer configurer) {
 		return findJsonDecoder(configurer.getReaders().stream()
-				.filter(reader -> reader instanceof DecoderHttpMessageReader)
-				.map(reader -> ((DecoderHttpMessageReader<?>) reader).getDecoder()));
+	.filter(reader -> reader instanceof DecoderHttpMessageReader)
+	.map(reader -> ((DecoderHttpMessageReader<?>) reader).getDecoder()));
 	}
 
 	static Encoder<?> findJsonEncoder(List<Encoder<?>> encoders) {
@@ -80,16 +80,16 @@ final class CodecDelegate {
 
 	private static Encoder<?> findJsonEncoder(Stream<Encoder<?>> stream) {
 		return stream
-				.filter(encoder -> encoder.canEncode(MESSAGE_TYPE, MediaType.APPLICATION_JSON))
-				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException("No JSON Encoder"));
+	.filter(encoder -> encoder.canEncode(MESSAGE_TYPE, MediaType.APPLICATION_JSON))
+	.findFirst()
+	.orElseThrow(() -> new IllegalArgumentException("No JSON Encoder"));
 	}
 
 	private static Decoder<?> findJsonDecoder(Stream<Decoder<?>> decoderStream) {
 		return decoderStream
-				.filter(decoder -> decoder.canDecode(MESSAGE_TYPE, MediaType.APPLICATION_JSON))
-				.findFirst()
-				.orElseThrow(() -> new IllegalArgumentException("No JSON Decoder"));
+	.filter(decoder -> decoder.canDecode(MESSAGE_TYPE, MediaType.APPLICATION_JSON))
+	.findFirst()
+	.orElseThrow(() -> new IllegalArgumentException("No JSON Decoder"));
 	}
 
 
@@ -102,7 +102,7 @@ final class CodecDelegate {
 	public <T> WebSocketMessage encode(WebSocketSession session, GraphQlWebSocketMessage message) {
 
 		DataBuffer buffer = ((Encoder<T>) this.encoder).encodeValue(
-				(T) message, session.bufferFactory(), MESSAGE_TYPE, MimeTypeUtils.APPLICATION_JSON, null);
+	(T) message, session.bufferFactory(), MESSAGE_TYPE, MimeTypeUtils.APPLICATION_JSON, null);
 
 		return new WebSocketMessage(WebSocketMessage.Type.TEXT, buffer);
 	}

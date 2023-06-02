@@ -48,7 +48,7 @@ public class SchemaMappingDetectionTests {
 	void registerWithDefaultCoordinates() {
 
 		Map<String, Map<String, DataFetcher>> map =
-				initRuntimeWiringBuilder(BookController.class).build().getDataFetchers();
+	initRuntimeWiringBuilder(BookController.class).build().getDataFetchers();
 
 		assertThat(map).containsOnlyKeys("Query", "Mutation", "Subscription", "Book");
 		assertThat(map.get("Query")).containsOnlyKeys("bookById", "bookByIdCustomized");
@@ -66,7 +66,7 @@ public class SchemaMappingDetectionTests {
 	void registerWithExplicitCoordinates() {
 
 		Map<String, Map<String, DataFetcher>> map =
-				initRuntimeWiringBuilder(BookController.class).build().getDataFetchers();
+	initRuntimeWiringBuilder(BookController.class).build().getDataFetchers();
 
 		assertThat(map).containsOnlyKeys("Query", "Mutation", "Subscription", "Book");
 		assertThat(map.get("Query")).containsOnlyKeys("bookById", "bookByIdCustomized");
@@ -102,7 +102,7 @@ public class SchemaMappingDetectionTests {
 		String field = strings[1];
 
 		AnnotatedControllerConfigurer.SchemaMappingDataFetcher dataFetcher =
-				(AnnotatedControllerConfigurer.SchemaMappingDataFetcher) map.get(typeName).get(field);
+	(AnnotatedControllerConfigurer.SchemaMappingDataFetcher) map.get(typeName).get(field);
 
 		assertThat(dataFetcher.getHandlerMethod().getMethod().getName()).isEqualTo(methodName);
 	}

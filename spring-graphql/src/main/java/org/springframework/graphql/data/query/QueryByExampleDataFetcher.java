@@ -112,7 +112,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 
 
 	QueryByExampleDataFetcher(
-			TypeInformation<T> domainType, @Nullable CursorStrategy<ScrollPosition> cursorStrategy) {
+TypeInformation<T> domainType, @Nullable CursorStrategy<ScrollPosition> cursorStrategy) {
 
 		this.domainType = domainType;
 		this.cursorStrategy = cursorStrategy;
@@ -152,7 +152,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 		List<GraphQLArgument> definedArguments = environment.getFieldDefinition().getArguments();
 		if (definedArguments.size() == 1) {
 			String name = definedArguments.get(0).getName();
-			if (arguments.get(name) instanceof Map<?,?>) {
+			if (arguments.get(name) instanceof Map<?, ?>) {
 				return name;
 			}
 		}
@@ -167,8 +167,8 @@ public abstract class QueryByExampleDataFetcher<T> {
 
 		// Compute selection only for non-projections
 		if (this.domainType.getType().equals(resultType) ||
-				this.domainType.getType().isAssignableFrom(resultType) ||
-				this.domainType.isSubTypeOf(resultType)) {
+	this.domainType.getType().isAssignableFrom(resultType) ||
+	this.domainType.isSubTypeOf(resultType)) {
 			return PropertySelection.create(this.domainType, selection).toList();
 		}
 		return Collections.emptyList();
@@ -214,8 +214,8 @@ public abstract class QueryByExampleDataFetcher<T> {
 	 * {@link ReactiveBuilder}.
 	 */
 	public static RuntimeWiringConfigurer autoRegistrationConfigurer(
-			List<QueryByExampleExecutor<?>> executors,
-			List<ReactiveQueryByExampleExecutor<?>> reactiveExecutors) {
+List<QueryByExampleExecutor<?>> executors,
+List<ReactiveQueryByExampleExecutor<?>> reactiveExecutors) {
 
 		return autoRegistrationConfigurer(executors, reactiveExecutors, null, null);
 	}
@@ -239,10 +239,10 @@ public abstract class QueryByExampleDataFetcher<T> {
 	 * @since 1.2.0
 	 */
 	public static RuntimeWiringConfigurer autoRegistrationConfigurer(
-			List<QueryByExampleExecutor<?>> executors,
-			List<ReactiveQueryByExampleExecutor<?>> reactiveExecutors,
-			@Nullable CursorStrategy<ScrollPosition> cursorStrategy,
-			@Nullable ScrollSubrange defaultScrollSubrange) {
+List<QueryByExampleExecutor<?>> executors,
+List<ReactiveQueryByExampleExecutor<?>> reactiveExecutors,
+@Nullable CursorStrategy<ScrollPosition> cursorStrategy,
+@Nullable ScrollSubrange defaultScrollSubrange) {
 
 		Map<String, DataFetcherFactory> factories = new HashMap<>();
 
@@ -250,8 +250,8 @@ public abstract class QueryByExampleDataFetcher<T> {
 			String typeName = RepositoryUtils.getGraphQlTypeName(executor);
 			if (typeName != null) {
 				Builder<?, ?> builder = customize(executor, builder(executor)
-						.cursorStrategy(cursorStrategy)
-						.defaultScrollSubrange(defaultScrollSubrange));
+			.cursorStrategy(cursorStrategy)
+			.defaultScrollSubrange(defaultScrollSubrange));
 
 				factories.put(typeName, new DataFetcherFactory() {
 					@Override
@@ -276,8 +276,8 @@ public abstract class QueryByExampleDataFetcher<T> {
 			String typeName = RepositoryUtils.getGraphQlTypeName(executor);
 			if (typeName != null) {
 				ReactiveBuilder<?, ?> builder = customize(executor, builder(executor)
-						.cursorStrategy(cursorStrategy)
-						.defaultScrollSubrange(defaultScrollSubrange));
+			.cursorStrategy(cursorStrategy)
+			.defaultScrollSubrange(defaultScrollSubrange));
 
 				factories.put(typeName, new DataFetcherFactory() {
 					@Override
@@ -319,8 +319,8 @@ public abstract class QueryByExampleDataFetcher<T> {
 	 */
 	@Deprecated
 	public static GraphQLTypeVisitor autoRegistrationTypeVisitor(
-			List<QueryByExampleExecutor<?>> executors,
-			List<ReactiveQueryByExampleExecutor<?>> reactiveExecutors) {
+List<QueryByExampleExecutor<?>> executors,
+List<ReactiveQueryByExampleExecutor<?>> reactiveExecutors) {
 
 		Map<String, Function<Boolean, DataFetcher<?>>> factories = new HashMap<>();
 
@@ -346,7 +346,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	private static Builder customize(QueryByExampleExecutor<?> executor, Builder builder) {
-		if(executor instanceof QueryByExampleBuilderCustomizer<?> customizer){
+		if (executor instanceof QueryByExampleBuilderCustomizer<?> customizer) {
 			return customizer.customize(builder);
 		}
 		return builder;
@@ -354,7 +354,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	private static ReactiveBuilder customize(ReactiveQueryByExampleExecutor<?> executor, ReactiveBuilder builder) {
-		if(executor instanceof ReactiveQueryByExampleBuilderCustomizer<?> customizer){
+		if (executor instanceof ReactiveQueryByExampleBuilderCustomizer<?> customizer) {
 			return customizer.customize(builder);
 		}
 		return builder;
@@ -391,8 +391,8 @@ public abstract class QueryByExampleDataFetcher<T> {
 		}
 
 		Builder(QueryByExampleExecutor<T> executor, TypeInformation<T> domainType, Class<R> resultType,
-				@Nullable CursorStrategy<ScrollPosition> cursorStrategy, @Nullable ScrollSubrange defaultSubrange,
-				Sort sort) {
+	@Nullable CursorStrategy<ScrollPosition> cursorStrategy, @Nullable ScrollSubrange defaultSubrange,
+	Sort sort) {
 
 			this.executor = executor;
 			this.domainType = domainType;
@@ -414,7 +414,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 		public <P> Builder<T, P> projectAs(Class<P> projectionType) {
 			Assert.notNull(projectionType, "Projection type must not be null");
 			return new Builder<>(this.executor, this.domainType,
-					projectionType, this.cursorStrategy, this.defaultSubrange, this.sort);
+		projectionType, this.cursorStrategy, this.defaultSubrange, this.sort);
 		}
 
 		/**
@@ -428,7 +428,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 		 */
 		public Builder<T, R> cursorStrategy(@Nullable CursorStrategy<ScrollPosition> cursorStrategy) {
 			return new Builder<>(this.executor, this.domainType,
-					this.resultType, cursorStrategy, this.defaultSubrange, this.sort);
+		this.resultType, cursorStrategy, this.defaultSubrange, this.sort);
 		}
 
 		/**
@@ -442,7 +442,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 		 */
 		public Builder<T, R> defaultScrollSubrange(@Nullable ScrollSubrange defaultSubrange) {
 			return new Builder<>(this.executor, this.domainType,
-					this.resultType, this.cursorStrategy, defaultSubrange, this.sort);
+		this.resultType, this.cursorStrategy, defaultSubrange, this.sort);
 		}
 
 		/**
@@ -454,7 +454,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 		public Builder<T, R> sortBy(Sort sort) {
 			Assert.notNull(sort, "Sort must not be null");
 			return new Builder<>(this.executor, this.domainType,
-					this.resultType, this.cursorStrategy, this.defaultSubrange, sort);
+		this.resultType, this.cursorStrategy, this.defaultSubrange, sort);
 		}
 
 		/**
@@ -478,10 +478,10 @@ public abstract class QueryByExampleDataFetcher<T> {
 		 */
 		public DataFetcher<Iterable<R>> scrollable() {
 			return new ScrollableEntityFetcher<>(
-					this.executor, this.domainType, this.resultType,
-					(this.cursorStrategy != null ? this.cursorStrategy : RepositoryUtils.defaultCursorStrategy()),
-					(this.defaultSubrange != null ? this.defaultSubrange : RepositoryUtils.defaultScrollSubrange()),
-					this.sort);
+		this.executor, this.domainType, this.resultType,
+		(this.cursorStrategy != null ? this.cursorStrategy : RepositoryUtils.defaultCursorStrategy()),
+		(this.defaultSubrange != null ? this.defaultSubrange : RepositoryUtils.defaultScrollSubrange()),
+		this.sort);
 		}
 
 	}
@@ -537,9 +537,9 @@ public abstract class QueryByExampleDataFetcher<T> {
 		}
 
 		ReactiveBuilder(
-				ReactiveQueryByExampleExecutor<T> executor, TypeInformation<T> domainType, Class<R> resultType,
-				@Nullable CursorStrategy<ScrollPosition> cursorStrategy, @Nullable ScrollSubrange defaultSubrange,
-				Sort sort) {
+	ReactiveQueryByExampleExecutor<T> executor, TypeInformation<T> domainType, Class<R> resultType,
+	@Nullable CursorStrategy<ScrollPosition> cursorStrategy, @Nullable ScrollSubrange defaultSubrange,
+	Sort sort) {
 
 			this.executor = executor;
 			this.domainType = domainType;
@@ -560,8 +560,8 @@ public abstract class QueryByExampleDataFetcher<T> {
 		 */
 		public <P> ReactiveBuilder<T, P> projectAs(Class<P> projectionType) {
 			Assert.notNull(projectionType, "Projection type must not be null");
-			return new ReactiveBuilder<>(this.executor, this.domainType, 
-					projectionType, this.cursorStrategy, this.defaultSubrange, this.sort);
+			return new ReactiveBuilder<>(this.executor, this.domainType,
+		projectionType, this.cursorStrategy, this.defaultSubrange, this.sort);
 		}
 
 		/**
@@ -575,7 +575,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 		 */
 		public ReactiveBuilder<T, R> cursorStrategy(@Nullable CursorStrategy<ScrollPosition> cursorStrategy) {
 			return new ReactiveBuilder<>(this.executor, this.domainType,
-					this.resultType, cursorStrategy, this.defaultSubrange, this.sort);
+		this.resultType, cursorStrategy, this.defaultSubrange, this.sort);
 		}
 
 		/**
@@ -589,7 +589,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 		 */
 		public ReactiveBuilder<T, R> defaultScrollSubrange(@Nullable ScrollSubrange defaultSubrange) {
 			return new ReactiveBuilder<>(this.executor, this.domainType,
-					this.resultType, this.cursorStrategy, defaultSubrange, this.sort);
+		this.resultType, this.cursorStrategy, defaultSubrange, this.sort);
 		}
 
 		/**
@@ -600,8 +600,8 @@ public abstract class QueryByExampleDataFetcher<T> {
 		 */
 		public ReactiveBuilder<T, R> sortBy(Sort sort) {
 			Assert.notNull(sort, "Sort must not be null");
-			return new ReactiveBuilder<>(this.executor, this.domainType, 
-					this.resultType, this.cursorStrategy, this.defaultSubrange, sort);
+			return new ReactiveBuilder<>(this.executor, this.domainType,
+		this.resultType, this.cursorStrategy, this.defaultSubrange, sort);
 		}
 
 		/**
@@ -625,10 +625,10 @@ public abstract class QueryByExampleDataFetcher<T> {
 		 */
 		public DataFetcher<Mono<Iterable<R>>> scrollable() {
 			return new ReactiveScrollableEntityFetcher<>(
-					this.executor, this.domainType, this.resultType,
-					(this.cursorStrategy != null ? this.cursorStrategy : RepositoryUtils.defaultCursorStrategy()),
-					(this.defaultSubrange != null ? this.defaultSubrange : RepositoryUtils.defaultScrollSubrange()),
-					this.sort);
+		this.executor, this.domainType, this.resultType,
+		(this.cursorStrategy != null ? this.cursorStrategy : RepositoryUtils.defaultCursorStrategy()),
+		(this.defaultSubrange != null ? this.defaultSubrange : RepositoryUtils.defaultScrollSubrange()),
+		this.sort);
 		}
 
 	}
@@ -655,7 +655,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 
 
 	private static class SingleEntityFetcher<T, R>
-			extends QueryByExampleDataFetcher<T> implements SelfDescribingDataFetcher<R> {
+extends QueryByExampleDataFetcher<T> implements SelfDescribingDataFetcher<R> {
 
 		private final QueryByExampleExecutor<T> executor;
 
@@ -664,7 +664,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 		private final Sort sort;
 
 		SingleEntityFetcher(
-				QueryByExampleExecutor<T> executor, TypeInformation<T> domainType, Class<R> resultType, Sort sort) {
+	QueryByExampleExecutor<T> executor, TypeInformation<T> domainType, Class<R> resultType, Sort sort) {
 
 			super(domainType, null);
 			this.executor = executor;
@@ -703,7 +703,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 
 
 	private static class ManyEntityFetcher<T, R>
-			extends QueryByExampleDataFetcher<T> implements SelfDescribingDataFetcher<Iterable<R>> {
+extends QueryByExampleDataFetcher<T> implements SelfDescribingDataFetcher<Iterable<R>> {
 
 		private final QueryByExampleExecutor<T> executor;
 
@@ -712,8 +712,8 @@ public abstract class QueryByExampleDataFetcher<T> {
 		private final Sort sort;
 
 		ManyEntityFetcher(
-				QueryByExampleExecutor<T> executor, TypeInformation<T> domainType, Class<R> resultType,
-				@Nullable CursorStrategy<ScrollPosition> cursorStrategy, Sort sort) {
+	QueryByExampleExecutor<T> executor, TypeInformation<T> domainType, Class<R> resultType,
+	@Nullable CursorStrategy<ScrollPosition> cursorStrategy, Sort sort) {
 
 			super(domainType, cursorStrategy);
 			this.executor = executor;
@@ -761,10 +761,10 @@ public abstract class QueryByExampleDataFetcher<T> {
 		private final ResolvableType scrollableResultType;
 
 		ScrollableEntityFetcher(
-				QueryByExampleExecutor<T> executor, TypeInformation<T> domainType, Class<R> resultType,
-				CursorStrategy<ScrollPosition> cursorStrategy,
-				ScrollSubrange defaultSubrange,
-				Sort sort) {
+	QueryByExampleExecutor<T> executor, TypeInformation<T> domainType, Class<R> resultType,
+	CursorStrategy<ScrollPosition> cursorStrategy,
+	ScrollSubrange defaultSubrange,
+	Sort sort) {
 
 			super(executor, domainType, resultType, cursorStrategy, sort);
 
@@ -795,7 +795,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 
 
 	private static class ReactiveSingleEntityFetcher<T, R>
-			extends QueryByExampleDataFetcher<T> implements SelfDescribingDataFetcher<Mono<R>> {
+extends QueryByExampleDataFetcher<T> implements SelfDescribingDataFetcher<Mono<R>> {
 
 		private final ReactiveQueryByExampleExecutor<T> executor;
 
@@ -804,8 +804,8 @@ public abstract class QueryByExampleDataFetcher<T> {
 		private final Sort sort;
 
 		ReactiveSingleEntityFetcher(
-				ReactiveQueryByExampleExecutor<T> executor, TypeInformation<T> domainType,
-				Class<R> resultType, Sort sort) {
+	ReactiveQueryByExampleExecutor<T> executor, TypeInformation<T> domainType,
+	Class<R> resultType, Sort sort) {
 
 			super(domainType, null);
 			this.executor = executor;
@@ -843,7 +843,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 
 
 	private static class ReactiveManyEntityFetcher<T, R>
-			extends QueryByExampleDataFetcher<T> implements SelfDescribingDataFetcher<Flux<R>> {
+extends QueryByExampleDataFetcher<T> implements SelfDescribingDataFetcher<Flux<R>> {
 
 		private final ReactiveQueryByExampleExecutor<T> executor;
 
@@ -852,8 +852,8 @@ public abstract class QueryByExampleDataFetcher<T> {
 		private final Sort sort;
 
 		ReactiveManyEntityFetcher(
-				ReactiveQueryByExampleExecutor<T> executor, TypeInformation<T> domainType,
-				Class<R> resultType, Sort sort) {
+	ReactiveQueryByExampleExecutor<T> executor, TypeInformation<T> domainType,
+	Class<R> resultType, Sort sort) {
 
 			super(domainType, null);
 			this.executor = executor;
@@ -891,7 +891,7 @@ public abstract class QueryByExampleDataFetcher<T> {
 
 
 	private static class ReactiveScrollableEntityFetcher<T, R>
-			extends QueryByExampleDataFetcher<T> implements SelfDescribingDataFetcher<Mono<Iterable<R>>> {
+extends QueryByExampleDataFetcher<T> implements SelfDescribingDataFetcher<Mono<Iterable<R>>> {
 
 		private final ReactiveQueryByExampleExecutor<T> executor;
 
@@ -904,8 +904,8 @@ public abstract class QueryByExampleDataFetcher<T> {
 		private final Sort sort;
 
 		ReactiveScrollableEntityFetcher(
-				ReactiveQueryByExampleExecutor<T> executor, TypeInformation<T> domainType, Class<R> resultType,
-				CursorStrategy<ScrollPosition> cursorStrategy, ScrollSubrange defaultSubrange, Sort sort) {
+	ReactiveQueryByExampleExecutor<T> executor, TypeInformation<T> domainType, Class<R> resultType,
+	CursorStrategy<ScrollPosition> cursorStrategy, ScrollSubrange defaultSubrange, Sort sort) {
 
 			super(domainType, cursorStrategy);
 

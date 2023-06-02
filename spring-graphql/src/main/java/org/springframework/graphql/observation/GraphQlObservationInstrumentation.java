@@ -60,10 +60,10 @@ public class GraphQlObservationInstrumentation extends SimplePerformantInstrumen
 	private static final Log logger = LogFactory.getLog(GraphQlObservationInstrumentation.class);
 
 	private static final ExecutionRequestObservationConvention DEFAULT_REQUEST_CONVENTION =
-			new DefaultExecutionRequestObservationConvention();
+new DefaultExecutionRequestObservationConvention();
 
 	private static final DataFetcherObservationConvention DEFAULT_DATA_FETCHER_CONVENTION =
-			new DefaultDataFetcherObservationConvention();
+new DefaultDataFetcherObservationConvention();
 
 	private final ObservationRegistry observationRegistry;
 
@@ -91,8 +91,8 @@ public class GraphQlObservationInstrumentation extends SimplePerformantInstrumen
 	 * @param dateFetcherObservationConvention the convention to use for data fetcher observations
 	 */
 	public GraphQlObservationInstrumentation(ObservationRegistry observationRegistry,
-			ExecutionRequestObservationConvention requestObservationConvention,
-			DataFetcherObservationConvention dateFetcherObservationConvention) {
+ExecutionRequestObservationConvention requestObservationConvention,
+DataFetcherObservationConvention dateFetcherObservationConvention) {
 		this.observationRegistry = observationRegistry;
 		this.requestObservationConvention = requestObservationConvention;
 		this.dataFetcherObservationConvention = dateFetcherObservationConvention;
@@ -105,11 +105,11 @@ public class GraphQlObservationInstrumentation extends SimplePerformantInstrumen
 
 	@Override
 	public InstrumentationContext<ExecutionResult> beginExecution(InstrumentationExecutionParameters parameters,
-			InstrumentationState state) {
+InstrumentationState state) {
 		if (state instanceof RequestObservationInstrumentationState instrumentationState) {
 			ExecutionRequestObservationContext observationContext = new ExecutionRequestObservationContext(parameters.getExecutionInput());
 			Observation requestObservation = GraphQlObservationDocumentation.EXECUTION_REQUEST.observation(this.requestObservationConvention,
-					DEFAULT_REQUEST_CONVENTION, () -> observationContext, this.observationRegistry);
+		DEFAULT_REQUEST_CONVENTION, () -> observationContext, this.observationRegistry);
 			requestObservation.parentObservation(getCurrentObservation(parameters.getGraphQLContext()));
 			GraphQLContext graphQLContext = parameters.getGraphQLContext();
 			graphQLContext.put(ObservationThreadLocalAccessor.KEY, requestObservation);
@@ -135,13 +135,13 @@ public class GraphQlObservationInstrumentation extends SimplePerformantInstrumen
 
 	@Override
 	public DataFetcher<?> instrumentDataFetcher(DataFetcher<?> dataFetcher,
-			InstrumentationFieldFetchParameters parameters, InstrumentationState state) {
+InstrumentationFieldFetchParameters parameters, InstrumentationState state) {
 		if (!parameters.isTrivialDataFetcher()
-				&& state instanceof RequestObservationInstrumentationState instrumentationState) {
+	&& state instanceof RequestObservationInstrumentationState instrumentationState) {
 			return (environment) -> {
 				DataFetcherObservationContext observationContext = new DataFetcherObservationContext(parameters.getEnvironment());
 				Observation dataFetcherObservation = GraphQlObservationDocumentation.DATA_FETCHER.observation(this.dataFetcherObservationConvention,
-						DEFAULT_DATA_FETCHER_CONVENTION, () -> observationContext, this.observationRegistry);
+			DEFAULT_DATA_FETCHER_CONVENTION, () -> observationContext, this.observationRegistry);
 				dataFetcherObservation.parentObservation(getCurrentObservation(environment));
 				dataFetcherObservation.start();
 				try {
@@ -194,17 +194,18 @@ public class GraphQlObservationInstrumentation extends SimplePerformantInstrumen
 			}
 			else if (result.getLocalContext() instanceof GraphQLContext) {
 				((GraphQLContext) result.getLocalContext()).put(ObservationThreadLocalAccessor.KEY, dataFetcherObservation);
-			} else {
+			}
+			else {
 				logger.debug("Cannot add observation to localContext as it is not a GraphQLContext but a "
-						+ result.getLocalContext().getClass().toString());
+			+ result.getLocalContext().getClass().toString());
 			}
 			return result;
 		}
 		else {
 			return DataFetcherResult.newResult()
-					.data(value)
-					.localContext(GraphQLContext.newContext().of(ObservationThreadLocalAccessor.KEY, dataFetcherObservation).build())
-					.build();
+		.data(value)
+		.localContext(GraphQLContext.newContext().of(ObservationThreadLocalAccessor.KEY, dataFetcherObservation).build())
+		.build();
 		}
 
 	}

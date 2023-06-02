@@ -40,19 +40,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WebGraphQlInterceptorTests {
 
 	private static final WebGraphQlRequest webRequest = new WebGraphQlRequest(
-			URI.create("http://abc.org"), new HttpHeaders(), null, Collections.emptyMap(),
-			Collections.singletonMap("query", "{ notUsed }"), "1", null);
+URI.create("http://abc.org"), new HttpHeaders(), null, Collections.emptyMap(),
+Collections.singletonMap("query", "{ notUsed }"), "1", null);
 
 	@Test
 	void interceptorOrder() {
 		StringBuilder sb = new StringBuilder();
 
 		WebGraphQlHandler handler = WebGraphQlHandler.builder(this::emptyExecutionResult)
-				.interceptors(Arrays.asList(
-						new OrderInterceptor(1, sb),
-						new OrderInterceptor(2, sb),
-						new OrderInterceptor(3, sb)))
-				.build();
+	.interceptors(Arrays.asList(
+new OrderInterceptor(1, sb),
+new OrderInterceptor(2, sb),
+new OrderInterceptor(3, sb)))
+	.build();
 
 		handler.handleRequest(webRequest).block();
 		assertThat(sb.toString()).isEqualTo(":pre1:pre2:pre3:post3:post2:post1");
@@ -61,12 +61,12 @@ public class WebGraphQlInterceptorTests {
 	@Test
 	void responseHeader() {
 		WebGraphQlHandler handler = WebGraphQlHandler.builder(this::emptyExecutionResult)
-				.interceptor((input, next) -> next.next(input)
-						.doOnNext(response -> {
-							HttpHeaders httpHeaders = response.getResponseHeaders();
-							httpHeaders.add("testHeader", "testValue");
-						}))
-				.build();
+	.interceptor((input, next) -> next.next(input)
+.doOnNext(response -> {
+	HttpHeaders httpHeaders = response.getResponseHeaders();
+	httpHeaders.add("testHeader", "testValue");
+}))
+	.build();
 
 		HttpHeaders headers = handler.handleRequest(webRequest).block().getResponseHeaders();
 
@@ -78,15 +78,15 @@ public class WebGraphQlInterceptorTests {
 		AtomicReference<String> actualName = new AtomicReference<>();
 
 		WebGraphQlHandler handler = WebGraphQlHandler
-				.builder((request) -> {
-					actualName.set(request.toExecutionInput().getOperationName());
-					return emptyExecutionResult(request);
-				})
-				.interceptor((request, chain) -> {
-					request.configureExecutionInput((input, builder) -> builder.operationName("testOp").build());
-					return chain.next(request);
-				})
-				.build();
+	.builder((request) -> {
+		actualName.set(request.toExecutionInput().getOperationName());
+		return emptyExecutionResult(request);
+	})
+	.interceptor((request, chain) -> {
+		request.configureExecutionInput((input, builder) -> builder.operationName("testOp").build());
+		return chain.next(request);
+	})
+	.build();
 
 		handler.handleRequest(webRequest).block();
 
@@ -95,8 +95,8 @@ public class WebGraphQlInterceptorTests {
 
 	private Mono<ExecutionGraphQlResponse> emptyExecutionResult(ExecutionGraphQlRequest request) {
 		return Mono.just(new DefaultExecutionGraphQlResponse(
-				ExecutionInput.newExecutionInput("{}").build(),
-				ExecutionResultImpl.newExecutionResult().build()));
+	ExecutionInput.newExecutionInput("{}").build(),
+	ExecutionResultImpl.newExecutionResult().build()));
 	}
 
 	private static class OrderInterceptor implements WebGraphQlInterceptor {
@@ -114,11 +114,11 @@ public class WebGraphQlInterceptorTests {
 		public Mono<WebGraphQlResponse> intercept(WebGraphQlRequest request, Chain chain) {
 			this.sb.append(":pre").append(this.order);
 			return chain.next(request)
-					.map((response) -> {
-						this.sb.append(":post").append(this.order);
-						return response;
-					})
-					.subscribeOn(Schedulers.boundedElastic());
+		.map((response) -> {
+			this.sb.append(":post").append(this.order);
+			return response;
+		})
+		.subscribeOn(Schedulers.boundedElastic());
 		}
 
 	}

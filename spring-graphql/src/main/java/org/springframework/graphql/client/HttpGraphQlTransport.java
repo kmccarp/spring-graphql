@@ -42,11 +42,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 final class HttpGraphQlTransport implements GraphQlTransport {
 
 	private static final ParameterizedTypeReference<Map<String, Object>> MAP_TYPE =
-			new ParameterizedTypeReference<Map<String, Object>>() {};
+new ParameterizedTypeReference<Map<String, Object>>() {
+};
 
 	// To be removed in favor of Framework's MediaType.APPLICATION_GRAPHQL_RESPONSE
 	private static final MediaType APPLICATION_GRAPHQL_RESPONSE =
-			new MediaType("application", "graphql-response+json");
+new MediaType("application", "graphql-response+json");
 
 
 	private final WebClient webClient;
@@ -72,17 +73,17 @@ final class HttpGraphQlTransport implements GraphQlTransport {
 	@SuppressWarnings("removal")
 	public Mono<GraphQlResponse> execute(GraphQlRequest request) {
 		return this.webClient.post()
-				.contentType(this.contentType)
-				.accept(MediaType.APPLICATION_JSON, APPLICATION_GRAPHQL_RESPONSE, MediaType.APPLICATION_GRAPHQL)
-				.bodyValue(request.toMap())
-				.attributes(attributes -> {
-					if (request instanceof ClientGraphQlRequest clientRequest) {
-						attributes.putAll(clientRequest.getAttributes());
-					}
-				})
-				.retrieve()
-				.bodyToMono(MAP_TYPE)
-				.map(ResponseMapGraphQlResponse::new);
+	.contentType(this.contentType)
+	.accept(MediaType.APPLICATION_JSON, APPLICATION_GRAPHQL_RESPONSE, MediaType.APPLICATION_GRAPHQL)
+	.bodyValue(request.toMap())
+	.attributes(attributes -> {
+		if (request instanceof ClientGraphQlRequest clientRequest) {
+			attributes.putAll(clientRequest.getAttributes());
+		}
+	})
+	.retrieve()
+	.bodyToMono(MAP_TYPE)
+	.map(ResponseMapGraphQlResponse::new);
 	}
 
 	@Override

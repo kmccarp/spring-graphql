@@ -61,18 +61,18 @@ public class BatchMappingDetectionTests {
 	void registerWithDefaultCoordinates() {
 
 		Map<String, Map<String, DataFetcher>> dataFetcherMap =
-				initRuntimeWiringBuilder(BookController.class).build().getDataFetchers();
+	initRuntimeWiringBuilder(BookController.class).build().getDataFetchers();
 
 		assertThat(dataFetcherMap).containsOnlyKeys("Book");
 		assertThat(dataFetcherMap.get("Book")).containsOnlyKeys(
-				"authorFlux", "authorList", "authorMonoMap", "authorMap", "authorCallableMap", "authorEnvironment");
+	"authorFlux", "authorList", "authorMonoMap", "authorMap", "authorCallableMap", "authorEnvironment");
 
 		DataLoaderRegistry registry = new DataLoaderRegistry();
 		this.batchLoaderRegistry.registerDataLoaders(registry, GraphQLContext.newContext().build());
 
 		assertThat(registry.getDataLoadersMap()).containsOnlyKeys(
-				"Book.authorFlux", "Book.authorList", "Book.authorMonoMap", "Book.authorMap",
-				"Book.authorCallableMap", "Book.authorEnvironment");
+	"Book.authorFlux", "Book.authorList", "Book.authorMonoMap", "Book.authorMap",
+	"Book.authorCallableMap", "Book.authorEnvironment");
 	}
 
 	@Test
@@ -94,13 +94,13 @@ public class BatchMappingDetectionTests {
 	@Test
 	void invalidReturnType() {
 		assertThatThrownBy(() -> initRuntimeWiringBuilder(InvalidReturnTypeController.class).build())
-				.hasMessageStartingWith("@BatchMapping method is expected to return");
+	.hasMessageStartingWith("@BatchMapping method is expected to return");
 	}
 
 	@Test
 	void schemaAndBatch() {
 		assertThatThrownBy(() -> initRuntimeWiringBuilder(SchemaAndBatchMappingController.class).build())
-				.hasMessageStartingWith("Expected either @BatchMapping or @SchemaMapping, not both");
+	.hasMessageStartingWith("Expected either @BatchMapping or @SchemaMapping, not both");
 	}
 
 	@SuppressWarnings("unchecked")

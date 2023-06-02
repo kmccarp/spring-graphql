@@ -48,7 +48,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class WebGraphQlRequest extends DefaultExecutionGraphQlRequest implements ExecutionGraphQlRequest {
 
 	private static final MultiValueMap<String, HttpCookie> EMPTY_COOKIES =
-			CollectionUtils.unmodifiableMultiValueMap(new LinkedMultiValueMap<>());
+CollectionUtils.unmodifiableMultiValueMap(new LinkedMultiValueMap<>());
 
 
 	private final UriComponents uri;
@@ -81,11 +81,11 @@ public class WebGraphQlRequest extends DefaultExecutionGraphQlRequest implements
 	 * @since 1.1.3
 	 */
 	public WebGraphQlRequest(
-			URI uri, HttpHeaders headers, @Nullable MultiValueMap<String, HttpCookie> cookies,
-			Map<String, Object> attributes, Map<String, Object> body, String id, @Nullable Locale locale) {
+URI uri, HttpHeaders headers, @Nullable MultiValueMap<String, HttpCookie> cookies,
+Map<String, Object> attributes, Map<String, Object> body, String id, @Nullable Locale locale) {
 
 		super(getKey("query", body), getKey("operationName", body), getKey("variables", body),
-				getKey("extensions", body), id, locale);
+	getKey("extensions", body), id, locale);
 
 		Assert.notNull(uri, "URI is required'");
 		Assert.notNull(headers, "HttpHeaders is required'");

@@ -59,7 +59,7 @@ class AutoRegistrationTypeVisitor extends GraphQLTypeVisitorStub {
 
 	@Override
 	public TraversalControl visitGraphQLFieldDefinition(
-			GraphQLFieldDefinition fieldDefinition, TraverserContext<GraphQLSchemaElement> context) {
+GraphQLFieldDefinition fieldDefinition, TraverserContext<GraphQLSchemaElement> context) {
 
 		if (this.dataFetcherFactories.isEmpty()) {
 			return TraversalControl.QUIT;
@@ -72,8 +72,8 @@ class AutoRegistrationTypeVisitor extends GraphQLTypeVisitorStub {
 		}
 
 		DataFetcher<?> dataFetcher = (fieldType instanceof GraphQLList ?
-				getDataFetcher(((GraphQLList) fieldType).getWrappedType(), false) :
-				getDataFetcher(fieldType, true));
+	getDataFetcher(((GraphQLList) fieldType).getWrappedType(), false) :
+	getDataFetcher(fieldType, true));
 
 		if (dataFetcher != null) {
 			GraphQLCodeRegistry.Builder registry = context.getVarFromParents(GraphQLCodeRegistry.Builder.class);
@@ -98,8 +98,8 @@ class AutoRegistrationTypeVisitor extends GraphQLTypeVisitorStub {
 	}
 
 	private boolean hasDataFetcher(
-			GraphQLCodeRegistry.Builder registry, GraphQLFieldsContainer parent,
-			GraphQLFieldDefinition fieldDefinition) {
+GraphQLCodeRegistry.Builder registry, GraphQLFieldsContainer parent,
+GraphQLFieldDefinition fieldDefinition) {
 
 		DataFetcher<?> fetcher = registry.getDataFetcher(parent, fieldDefinition);
 		return (fetcher != null && !(fetcher instanceof PropertyDataFetcher));

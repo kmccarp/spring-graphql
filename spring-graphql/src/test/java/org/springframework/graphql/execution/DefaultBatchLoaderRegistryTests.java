@@ -42,10 +42,10 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 public class DefaultBatchLoaderRegistryTests {
 
 	private final BatchLoaderRegistry batchLoaderRegistry =
-			new DefaultBatchLoaderRegistry(() -> {
-				// Disable batching, so we can test loading immediately
-				return DataLoaderOptions.newOptions().setBatchingEnabled(false);
-			});
+new DefaultBatchLoaderRegistry(() -> {
+	// Disable batching, so we can test loading immediately
+	return DataLoaderOptions.newOptions().setBatchingEnabled(false);
+});
 
 	private final DataLoaderRegistry dataLoaderRegistry = DataLoaderRegistry.newRegistry().build();
 
@@ -55,11 +55,11 @@ public class DefaultBatchLoaderRegistryTests {
 		AtomicReference<String> valueRef = new AtomicReference<>();
 
 		this.batchLoaderRegistry.forTypePair(Long.class, Book.class)
-				.registerBatchLoader((ids, environment) ->
-						Flux.deferContextual(contextView -> {
-							valueRef.set(contextView.get("key"));
-							return Flux.fromIterable(ids).map(BookSource::getBook);
-						}));
+	.registerBatchLoader((ids, environment) ->
+Flux.deferContextual(contextView -> {
+	valueRef.set(contextView.get("key"));
+	return Flux.fromIterable(ids).map(BookSource::getBook);
+}));
 
 		ExecutionInput input = ExecutionInput.newExecutionInput().query("").build();
 
@@ -80,11 +80,11 @@ public class DefaultBatchLoaderRegistryTests {
 		AtomicReference<String> valueRef = new AtomicReference<>();
 
 		this.batchLoaderRegistry.forTypePair(Long.class, Book.class)
-				.registerMappedBatchLoader((ids, environment) ->
-						Mono.deferContextual(contextView -> {
-							valueRef.set(contextView.get("key"));
-							return Flux.fromIterable(ids).map(BookSource::getBook).collectMap(Book::getId, Function.identity());
-						}));
+	.registerMappedBatchLoader((ids, environment) ->
+Mono.deferContextual(contextView -> {
+	valueRef.set(contextView.get("key"));
+	return Flux.fromIterable(ids).map(BookSource::getBook).collectMap(Book::getId, Function.identity());
+}));
 
 		ExecutionInput input = ExecutionInput.newExecutionInput().query("").build();
 
@@ -106,8 +106,8 @@ public class DefaultBatchLoaderRegistryTests {
 		StatisticsCollector collector = new NoOpStatisticsCollector();
 
 		this.batchLoaderRegistry.forName(name)
-				.withOptions(options -> options.setStatisticsCollector(() -> collector))
-				.registerBatchLoader((keys, environment) -> Flux.empty());
+	.withOptions(options -> options.setStatisticsCollector(() -> collector))
+	.registerBatchLoader((keys, environment) -> Flux.empty());
 
 		this.batchLoaderRegistry.registerDataLoaders(this.dataLoaderRegistry, GraphQLContext.newContext().build());
 

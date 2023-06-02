@@ -53,7 +53,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 public class ContextValueMethodArgumentResolverTests {
 
 	private static final Method method = ClassUtils.getMethod(
-			ContextValueMethodArgumentResolverTests.class, "handle", (Class<?>[]) null);
+ContextValueMethodArgumentResolverTests.class, "handle", (Class<?>[]) null);
 
 	private final ContextValueMethodArgumentResolver resolver = new ContextValueMethodArgumentResolver();
 
@@ -90,8 +90,8 @@ public class ContextValueMethodArgumentResolverTests {
 
 		// Required
 		assertThatIllegalStateException()
-				.isThrownBy(() -> resolveValue(context, context, 0))
-				.withMessage("Missing required context value for method 'handle' parameter 0");
+	.isThrownBy(() -> resolveValue(context, context, 0))
+	.withMessage("Missing required context value for method 'handle' parameter 0");
 
 		// Not required
 		assertThat(resolveValue(context, context, 2)).isNull();
@@ -123,14 +123,14 @@ public class ContextValueMethodArgumentResolverTests {
 		resolvers.addResolver(new ContextValueMethodArgumentResolver());
 
 		DataFetcherHandlerMethod handlerMethod = new DataFetcherHandlerMethod(
-				new HandlerMethod(new TestController(), TestController.class.getMethod("handleMono", Mono.class)),
-				resolvers, null, null, false);
+	new HandlerMethod(new TestController(), TestController.class.getMethod("handleMono", Mono.class)),
+	resolvers, null, null, false);
 
 		GraphQLContext graphQLContext = new GraphQLContext.Builder().build();
 
 		DataFetchingEnvironment environment = DataFetchingEnvironmentImpl.newDataFetchingEnvironment()
-				.graphQLContext(graphQLContext)
-				.build();
+	.graphQLContext(graphQLContext)
+	.build();
 
 		graphQLContext.put("stringMono", Mono.just("value A"));
 		StepVerifier.create((Mono<String>) handlerMethod.invoke(environment)).expectNext("value A").verifyComplete();
@@ -145,8 +145,8 @@ public class ContextValueMethodArgumentResolverTests {
 		TestController controller = new TestController();
 
 		BatchLoaderHandlerMethod handlerMethod = new BatchLoaderHandlerMethod(
-				new HandlerMethod(controller,
-						TestController.class.getMethod("getAuthors", List.class, Long.class)), null);
+	new HandlerMethod(controller,
+TestController.class.getMethod("getAuthors", List.class, Long.class)), null);
 
 		GraphQLContext context = new GraphQLContext.Builder().build();
 		context.put("id", 123L);
@@ -155,20 +155,20 @@ public class ContextValueMethodArgumentResolverTests {
 		List<Book> keys = Arrays.asList(BookSource.getBook(1L), BookSource.getBook(2L), BookSource.getBook(3L));
 
 		StepVerifier.create(handlerMethod.invokeForIterable(keys, environment))
-				.expectNextCount(3)
-				.verifyComplete();
+	.expectNextCount(3)
+	.verifyComplete();
 
 		assertThat(controller.savedId).isEqualTo(context.get("id"));
 	}
 
 	@Nullable
 	private Object resolveValue(
-			@Nullable GraphQLContext localContext, @Nullable GraphQLContext graphQLContext, int index) {
+@Nullable GraphQLContext localContext, @Nullable GraphQLContext graphQLContext, int index) {
 
 		DataFetchingEnvironment environment = DataFetchingEnvironmentImpl.newDataFetchingEnvironment()
-				.localContext(localContext)
-				.graphQLContext(graphQLContext)
-				.build();
+	.localContext(localContext)
+	.graphQLContext(graphQLContext)
+	.build();
 
 		return this.resolver.resolveArgument(methodParam(index), environment);
 	}
@@ -182,12 +182,12 @@ public class ContextValueMethodArgumentResolverTests {
 
 	@SuppressWarnings({"unused", "OptionalUsedAsFieldOrParameterType"})
 	public void handle(
-			@ContextValue Book book,
-			@ContextValue("customKey") Book customKeyBook,
-			@ContextValue(required = false) Book notRequiredBook,
-			@ContextValue Optional<Book> optionalBook,
-			@LocalContextValue Book localBook,
-			Book otherBook) {
+@ContextValue Book book,
+@ContextValue("customKey") Book customKeyBook,
+@ContextValue(required = false) Book notRequiredBook,
+@ContextValue Optional<Book> optionalBook,
+@LocalContextValue Book localBook,
+Book otherBook) {
 	}
 
 

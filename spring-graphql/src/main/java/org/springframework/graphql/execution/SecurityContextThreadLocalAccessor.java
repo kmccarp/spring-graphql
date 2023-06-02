@@ -34,8 +34,8 @@ import org.springframework.util.ClassUtils;
 public class SecurityContextThreadLocalAccessor implements ThreadLocalAccessor<Object> {
 
 	private final static boolean springSecurityPresent = ClassUtils.isPresent(
-			"org.springframework.security.core.context.SecurityContext",
-			SecurityContextThreadLocalAccessor.class.getClassLoader());
+"org.springframework.security.core.context.SecurityContext",
+SecurityContextThreadLocalAccessor.class.getClassLoader());
 
 
 	private final ThreadLocalAccessor<?> delegate;
