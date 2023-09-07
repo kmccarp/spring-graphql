@@ -101,11 +101,11 @@ final class DefaultHttpGraphQlTesterBuilder
 	}
 
 
-	/**
-	 * Default {@link HttpGraphQlTester} that builds and uses a {@link WebTestClient}
-	 * for request execution.
-	 */
-	private static class DefaultHttpGraphQlTester extends AbstractDelegatingGraphQlTester implements HttpGraphQlTester {
+    /**
+     * Default {@link HttpGraphQlTester} that builds and uses a {@link WebTestClient}
+     * for request execution.
+     */
+    private static final class DefaultHttpGraphQlTester extends AbstractDelegatingGraphQlTester implements HttpGraphQlTester {
 
 		private final WebTestClient webTestClient;
 
