@@ -133,7 +133,7 @@ public class GraphQlObservationInstrumentation extends SimplePerformantInstrumen
 			InstrumentationFieldFetchParameters parameters, InstrumentationState state) {
 		if (!parameters.isTrivialDataFetcher()
 				&& state == RequestObservationInstrumentationState.INSTANCE) {
-			return (environment) -> {
+			return environment -> {
 				DataFetcherObservationContext observationContext = new DataFetcherObservationContext(environment);
 				Observation dataFetcherObservation = GraphQlObservationDocumentation.DATA_FETCHER.observation(this.dataFetcherObservationConvention,
 						DEFAULT_DATA_FETCHER_CONVENTION, () -> observationContext, this.observationRegistry);

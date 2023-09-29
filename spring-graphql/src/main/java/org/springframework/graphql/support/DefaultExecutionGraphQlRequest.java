@@ -72,7 +72,7 @@ public class DefaultExecutionGraphQlRequest extends DefaultGraphQlRequest implem
 		super(document, operationName, variables, extensions);
 		Assert.notNull(id, "'id' is required");
 		this.id = id;
-		this.locale = (locale != null) ? locale : Locale.getDefault();
+		this.locale = locale != null ? locale : Locale.getDefault();
 	}
 
 
