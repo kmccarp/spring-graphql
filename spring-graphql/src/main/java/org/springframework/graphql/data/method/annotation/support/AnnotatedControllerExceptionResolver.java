@@ -224,7 +224,7 @@ final class AnnotatedControllerExceptionResolver {
 			while (exToExpose != null) {
 				exceptions.add(exToExpose);
 				Throwable cause = exToExpose.getCause();
-				exToExpose = (cause != exToExpose ? cause : null);
+				exToExpose = cause != exToExpose ? cause : null;
 			}
 			Object[] arguments = new Object[exceptions.size() + 1];
 			exceptions.toArray(arguments);  // efficient arraycopy call in ArrayList
@@ -290,7 +290,7 @@ final class AnnotatedControllerExceptionResolver {
 				method = getMappedMethod(exceptionType);
 				this.resolvedExceptionCache.put(exceptionType, method);
 			}
-			return (method != NO_MATCH ? method : null);
+			return method != NO_MATCH ? method : null;
 		}
 
 		private MethodHolder getMappedMethod(Class<? extends Throwable> exceptionType) {
